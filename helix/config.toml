@@ -1,0 +1,22 @@
+theme = "dark_plus"
+
+[editor]
+line-number = "relative"
+bufferline = "always"
+
+rulers = [80]
+
+[editor.soft-wrap]
+enable = true
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+[editor.lsp]
+display-messages = true
+
+[editor.indent-guides]
+render = false
+character = "▏"
