@@ -83,5 +83,5 @@ pipx install ruff
 ############
 
 brew install bat
-cargo install just
-cargo install sqlx-cli
+brew install just
+brew install sqlx-cli
