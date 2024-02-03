@@ -89,4 +89,3 @@ brew install sqlx-cli
 
 # we put this last since it requests that we restart the terminal mid-way
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/romkatv/zsh4humans/v5/install)"
-
