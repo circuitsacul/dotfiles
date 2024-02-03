@@ -49,19 +49,20 @@ brew install gpg-suite
 
 # helix
 git clone https://github.com/pinelang/helix-tree-explorer.git
-cd helix-tree-explore
+cd helix-tree-explorer
 git checkout tree_explore
 
 cargo install --path helix-term --locked
 
 mkdir -p ~/.config/helix
-ln -s $PWD/runtime ~/.config/helix/runtime
+cp -r $PWD/runtime ~/.config/helix/runtime
+cd ..
 ln -s $PWD/helix/config.toml ~/.config/helix/config.toml
 ln -s $PWD/helix/languages.toml ~/.config/helix/languages.toml
 hx --grammar fetch
 hx --grammar build
 
-cd ..
+rm -rf helix-tree-explore
 
 ######################################
 # Language Servers & Related Tooling #
@@ -82,6 +83,7 @@ pipx install ruff
 brew install bat
 brew install just
 brew install sqlx-cli
+brew install git
 
 ##############
 # zsh4humans #
