@@ -63,9 +63,6 @@ hx --grammar build
 
 cd ..
 
-# zsh4humans
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/romkatv/zsh4humans/v5/install)"
-
 ######################################
 # Language Servers & Related Tooling #
 ######################################
@@ -85,3 +82,11 @@ pipx install ruff
 brew install bat
 brew install just
 brew install sqlx-cli
+
+##############
+# zsh4humans #
+##############
+
+# we put this last since it requests that we restart the terminal mid-way
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/romkatv/zsh4humans/v5/install)"
+
