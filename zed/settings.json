@@ -7,6 +7,10 @@
 // custom settings, run the `open default settings` command
 // from the command palette or from `Zed` application menu.
 {
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false
+  },
   "theme": "Rosé Pine",
   "vim_mode": true,
   "ui_font_family": "Fira Code",

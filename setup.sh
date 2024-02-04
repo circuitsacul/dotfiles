@@ -1,3 +1,5 @@
+xcode-select --install
+
 ####################
 # Package Managers #
 ####################
@@ -15,33 +17,6 @@ brew install pipx
 pipx install poetry
 mkdir -p ~/Library/Application\ Support/pypoetry
 ln -s $PWD/poetry/config.toml ~/Library/Application\ Support/pypoetry/config.toml
-
-########
-# Apps #
-########
-# zed
-brew install zed
-mkdir -p ~/.config/zed
-ln -s $PWD/zed/settings.json ~/.config/zed/settings.json
-
-# iterm2
-brew install iterm2
-cp $PWD/iterm2/com.googlecode.iterm2.plist ~/Library/Preferences/com.googlecode.iterm2.plist
-
-# warp
-brew install warp
-
-# other
-brew install orbstack
-brew install arc
-brew install signal
-brew install enpass
-brew install mullvadvpn
-brew install rectangle
-brew install shottr
-brew install clop
-sudo xattr -r -d com.apple.quarantine /Applications/Clop.app
-brew install gpg-suite
 
 ###################
 # General Tooling #
@@ -76,6 +51,37 @@ pipx install ruff-lsp
 
 pipx install ruff
 
+########
+# Apps #
+########
+# zed
+brew install --cask zed
+mkdir -p ~/.config/zed
+ln -s $PWD/zed/settings.json ~/.config/zed/settings.json
+
+# iterm2
+brew install --cask iterm2
+cp $PWD/iterm2/com.googlecode.iterm2.plist ~/Library/Preferences/com.googlecode.iterm2.plist
+
+# warp
+brew install --cask warp
+
+# other
+brew install --cask orbstack
+brew install --cask arc
+brew install --cask signal
+brew install --cask enpass
+brew install --cask mullvadvpn
+brew install --cask rectangle
+brew install --cask shottr
+brew install --cask clop
+sudo xattr -r -d com.apple.quarantine /Applications/Clop.app
+brew install --cask gpg-suite
+brew install --cask httpie
+brew install --cask raycast
+# there's new brew formula for charmstone
+echo "install charmstone!"
+
 ############
 # Commands #
 ############
@@ -84,6 +90,12 @@ brew install bat
 brew install just
 brew install sqlx-cli
 brew install git
+brew install httpie
+brew install pandoc
+
+# difftastic
+brew install difftastic
+ln -s $PWD/git/.gitconfig ~/.gitconfig
 
 ##############
 # zsh4humans #
