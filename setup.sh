@@ -12,6 +12,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
 # pipx
 brew install pipx
+echo 'eval "$(register-python-argcomplete pipx)"' >> ~/.zshrc
 
 # poetry
 pipx install poetry
@@ -96,6 +97,10 @@ brew install pandoc
 # difftastic
 brew install difftastic
 ln -s $PWD/git/.gitconfig ~/.gitconfig
+
+# libpq (psql)
+brew install libpq
+echo 'export PATH="/opt/homebrew/opt/libpq/bin:$PATH"' >> ~/.zshrc
 
 ##############
 # zsh4humans #
