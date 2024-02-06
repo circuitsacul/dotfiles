@@ -10,6 +10,9 @@ xcode-select --install
 # rust
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
+# python
+brew install python3
+
 # pipx
 brew install pipx
 echo 'eval "$(register-python-argcomplete pipx)"' >> ~/.zshrc
@@ -71,7 +74,8 @@ brew install --cask warp
 brew install --cask orbstack
 brew install --cask arc
 brew install --cask signal
-brew install --cask enpass
+# brew install --cask enpass
+brew install --cask bitwarden
 brew install --cask mullvadvpn
 brew install --cask rectangle
 brew install --cask shottr
@@ -80,6 +84,8 @@ sudo xattr -r -d com.apple.quarantine /Applications/Clop.app
 brew install --cask gpg-suite
 brew install --cask httpie
 brew install --cask raycast
+brew install --cast appcleaner
+brew install --cask spotify
 # there's new brew formula for charmstone
 echo "install charmstone!"
 
@@ -93,6 +99,7 @@ brew install sqlx-cli
 brew install git
 brew install httpie
 brew install pandoc
+brew install gh
 
 # difftastic
 brew install difftastic
