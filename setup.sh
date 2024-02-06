@@ -1,5 +1,13 @@
 xcode-select --install
 
+#########
+# Fixes #
+#########
+# Some apps add info to .profile instaed of .zprofile
+touch ~/.zprofile
+touch ~/.profile
+echo 'source ~/.profile' >> ~/.zprofile
+
 ####################
 # Package Managers #
 ####################
@@ -21,6 +29,10 @@ echo 'eval "$(register-python-argcomplete pipx)"' >> ~/.zshrc
 pipx install poetry
 mkdir -p ~/Library/Application\ Support/pypoetry
 ln -s $PWD/poetry/config.toml ~/Library/Application\ Support/pypoetry/config.toml
+
+# rye
+curl -sSf https://rye-up.com/get | bash
+ln -s $PWD/rye/config.toml ~/.rye/config.toml
 
 ###################
 # General Tooling #
@@ -100,6 +112,7 @@ brew install git
 brew install httpie
 brew install pandoc
 brew install gh
+brew install bitwarden-cli
 
 # difftastic
 brew install difftastic
