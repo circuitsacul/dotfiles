@@ -30,9 +30,9 @@ pipx install poetry
 mkdir -p ~/Library/Application\ Support/pypoetry
 ln -s $PWD/poetry/config.toml ~/Library/Application\ Support/pypoetry/config.toml
 
-# rye
-curl -sSf https://rye-up.com/get | bash
-ln -s $PWD/rye/config.toml ~/.rye/config.toml
+# # rye
+# brew install rye
+# ln -s $PWD/rye/config.toml ~/.rye/config.toml
 
 ###################
 # General Tooling #
@@ -55,37 +55,25 @@ hx --grammar build
 
 rm -rf helix-tree-explore
 
-######################################
-# Language Servers & Related Tooling #
-######################################
-# NOTE: these are only used by helix
-#       zed downloads its own language servers
-
-# python language servers
-pipx install pyright  # and pyright-langserver
-pipx install ruff-lsp
-
-pipx install ruff
-
 ########
 # Apps #
 ########
-# zed
-brew install --cask zed
-mkdir -p ~/.config/zed
-ln -s $PWD/zed/settings.json ~/.config/zed/settings.json
+# # zed
+# brew install --cask zed
+# mkdir -p ~/.config/zed
+# ln -s $PWD/zed/settings.json ~/.config/zed/settings.json
 
 # iterm2
 brew install --cask iterm2
 cp $PWD/iterm2/com.googlecode.iterm2.plist ~/Library/Preferences/com.googlecode.iterm2.plist
 
-# warp
-brew install --cask warp
-
 # other
 brew install --cask orbstack
 brew install --cask arc
 brew install --cask signal
+brew install --cask whatsapp
+brew install --cask telegram
+brew install --cask element
 # brew install --cask enpass
 brew install --cask bitwarden
 brew install --cask mullvadvpn
@@ -97,7 +85,8 @@ brew install --cask gpg-suite
 brew install --cask httpie
 brew install --cask raycast
 brew install --cast appcleaner
-brew install --cask spotify
+# brew install --cask spotify
+brew install --cask utm
 # there's new brew formula for charmstone
 echo "install charmstone!"
 
@@ -113,6 +102,11 @@ brew install httpie
 brew install pandoc
 brew install gh
 brew install bitwarden-cli
+
+# language servers
+brew install pyright
+brew install ruff-lsp
+brew install ruff
 
 # difftastic
 brew install difftastic
