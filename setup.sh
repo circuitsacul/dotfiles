@@ -58,10 +58,10 @@ rm -rf helix-tree-explore
 ########
 # Apps #
 ########
-# # zed
-# brew install --cask zed
-# mkdir -p ~/.config/zed
-# ln -s $PWD/zed/settings.json ~/.config/zed/settings.json
+# zed
+brew install --cask zed
+mkdir -p ~/.config/zed
+ln -s $PWD/zed/settings.json ~/.config/zed/settings.json
 
 # iterm2
 brew install --cask iterm2
@@ -87,7 +87,7 @@ brew install --cask raycast
 brew install --cast appcleaner
 # brew install --cask spotify
 brew install --cask utm
-# there's new brew formula for charmstone
+# there's no brew formula for charmstone
 echo "install charmstone!"
 
 ############
@@ -103,7 +103,7 @@ brew install pandoc
 brew install gh
 brew install bitwarden-cli
 
-# language servers
+# language servers (only needed for helix editor)
 brew install pyright
 brew install ruff-lsp
 brew install ruff

@@ -1,21 +1,22 @@
-// Zed settings
-//
-// For information on how to configure Zed, see the Zed
-// documentation: https://zed.dev/docs/configuring-zed
-//
-// To see all of Zed's default settings without changing your
-// custom settings, run the `open default settings` command
-// from the command palette or from `Zed` application menu.
 {
+  "features": {
+    "inline_completion_provider": "none"
+  },
   "telemetry": {
     "diagnostics": false,
     "metrics": false
   },
-  "theme": "Rosé Pine",
+  "theme": {
+    "mode": "system",
+    "light": "One Light",
+    "dark": "Catppuccin Mocha"
+  },
   "vim_mode": true,
-  "ui_font_family": "Fira Code",
-  "buffer_font_family": "Fira Code",
-  "relative_line_numbers": true,
+  "terminal": {
+    "font_family": "MesloLGS NF"
+  },
+  "ui_font_family": "MesloLGS NF",
+  "buffer_font_family": "MesloLGS NF",
   "lsp": {
     "rust-analyzer": {
       "initialization_options": {
