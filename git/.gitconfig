@@ -1,3 +1,6 @@
+[pager]
+  pager = "delta"
+
 [diff]
         tool = difftastic
 [difftool]

@@ -6,7 +6,7 @@ xcode-select --install
 # Some apps add info to .profile instaed of .zprofile
 touch ~/.zprofile
 touch ~/.profile
-echo 'source ~/.profile' >> ~/.zprofile
+echo 'source ~/.profile' >>~/.zprofile
 
 ####################
 # Package Managers #
@@ -19,16 +19,19 @@ echo 'source ~/.profile' >> ~/.zprofile
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
 # python
-brew install python3
+curl -LsSf https://astral.sh/uv/install.sh | sh
 
-# pipx
-brew install pipx
-echo 'eval "$(register-python-argcomplete pipx)"' >> ~/.zshrc
+source "$HOME/.cargo/env"
+echo $(uv generate-shell-completion zsh) >>~/.zshrc
 
-# poetry
-pipx install poetry
-mkdir -p ~/Library/Application\ Support/pypoetry
-ln -s $PWD/poetry/config.toml ~/Library/Application\ Support/pypoetry/config.toml
+# # pipx
+# brew install pipx
+# echo 'eval "$(register-python-argcomplete pipx)"' >>~/.zshrc
+#
+# # poetry
+# pipx install poetry
+# mkdir -p ~/Library/Application\ Support/pypoetry
+# ln -s $PWD/poetry/config.toml ~/Library/Application\ Support/pypoetry/config.toml
 
 # # rye
 # brew install rye
@@ -74,8 +77,9 @@ brew install --cask signal
 brew install --cask whatsapp
 brew install --cask telegram
 brew install --cask element
-# brew install --cask enpass
-brew install --cask bitwarden
+# brew install --cask bitwarden
+# disabled b/c app-store version is required for browser biometrics
+echo "install bitwarden from appstore"
 brew install --cask mullvadvpn
 brew install --cask rectangle
 brew install --cask shottr
@@ -85,10 +89,11 @@ brew install --cask gpg-suite
 brew install --cask httpie
 brew install --cask raycast
 brew install --cast appcleaner
-# brew install --cask spotify
 brew install --cask utm
-# there's no brew formula for charmstone
-echo "install charmstone!"
+# brew install --cask charmstone
+# disabled b/c I already paid for app store version
+echo "install charmstone from app store"
+brew install --cask dropshare
 
 ############
 # Commands #
@@ -104,9 +109,9 @@ brew install gh
 brew install bitwarden-cli
 
 # language servers (only needed for helix editor)
-brew install pyright
-brew install ruff-lsp
-brew install ruff
+uv tool install pyright
+uv tool install ruff
+uv tool install ruff-lsp
 
 # difftastic
 brew install difftastic
@@ -114,7 +119,7 @@ ln -s $PWD/git/.gitconfig ~/.gitconfig
 
 # libpq (psql)
 brew install libpq
-echo 'export PATH="/opt/homebrew/opt/libpq/bin:$PATH"' >> ~/.zshrc
+echo 'export PATH="/opt/homebrew/opt/libpq/bin:$PATH"' >>~/.zshrc
 
 ##############
 # zsh4humans #
