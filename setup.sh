@@ -42,29 +42,33 @@ echo $(uv generate-shell-completion zsh) >>~/.zshrc
 ###################
 
 # helix
-git clone https://github.com/pinelang/helix-tree-explorer.git
-cd helix-tree-explorer
-git checkout tree_explore
+# git clone https://github.com/pinelang/helix-tree-explorer.git
+# cd helix-tree-explorer
+# git checkout tree_explore
+#
+# cargo install --path helix-term --locked
+#
+# mkdir -p ~/.config/helix
+# cp -r $PWD/runtime ~/.config/helix/runtime
+# cd ..
+# ln -s $PWD/helix/config.toml ~/.config/helix/config.toml
+# ln -s $PWD/helix/languages.toml ~/.config/helix/languages.toml
+# hx --grammar fetch
+# hx --grammar build
+#
+# rm -rf helix-tree-explore
 
-cargo install --path helix-term --locked
-
-mkdir -p ~/.config/helix
-cp -r $PWD/runtime ~/.config/helix/runtime
-cd ..
-ln -s $PWD/helix/config.toml ~/.config/helix/config.toml
-ln -s $PWD/helix/languages.toml ~/.config/helix/languages.toml
-hx --grammar fetch
-hx --grammar build
-
-rm -rf helix-tree-explore
+# lazyvim
+ln -s ~/src/local/dotfiles/nvim ~/.config/nvim
+brew install nvim
 
 ########
 # Apps #
 ########
 # zed
-brew install --cask zed
-mkdir -p ~/.config/zed
-ln -s $PWD/zed/settings.json ~/.config/zed/settings.json
+# brew install --cask zed
+# mkdir -p ~/.config/zed
+# ln -s $PWD/zed/settings.json ~/.config/zed/settings.json
 
 # iterm2
 brew install --cask iterm2
@@ -72,7 +76,7 @@ cp $PWD/iterm2/com.googlecode.iterm2.plist ~/Library/Preferences/com.googlecode.
 
 # other
 brew install --cask orbstack
-brew install --cask arc
+brew install --cask librewolf --no-quarantine
 brew install --cask signal
 brew install --cask whatsapp
 brew install --cask telegram
@@ -109,9 +113,9 @@ brew install gh
 brew install bitwarden-cli
 
 # language servers (only needed for helix editor)
-uv tool install pyright
-uv tool install ruff
-uv tool install ruff-lsp
+# uv tool install pyright
+# uv tool install ruff
+# uv tool install ruff-lsp
 
 # difftastic
 brew install difftastic
