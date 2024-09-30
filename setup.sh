@@ -37,6 +37,10 @@ echo $(uv generate-shell-completion zsh) >>~/.zshrc
 # brew install rye
 # ln -s $PWD/rye/config.toml ~/.rye/config.toml
 
+# node
+brew install npm
+brew install pnpm
+
 ###################
 # General Tooling #
 ###################
@@ -78,8 +82,8 @@ cp $PWD/iterm2/com.googlecode.iterm2.plist ~/Library/Preferences/com.googlecode.
 brew install --cask orbstack
 brew install --cask librewolf --no-quarantine
 brew install --cask signal
-brew install --cask whatsapp
-brew install --cask telegram
+# brew install --cask whatsapp
+# brew install --cask telegram
 brew install --cask element
 # brew install --cask bitwarden
 # disabled b/c app-store version is required for browser biometrics
@@ -91,9 +95,9 @@ brew install --cask clop
 sudo xattr -r -d com.apple.quarantine /Applications/Clop.app
 brew install --cask gpg-suite
 brew install --cask httpie
-brew install --cask raycast
+# brew install --cask raycast
 brew install --cast appcleaner
-brew install --cask utm
+# brew install --cask utm
 # brew install --cask charmstone
 # disabled b/c I already paid for app store version
 echo "install charmstone from app store"
