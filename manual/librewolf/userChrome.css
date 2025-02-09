@@ -1,0 +1,38 @@
+/* hide tabs */
+.toolbar-items {
+  visibility: collapse;
+}
+
+/* move close/min/max buttons to left */
+#titlebar {
+  appearance: none !important;
+  height: 0px;
+}
+
+#titlebar > #toolbar-menubar {
+  margin-top: 0px;
+}
+
+#TabsToolbar {
+  min-width: 0 !important;
+  min-height: 0 !important;
+}
+
+#TabsToolbar > .titlebar-buttonbox-container {
+  display: block;
+  position: absolute;
+  top: 12px;
+  left: 0px;
+}
+
+#main-window[sizemode="fullscreen"] #customizableui-special-spring4 {
+  display: none !important;
+}
+
+/* hide treastyletabs extension title bar */
+/*#sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] #sidebar-header {*/
+/*  display: none;*/
+/*}*/
+#sidebar-header {
+  display: none;
+}
