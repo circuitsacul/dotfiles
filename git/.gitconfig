@@ -19,3 +19,5 @@
 [user]
 	email = me@circuitsacul.dev
 	name = CircuitSacul
+[init]
+	defaultBranch = main

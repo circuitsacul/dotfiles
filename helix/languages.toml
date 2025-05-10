@@ -5,6 +5,7 @@ command = "clippy"
 [[language]]
 name = "rust"
 language-servers = ["rust-analyzer"]
+formatter = { command = "rustfmt", args = ["+nightly", "--edition", "2024"] }
 rulers = [100]
 
 # python

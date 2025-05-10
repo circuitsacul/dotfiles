@@ -45,7 +45,7 @@ brew install pnpm
 # General Tooling #
 ###################
 
-# helix
+# helix tree explore
 # git clone https://github.com/pinelang/helix-tree-explorer.git
 # cd helix-tree-explorer
 # git checkout tree_explore
@@ -65,6 +65,20 @@ brew install pnpm
 # lazyvim
 ln -s ~/src/local/dotfiles/nvim ~/.config/nvim
 brew install nvim
+
+# yazi
+ln -s "$PWD/yazi" ~/.config/yazi
+ln -s "$PWD/yazi/open-in-hx.sh" ~/bin/open-in-hx
+ln -s "$PWD/yazi/yazihx.sh" ~/bin/yhx
+brew install yazi
+
+# tmux
+ln -s "$PWD/tmux" ~/.config/tmux
+
+mkdir -p ~/.config/tmux/plugins/catppuccin
+git clone -b v2.1.3 https://github.com/catppuccin/tmux.git ~/.config/tmux/plugins/catppuccin/tmux
+
+brew install tmux
 
 ########
 # Apps #
