@@ -30,6 +30,17 @@ files=("$@")
 
 [[ ${#files[@]} -eq 0 ]] && exit 0 # nothing to open
 
+# Check if the edit window was closed
+session=$(tmux display-message -p '#S')
+window="edit"
+if ! tmux list-windows -t "$session" | grep -q "$window"; then
+  proj=$(realpath "${1:-.}") # project root (arg or CWD)
+
+  tmux new-window -t "$session" -n edit "cd \"$proj\"; hx ."
+
+  sleep 0.1;
+fi
+
 # Bring Helix window to the foreground
 tmux select-window -t "$target"
 
