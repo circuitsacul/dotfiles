@@ -45,6 +45,10 @@ brew install pnpm
 # General Tooling #
 ###################
 
+# helix
+ln -s "$PWD/helix" ~/.config/helix
+brew install helix
+
 # helix tree explore
 # git clone https://github.com/pinelang/helix-tree-explorer.git
 # cd helix-tree-explorer
