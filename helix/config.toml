@@ -1,5 +1,9 @@
 theme = "catppuccin_mocha"
 
+[keys.normal]
+H = ":buffer-next"
+L = ":buffer-previous"
+
 [keys.normal.space]
 e = ":run-shell-command switch-to-yazi"
 

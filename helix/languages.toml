@@ -1,6 +1,7 @@
 # rust
-[language-server.rust-analyzer.config.check]
-command = "clippy"
+[language-server.rust-analyzer.config]
+check.command = "clippy"
+cargo.features = "all"
 
 [[language]]
 name = "rust"
