@@ -73,6 +73,7 @@ brew install nvim
 # yazi
 ln -s "$PWD/yazi" ~/.config/yazi
 ln -s "$PWD/yazi/open-in-hx.sh" ~/bin/open-in-hx
+ln -s "$PWD/yazi/switch-to-yazi.sh" ~/bin/switch-to-yazi
 ln -s "$PWD/yazi/yazihx.sh" ~/bin/yhx
 brew install yazi
 
@@ -135,9 +136,9 @@ brew install gh
 brew install bitwarden-cli
 
 # language servers (only needed for helix editor)
-# uv tool install pyright
-# uv tool install ruff
-# uv tool install ruff-lsp
+uv tool install pyright
+uv tool install ruff
+uv tool install ruff-lsp
 
 # difftastic
 brew install difftastic

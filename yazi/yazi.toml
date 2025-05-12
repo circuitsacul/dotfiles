@@ -1,2 +1,2 @@
 [opener]
-edit = [{ run = '~/bin/open-in-hx "$@"', block = true }]
+edit = [{ run = '~/bin/open-in-hx "$@"' }]

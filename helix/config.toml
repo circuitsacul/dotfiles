@@ -1,5 +1,8 @@
 theme = "catppuccin_mocha"
 
+[keys.normal.space]
+e = ":run-shell-command switch-to-yazi"
+
 [editor]
 line-number = "relative"
 bufferline = "always"

@@ -45,7 +45,5 @@ fi
 tmux select-window -t "$target"
 
 # Push :open commands into Helix
-for f in "${files[@]}"; do
-  tmux send-keys -t "$target" Escape
-  tmux send-keys -t "$target" ":open \"$f\"" Enter
-done
+tmux send-keys -t "$target" Escape
+tmux send-keys -t "$target" ":open ${files[*]}" Enter
