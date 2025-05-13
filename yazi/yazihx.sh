@@ -2,7 +2,6 @@
 
 proj=$(realpath "${1:-.}") # project root (arg or CWD)
 sess=$(echo "$proj" | tr -c '[:alnum:]' '_' | tr -s '_')
-# sess=$(basename "$proj" | tr -c '[:alnum:]' '_') # safe session name
 
 if tmux has-session -t "$sess" 2>/dev/null; then
   tmux attach -t "$sess"

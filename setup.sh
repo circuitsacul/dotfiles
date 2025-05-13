@@ -72,8 +72,6 @@ brew install nvim
 
 # yazi
 ln -s "$PWD/yazi" ~/.config/yazi
-ln -s "$PWD/yazi/open-in-hx.sh" ~/bin/open-in-hx
-ln -s "$PWD/yazi/switch-to-yazi.sh" ~/bin/switch-to-yazi
 ln -s "$PWD/yazi/yazihx.sh" ~/bin/yhx
 brew install yazi
 

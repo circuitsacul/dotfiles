@@ -1,0 +1,4 @@
+[manager]
+prepend_keymap = [
+  { on = "e", run = "shell ~/.config/yazi/open-in-hx.sh" }
+]

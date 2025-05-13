@@ -1,2 +1,5 @@
+[manager]
+show_hidden = true
+
 [opener]
-edit = [{ run = '~/bin/open-in-hx "$@"' }]
+edit = [{ run = '~/.config/yazi/open-in-hx.sh "$@"' }]
