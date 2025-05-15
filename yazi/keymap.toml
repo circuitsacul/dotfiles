@@ -1,4 +1,5 @@
 [manager]
 prepend_keymap = [
-  { on = "e", run = "shell ~/.config/yazi/open-in-hx.sh" }
+  { on = "e", run = "shell ~/.config/yazi/open-in-hx.sh" },
+  { on = "L", run = "shell ~/.config/yazi/open-lazygit.sh" }
 ]

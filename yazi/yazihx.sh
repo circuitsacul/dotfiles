@@ -9,10 +9,14 @@ else
   # create session (detached)
   tmux new-session -s "$sess" -n tree -d "cd \"$proj\"; yazi"
 
-  # second window runs Helix in project root
-  tmux new-window -t "$sess" -n edit "cd \"$proj\"; hx ."
-
   # start on the Yazi window
   tmux select-window -t "$sess:tree"
   tmux attach -t "$sess"
+
+  # second window runs Helix in project root
+  tmux new-window -t "$sess" -n edit "cd \"$proj\"; hx ."
+
+  # lazygit
+  tmux new-window -t "$sess" -n lazygit "cd \"$proj\"; lazygit"
+
 fi

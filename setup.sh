@@ -8,6 +8,8 @@ touch ~/.zprofile
 touch ~/.profile
 echo 'source ~/.profile' >>~/.zprofile
 
+echo 'export XDG_CONFIG_HOME="$HOME/.config"' >> ~/.zshrc
+
 ####################
 # Package Managers #
 ####################
@@ -69,6 +71,10 @@ brew install helix
 # lazyvim
 ln -s ~/src/local/dotfiles/nvim ~/.config/nvim
 brew install nvim
+
+# lazygit
+ln -s "$PWD/lazygit" ~/.config/lazygit
+brew install lazygit
 
 # yazi
 ln -s "$PWD/yazi" ~/.config/yazi

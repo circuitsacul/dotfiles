@@ -2,6 +2,13 @@
 
 set -euo pipefail
 
+# --line=N must be first (if present)
+line=""
+if [[ ${1:-} == --line=* ]]; then
+  line="${1#--line=}"
+  shift
+fi
+
 files=("$@")
 
 window="edit"
@@ -23,4 +30,9 @@ if [ ${#files[@]} -gt 0 ]; then
   # Push :open commands into Helix
   tmux send-keys -t ":$window" Escape
   tmux send-keys -t ":$window" ":open ${files[*]}" Enter
+
+  # goto line number
+  if [[ -n $line ]]; then
+    tmux send-keys -t ":$window" ":goto ${line}" Enter
+  fi
 fi
