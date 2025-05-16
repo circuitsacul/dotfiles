@@ -3,7 +3,7 @@ git:
     externalDiffCommand: 'difft'
 
 os:
-  open: '~/.config/yazi/open-in-hx.sh {{filename}} &'
-  edit: '~/.config/yazi/open-in-hx.sh {{filename}} &'
-  editAtLine: '~/.config/yazi/open-in-hx.sh --line={{line}} {{filename}} &'
+  open: '~/.config/yazi/open-in-hx.sh {{filename}}'
+  edit: '~/.config/yazi/open-in-hx.sh {{filename}}'
+  editAtLine: '~/.config/yazi/open-in-hx.sh --line={{line}} {{filename}}'
   editInTerminal: false
