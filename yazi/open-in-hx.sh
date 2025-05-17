@@ -16,11 +16,11 @@ session=$(tmux display-message -p '#S')
 
 # Check if the edit window was closed
 if ! tmux list-windows -t "$session" | grep -q "$window"; then
-  proj=$(realpath "${1:-.}") # project root (arg or CWD)
+  proj=$(tmux show-option -t "$session" -v @project_root)
 
   tmux new-window -t "$session" -n "$window" "cd \"$proj\"; hx ."
 
-  sleep 0.1;
+  sleep 0.1
 fi
 
 # Bring Helix window to the foreground

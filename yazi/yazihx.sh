@@ -9,6 +9,10 @@ else
   # create session (detached)
   tmux new-session -s "$sess" -n tree -d "cd \"$proj\"; yazi"
 
+  # set the project path (assume we started in root) so other apps can be
+  # opened with the current root (e.g. lazygit and helix)
+  tmux set-option -t "$sess" @project_root "$proj"
+
   # start on the Yazi window
   tmux select-window -t "$sess:tree"
   tmux attach -t "$sess"
