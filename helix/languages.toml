@@ -1,3 +1,25 @@
+# xml
+# [language-server.xml]
+# command = "lemminx"
+
+[[language]]
+name = "xml"
+file-types = [ "xml", "svg", "xsd", "xslt", "xsl" ]
+auto-format = true
+formatter = { command = "xmllint", args = ["--format", "-"] }
+# language-servers = [ "xml" ]
+
+# rstml
+[[language]]
+name = "rstml"
+scope = "scope.rstml"
+file-types = []
+injection-regex = "rstml"
+
+[[grammar]]
+name = "rstml"
+source = { git = "https://github.com/rayliwell/tree-sitter-rstml", subpath = "rstml", rev = "07a8e3b9bda09b648a6ccaca09e15dea3adf956f" }
+
 # rust
 [language-server.rust-analyzer.config]
 check.command = "clippy"
