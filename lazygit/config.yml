@@ -7,3 +7,23 @@ os:
   edit: '~/.config/yazi/open-in-hx.sh {{filename}}'
   editAtLine: '~/.config/yazi/open-in-hx.sh --line={{line}} {{filename}}'
   editInTerminal: false
+
+keybinding:
+  status:
+    openConfigFile: ''
+    editConfigFile: ''
+
+  universal:
+    prevBlock-alt: 'n'
+    nextBlock-alt: 'o'
+    nextItem-alt:  'e'
+    prevItem-alt:  'i'
+
+    openFile: 'h'
+    new: 'c'
+
+  branches:
+    createPullRequest: 'b'
+
+  commits:
+    openInBrowser: 'b'

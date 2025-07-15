@@ -1,3 +1,16 @@
+# rune
+[[language]]
+name = "rune"
+scope = "source.rune"
+injection-regex = "rune"
+file-types = ["rn"]
+comment-token = "//"
+language-servers = ["rune-lsp"]
+roots = ["Rune.toml"]
+
+[language-server.rune-lsp]
+command = "rune-languageserver"
+
 # xml
 # [language-server.xml]
 # command = "lemminx"
@@ -21,7 +34,13 @@ name = "rstml"
 source = { git = "https://github.com/rayliwell/tree-sitter-rstml", subpath = "rstml", rev = "07a8e3b9bda09b648a6ccaca09e15dea3adf956f" }
 
 # rust
+[language-server.rust-analyzer]
+command = "rust-analyzer"
+args = ["+nightly"]
+
 [language-server.rust-analyzer.config]
+procMacro = { enable = false }
+diagnostics = { disabled = ["macro-error"] }
 check.command = "clippy"
 cargo.features = "all"
 
@@ -29,7 +48,7 @@ cargo.features = "all"
 name = "rust"
 language-servers = ["rust-analyzer"]
 formatter = { command = "rustfmt", args = ["+nightly", "--edition", "2024"] }
-rulers = [100]
+rulers = [90]
 
 # python
 [language-server.pyright]
