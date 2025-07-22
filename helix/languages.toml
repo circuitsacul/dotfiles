@@ -29,20 +29,20 @@ scope = "scope.rstml"
 file-types = []
 injection-regex = "rstml"
 
-[[grammar]]
-name = "rstml"
-source = { git = "https://github.com/rayliwell/tree-sitter-rstml", subpath = "rstml", rev = "07a8e3b9bda09b648a6ccaca09e15dea3adf956f" }
+# [[grammar]]
+# name = "rstml"
+# source = { git = "https://github.com/rayliwell/tree-sitter-rstml", subpath = "rstml", rev = "07a8e3b9bda09b648a6ccaca09e15dea3adf956f" }
 
 # rust
-[language-server.rust-analyzer]
-command = "rust-analyzer"
-args = ["+nightly"]
+# [language-server.rust-analyzer]
+# command = "rust-analyzer"
+# args = ["+nightly"]
 
 [language-server.rust-analyzer.config]
-procMacro = { enable = false }
-diagnostics = { disabled = ["macro-error"] }
-check.command = "clippy"
-cargo.features = "all"
+# procMacro = { enable = false }
+# diagnostics = { disabled = ["macro-error"] }
+# check.command = "clippy"
+# cargo.features = "all"
 
 [[language]]
 name = "rust"
