@@ -132,6 +132,7 @@ brew install --cask dropshare
 
 brew install bat
 brew install just
+ln -s $PWD/home-justfile/justfile ~/justfile
 brew install sqlx-cli
 brew install git
 brew install httpie
