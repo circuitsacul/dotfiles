@@ -41,14 +41,14 @@ injection-regex = "rstml"
 [language-server.rust-analyzer.config]
 # procMacro = { enable = false }
 # diagnostics = { disabled = ["macro-error"] }
-# check.command = "clippy"
-# cargo.features = "all"
+check.command = "clippy"
+cargo.features = "all"
 
 [[language]]
 name = "rust"
 language-servers = ["rust-analyzer"]
 formatter = { command = "rustfmt", args = ["+nightly", "--edition", "2024"] }
-rulers = [90]
+rulers = [100]
 
 # python
 [language-server.pyright]

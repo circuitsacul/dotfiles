@@ -1,36 +1,30 @@
 {
-  "assistant": {
-    "default_model": {
-      "provider": "zed.dev",
-      "model": "claude-3-5-sonnet-20240620"
-    },
-    "version": "2"
+  "disable_ai": true,
+  "minimap": {
+    "show": "auto"
   },
-  "features": {
-    "inline_completion_provider": "none"
+  "inlay_hints": {
+    "enabled": true
   },
+  "helix_mode": true,
   "telemetry": {
     "diagnostics": false,
     "metrics": false
   },
+  "ui_font_size": 16,
+  "buffer_font_size": 15,
   "theme": {
     "mode": "system",
-    "light": "One Light",
+    "light": "Ayu Light",
     "dark": "Catppuccin Mocha"
-  },
-  "vim_mode": true,
-  "terminal": {
-    "font_family": "MesloLGS NF"
-  },
-  "ui_font_family": "MesloLGS NF",
-  "buffer_font_family": "MesloLGS NF",
-  "lsp": {
-    "rust-analyzer": {
-      "initialization_options": {
-        "checkOnSave": {
-          "command": "clippy"
-        }
-      }
-    }
   }
+  // "lsp": {
+  //   "rust-analyzer": {
+  //     "initialization_options": {
+  //       "checkOnSave": {
+  //         "command": "clippy"
+  //       }
+  //     }
+  //   }
+  // }
 }

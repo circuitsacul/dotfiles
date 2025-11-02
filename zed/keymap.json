@@ -1,0 +1,81 @@
+[
+  {
+    "context": "Editor && vim_mode == normal",
+    "bindings": {
+      "shift-n": "pane::ActivatePreviousItem",
+      "shift-o": "pane::ActivateNextItem",
+
+      "n": "vim::Left",
+      "e": "vim::Down",
+      "i": "vim::Up",
+      "o": "vim::Right",
+
+      "h": "vim::InsertBefore",
+      "shift-h": "vim::InsertFirstNonWhitespace",
+
+      "l": "vim::InsertLineBelow",
+      "shift-l": "vim::InsertLineAbove",
+
+      "k": "vim::NextSubwordEnd",
+      "shift-k": "vim::NextWordEnd",
+
+      "j": "vim::MoveToNextMatch",
+      "shift-j": "vim::MoveToPreviousMatch",
+
+      "shift-e": "vim::JoinLinesNoWhitespace",
+      "alt-shift-e": "vim::JoinLines",
+
+      "g n": "vim::StartOfLine",
+      "g o": "vim::EndOfLine",
+      "g e": "vim::Down",
+      "g i": "vim::Up",
+
+      "space w n": "workspace::ActivatePaneLeft",
+      "space w e": "workspace::ActivatePaneDown",
+      "space w i": "workspace::ActivatePaneUp",
+      "space w o": "workspace::ActivatePaneRight",
+
+      "ctrl-w n": "workspace::ActivatePaneLeft",
+      "ctrl-w e": "workspace::ActivatePaneDown",
+      "ctrl-w i": "workspace::ActivatePaneUp",
+      "ctrl-w o": "workspace::ActivatePaneRight",
+
+      "z e": "vim::PageDown",
+      "z i": "vim::PageUp",
+      "shift-z e": "vim::PageDown",
+      "shift-z i": "vim::PageUp"
+    }
+  },
+  {
+    "context": "Editor && vim_mode == insert",
+    "bindings": {
+      "alt-x": "vim::SwitchToNormalMode"
+    }
+  },
+  {
+    "context": "Editor && vim_mode == visual",
+    "bindings": {
+      "n": "editor::SelectLeft",
+      "e": "editor::SelectDown",
+      "i": "editor::SelectUp",
+      "o": "editor::SelectRight",
+
+      "h": "vim::InsertBefore",
+      "shift-h": "vim::InsertFirstNonWhitespace",
+
+      "l": "vim::InsertLineBelow",
+      "shift-l": "vim::InsertLineAbove",
+
+      "k": "editor::SelectToNextSubwordEnd",
+      "shift-k": "editor::SelectToNextWordEnd",
+
+      "j": "vim::MoveToNextMatch",
+      "shift-j": "vim::MoveToPreviousMatch",
+
+      "g n": "editor::SelectToBeginningOfLine",
+      "g o": "editor::SelectToEndOfLine"
+      //"g e": "editor::SelectLineDown",
+      //"g i": "editor::SelectLineUp"
+    }
+  }
+]

@@ -93,16 +93,18 @@ brew install tmux
 # Apps #
 ########
 # zed
-# brew install --cask zed
-# mkdir -p ~/.config/zed
-# ln -s $PWD/zed/settings.json ~/.config/zed/settings.json
+brew install --cask zed
+mkdir -p ~/.config/zed
+ln -s $PWD/zed/settings.json ~/.config/zed/settings.json
+ln -s $PWD/zed/keymap.json ~/.config/zed/keymap.json
 
 # iterm2
 brew install --cask iterm2
 cp $PWD/iterm2/com.googlecode.iterm2.plist ~/Library/Preferences/com.googlecode.iterm2.plist
 
 # other
-brew install --cask orbstack
+# brew install --cask orbstack
+# brew install colima docker docker-compose
 brew install --cask librewolf --no-quarantine
 brew install --cask signal
 # brew install --cask whatsapp

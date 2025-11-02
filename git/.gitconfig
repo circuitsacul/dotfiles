@@ -18,6 +18,8 @@
 	gpgsign = true
 [user]
 	email = me@circuitsacul.dev
-	name = CircuitSacul
+	name = circuitsacul
 [init]
 	defaultBranch = main
+[pull]
+	rebase = true
