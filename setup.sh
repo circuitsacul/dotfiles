@@ -69,8 +69,8 @@ brew install helix
 # rm -rf helix-tree-explore
 
 # lazyvim
-ln -s ~/src/local/dotfiles/nvim ~/.config/nvim
-brew install nvim
+# ln -s ~/src/local/dotfiles/nvim ~/.config/nvim
+# brew install nvim
 
 # lazygit
 ln -s "$PWD/lazygit" ~/.config/lazygit
@@ -93,14 +93,14 @@ brew install tmux
 # Apps #
 ########
 # zed
-brew install --cask zed
-mkdir -p ~/.config/zed
-ln -s $PWD/zed/settings.json ~/.config/zed/settings.json
-ln -s $PWD/zed/keymap.json ~/.config/zed/keymap.json
+# brew install --cask zed
+# mkdir -p ~/.config/zed
+# ln -s $PWD/zed/settings.json ~/.config/zed/settings.json
+# ln -s $PWD/zed/keymap.json ~/.config/zed/keymap.json
 
 # iterm2
-brew install --cask iterm2
-cp $PWD/iterm2/com.googlecode.iterm2.plist ~/Library/Preferences/com.googlecode.iterm2.plist
+# brew install --cask iterm2
+# cp $PWD/iterm2/com.googlecode.iterm2.plist ~/Library/Preferences/com.googlecode.iterm2.plist
 
 # other
 # brew install --cask orbstack
@@ -119,14 +119,13 @@ brew install --cask shottr
 brew install --cask clop
 sudo xattr -r -d com.apple.quarantine /Applications/Clop.app
 brew install --cask gpg-suite
-brew install --cask httpie
+# brew install --cask httpie
 # brew install --cask raycast
 brew install --cast appcleaner
 # brew install --cask utm
 # brew install --cask charmstone
-# disabled b/c I already paid for app store version
-echo "install charmstone from app store"
-brew install --cask dropshare
+# echo "install charmstone from app store"
+# brew install --cask dropshare
 
 ############
 # Commands #
@@ -137,15 +136,14 @@ brew install just
 ln -s $PWD/home-justfile/justfile ~/justfile
 brew install sqlx-cli
 brew install git
-brew install httpie
-brew install pandoc
-brew install gh
+# brew install httpie
+# brew install pandoc
+# brew install gh
 brew install bitwarden-cli
 
 # language servers (only needed for helix editor)
 uv tool install pyright
 uv tool install ruff
-uv tool install ruff-lsp
 
 # difftastic
 brew install difftastic

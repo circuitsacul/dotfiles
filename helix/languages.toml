@@ -54,10 +54,11 @@ rulers = [100]
 [language-server.pyright]
 command = "pyright-langserver"
 args = ["--stdio"]
-config = {}
+config = { python = { analysis = { typeCheckingMode = "strict", diagnosticMode = "workspace" } } }
 
 [language-server.ruff]
-command = "ruff-lsp"
+command = "ruff"
+args = ["server"]
 config = { settings = { args = ["--extend-select", "I,RUF"] } }
 
 [[language]]
