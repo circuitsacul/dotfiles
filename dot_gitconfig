@@ -1,0 +1,21 @@
+[diff]
+	tool = difftastic
+[difftool]
+	prompt = false
+[difftool "difftastic"]
+	cmd = difft "$LOCAL" "$REMOTE"
+[pager]
+	pager = "delta"
+	difftool = true
+[alias]
+	dft = difftool
+[aliar]
+	dlog = "!f() { GIT_EXTERNAL_DIFF=difft git log -p --ext-diff $@; }; f"
+
+[commit]
+	gpgsign = true
+[user]
+	email = me@circuitsacul.dev
+	name = circuitsacul
+[init]
+	defaultBranch = main
