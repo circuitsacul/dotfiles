@@ -1,0 +1,39 @@
+###############################################################################
+# Rust
+###############################################################################
+[language-server.rust-analyzer.config]
+# procMacro = { enable = false }
+# diagnostics = { disabled = ["macro-error"] }
+check.command = "clippy"
+cargo.features = "all"
+
+[[language]]
+name = "rust"
+formatter = { command = "rustfmt", args = ["+nightly", "--edition", "2024"] }
+
+###############################################################################
+# Python
+###############################################################################
+[[language]]
+name = "python"
+language-servers = ["ruff", "ty"]
+
+[language-server.ruff.config.settings.lint]
+select = ["ALL"]
+# select = [
+#   # default
+#   "E4", "E7", "E9", "F",
+#   # bugs (bugbear, unused args, builtin shadowing, async rules)
+#   "B", "ARG", "A", "ASYNC",
+#   # readability (simplicity, flake8-comp, ruff rules)
+#   "SIM", "C4", "RUF",
+#   # isort, quotes, string concat
+#   "I", "Q", "ISC",
+#   # improvements (pyupgrade, performance, numpy, pandas)
+#   "UP", "PERF", "NPY", "PD"
+# ]
+preview = false
+
+[language-server.ty.config]
+diagnosticMode = "workspace"
+experimental = { rename = true, autoImport = true }

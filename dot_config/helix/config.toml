@@ -76,7 +76,7 @@ I="keep_selections"
 "A-I"="remove_selections"
 
 [keys.select.g]
-G="goto_file_end"
+G="extend_to_file_end"
 
 n="goto_line_start"
 o="goto_line_end"
@@ -103,7 +103,7 @@ bufferline = "always"
 completion-trigger-len = 0
 completion-timeout = 5
 
-rulers = [80]
+rulers = [101]
 
 [editor.soft-wrap]
 enable = true
