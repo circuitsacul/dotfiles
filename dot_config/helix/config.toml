@@ -97,6 +97,8 @@ e = ":run-shell-command ~/.config/yazi/switch-to-yazi.sh"
 l = ":run-shell-command ~/.config/yazi/open-lazygit.sh"
 
 [editor]
+scroll-lines = 1
+
 line-number = "relative"
 bufferline = "always"
 
