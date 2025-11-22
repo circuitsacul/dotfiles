@@ -1,0 +1,62 @@
+%YAML 1.3
+---
+- Rule:
+  - Test: [hires_wheel_down, 1]
+  - Rule:
+    - KeyIsDown: Mouse Gesture Button
+    - KeyPress:
+      - XF86_AudioLowerVolume
+      - click
+  - Rule:
+    - Not:
+        KeyIsDown: Mouse Gesture Button
+    - MouseScroll: [0, 1]
+- Rule:
+  - Test: [hires_wheel_up, 1]
+  - Rule:
+    - KeyIsDown: Mouse Gesture Button
+    - KeyPress:
+      - XF86_AudioRaiseVolume
+      - click
+  - Rule:
+    - Not:
+        KeyIsDown: Mouse Gesture Button
+    - MouseScroll: [0, -1]
+...
+---
+- Rule:
+  - Key: [Haptic, pressed]
+  - KeyPress:
+    - Control_L
+    - depress
+  - KeyPress:
+    - space
+    - click
+- Rule:
+  - Key: [Haptic, released]
+  - KeyPress:
+    - Control_L
+    - release
+...
+---
+- Rule:
+  - MouseGesture: Mouse Left
+  - KeyPress:
+    - [Super_L, Control_L, Right]
+    - click
+- Rule:
+  - MouseGesture: Mouse Right
+  - KeyPress:
+    - [Super_L, Control_L, Left]
+    - click
+- Rule:
+  - MouseGesture: Mouse Down
+  - KeyPress:
+    - [Control_L, Alt_L, g]
+    - click
+- Rule:
+  - MouseGesture: Mouse Up
+  - KeyPress:
+    - [Control_L, Alt_L, w]
+    - click
+...
