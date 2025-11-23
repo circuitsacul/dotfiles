@@ -15,7 +15,8 @@ keybinding:
     nextBlock-alt: 'o'
     nextItem-alt: 'e'
     prevItem-alt: 'i'
-    openFile: 'h'
+    edit: 'h'
+    openFile: 'H'
     new: 'c'
   branches:
     createPullRequest: 'b'
