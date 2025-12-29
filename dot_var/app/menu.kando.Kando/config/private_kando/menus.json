@@ -1,9 +1,7 @@
 {
+  "version": "2.1.1",
   "menus": [
     {
-      "shortcut": "Control+Space",
-      "shortcutID": "primary-menu",
-      "centered": false,
       "root": {
         "type": "submenu",
         "name": "Example Menu",
@@ -349,7 +347,12 @@
           }
         ]
       },
-      "hoverMode": true
+      "shortcut": "Control+Space",
+      "shortcutID": "primary-menu",
+      "centered": false,
+      "anchored": false,
+      "hoverMode": true,
+      "tags": []
     }
   ],
   "collections": [

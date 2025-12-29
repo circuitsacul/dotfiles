@@ -2,8 +2,8 @@
 # Rust
 ###############################################################################
 [language-server.rust-analyzer.config]
-# procMacro = { enable = false }
-# diagnostics = { disabled = ["macro-error"] }
+procMacro = { enable = false }
+diagnostics = { disabled = ["macro-error"] }
 check.command = "clippy"
 cargo.features = "all"
 
