@@ -93,7 +93,7 @@ e="scroll_down"
 i="scroll_up"
 
 [keys.normal.space]
-e = ":run-shell-command ~/.config/yazi/switch-to-yazi.sh"
+e = ":run-shell-command ~/.config/yazi/switch-to-yazi.sh %{buffer_name}"
 l = ":run-shell-command ~/.config/yazi/open-lazygit.sh"
 
 [editor]
