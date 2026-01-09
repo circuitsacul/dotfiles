@@ -103,10 +103,10 @@ scroll-lines = 1
 line-number = "relative"
 bufferline = "always"
 
-completion-trigger-len = 0
+completion-trigger-len = 1
 completion-timeout = 5
 
-rulers = [101]
+rulers = [100]
 
 [editor.soft-wrap]
 enable = true

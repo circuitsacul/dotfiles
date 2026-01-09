@@ -2,6 +2,7 @@
 # Rust
 ###############################################################################
 [language-server.rust-analyzer.config]
+config = { completion = { autoimport = { enable = false }, postfix = { enable = false }, limit = 200 } }
 # procMacro = { enable = false }
 # diagnostics = { disabled = ["macro-error"] }
 check.command = "clippy"
