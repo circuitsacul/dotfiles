@@ -18,4 +18,4 @@
 	email = me@circuitsacul.dev
 	name = circuitsacul
 [init]
-	defaultBranch = main
+	defaultBranch = master

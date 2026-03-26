@@ -11,6 +11,12 @@ fi
 
 files=("$@")
 
+escaped_files=()
+for f in "${files[@]}"; do
+  f_escaped=${f//\`/\\\`}
+  escaped_files+=("\`${f_escaped}\`")
+done
+
 window="edit"
 session=$(tmux display-message -p '#S')
 
@@ -26,10 +32,10 @@ fi
 # Bring Helix window to the foreground
 tmux select-window -t ":$window"
 
-if [ ${#files[@]} -gt 0 ]; then
+if [ ${#escaped_files[@]} -gt 0 ]; then
   # Push :open commands into Helix
   tmux send-keys -t ":$window" Escape
-  tmux send-keys -t ":$window" ":open ${files[*]}" Enter
+  tmux send-keys -t ":$window" ":open ${escaped_files[*]}" Enter
 
   # goto line number
   if [[ -n $line ]]; then
