@@ -22,3 +22,12 @@ keybinding:
     createPullRequest: 'b'
   commits:
     openInBrowser: 'b'
+customCommands:
+  - key: "E"
+    context: "global"
+    description: "switch to helix"
+    command: "~/.config/yazi/open-in-hx.sh"
+  - key: "Y"
+    context: "global"
+    description: "switch to yazi"
+    command: "~/.config/yazi/switch-to-yazi.sh"
