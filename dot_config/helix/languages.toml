@@ -24,3 +24,10 @@ language-servers = ["ruff", "pyright"]
 
 [language-server.ty.config]
 diagnosticMode = "workspace"
+
+###############################################################################
+# Misc
+###############################################################################
+[[language]]
+name = "helm"
+file-types = ["helm"]

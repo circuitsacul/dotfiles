@@ -13,8 +13,8 @@ files=("$@")
 
 escaped_files=()
 for f in "${files[@]}"; do
-  f_escaped=${f//\`/\\\`}
-  escaped_files+=("\`${f_escaped}\`")
+  f_escaped="${f//\'/\'\'}"
+  escaped_files+=("'${f_escaped}'")
 done
 
 window="edit"
