@@ -1,59 +1,54 @@
-# This is the configuration file for Ghostty.
-#
-# This template file has been automatically created at the following
-# path since Ghostty couldn't find any existing config files on your system:
-#
-#   /home/circuitsacul/.config/ghostty/config
-#
-# The template does not set any default options, since Ghostty ships
-# with sensible defaults for all options. Users should only need to set
-# options that they want to change from the default.
-#
-# Run `ghostty +show-config --default --docs` to view a list of
-# all available config options and their default values.
-#
-# Additionally, each config option is also explained in detail
-# on Ghostty's website, at https://ghostty.org/docs/config.
-#
-# Ghostty can reload the configuration while running by using the menu
-# options or the bound key (default: Command + Shift + comma on macOS and
-# Control + Shift + comma on other platforms). Not all config options can be
-# reloaded while running; some only apply to new windows and others may require
-# a full restart to take effect.
+# mouse-scroll-multiplier = precision:0.1,discrete:1
+mouse-scroll-multiplier = discrete:1
+mouse-shift-capture = never
+# mouse-reporting = true
+notify-on-command-finish = unfocused
+notify-on-command-finish-action = bell,no-notify
+notify-on-command-finish-after = 5s
+# scrollback-limit = 10000000
 
-# Config syntax crash course
-# ==========================
-# # The config file consists of simple key-value pairs,
-# # separated by equals signs.
-# font-family = Iosevka
-# window-padding-x = 2
-#
-# # Spacing around the equals sign does not matter.
-# # All of these are identical:
-# key=value
-# key= value
-# key =value
-# key = value
-#
-# # Any line beginning with a # is a comment. It's not possible to put
-# # a comment after a config option, since it would be interpreted as a
-# # part of the value. For example, this will have a value of "#123abc":
-# background = #123abc
-#
-# # Empty values are used to reset config keys to default.
-# key =
-#
-# # Some config options have unique syntaxes for their value,
-# # which is explained in the docs for that config option.
-# # Just for example:
-# resize-overlay-duration = 4s 200ms
+# window-padding-balance = true
+# window-padding-color = extend
+# window-decoration = auto
+window-subtitle = working-directory
+
+# `detect`
+shell-integration = zsh
 
 keybind=super+n=previous_tab
 keybind=super+o=next_tab
 keybind=global:super+enter=toggle_quick_terminal
+keybind=super+t=new_tab
+
 theme=Catppuccin Mocha
+window-theme=ghostty
+
 window-padding-x=0
 window-padding-y=0
-shell-integration-features=ssh-terminfo,ssh-env
-gtk-titlebar-style=tabs
-gtk-titlebar=false
+
+# gtk-titlebar-style=tabs
+gtk-titlebar=true
+
+# `flat` -> flat with terminal window
+# `raised` -> shadow over terminal area
+# `raised-border` -> subtle border
+gtk-toolbar-style = flat
+
+gtk-wide-tabs = false
+
+# `native` -> tabs & decirations on different lines
+# `tabs` -> merged line with tabs & decorations
+gtk-titlebar-style = native
+
+# 'top', 'bottom', 'hidden'
+gtk-tabs-location = top
+
+# 'auto' (default), 'always', 'never'
+window-show-tab-bar = always
+
+# `system` -> system notification
+# `audio` -> play custom sound
+# `attention` (default) -> request att when unfocused; not really sure what this does on KDE
+# `title` (defulat) -> bell emoji in title
+# `border` -> border around alerted surface
+bell-features = no-system,no-audio,attention,title,no-border
