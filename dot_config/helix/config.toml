@@ -32,9 +32,9 @@ hidden = false
 ###################################################################################################
 # YHX scripts
 [keys.normal.space]
-e = ":run-shell-command ~/.config/yazi/switch-to-yazi.sh %{buffer_name}"
-E = ":run-shell-command ~/.config/yazi/switch-to-yazi.sh"
-l = ":run-shell-command ~/.config/yazi/open-lazygit.sh"
+e = ":run-shell-command ~/bin/yhx-switch-yazi %{buffer_name}"
+E = ":run-shell-command ~/bin/yhx-switch-yazi"
+l = ":run-shell-command ~/bin/yhx-switch-lazygit"
 
 ###################################################################################################
 # colemak-dh key mappings

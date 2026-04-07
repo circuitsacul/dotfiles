@@ -1,2 +1,2 @@
 [opener]
-edit = [{ run = '~/.config/yazi/open-in-hx.sh "$@"' }]
+edit = [{ run = '~/bin/yhx-switch-hx "$@"' }]

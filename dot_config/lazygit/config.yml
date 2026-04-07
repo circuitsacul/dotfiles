@@ -2,9 +2,9 @@ git:
   pagers:
     - externalDiffCommand: 'difft'
 os:
-  open: '~/.config/yazi/open-in-hx.sh {{filename}}'
-  edit: '~/.config/yazi/open-in-hx.sh {{filename}}'
-  editAtLine: '~/.config/yazi/open-in-hx.sh --line={{line}} {{filename}}'
+  open: '~/bin/yhx-switch-hx {{filename}}'
+  edit: '~/bin/yhx-switch-hx {{filename}}'
+  editAtLine: '~/bin/yhx-switch-hx --line={{line}} {{filename}}'
   editInTerminal: false
 keybinding:
   status:
@@ -26,8 +26,8 @@ customCommands:
   - key: "E"
     context: "global"
     description: "switch to helix"
-    command: "~/.config/yazi/open-in-hx.sh"
+    command: "~/bin/yhx-switch-hx"
   - key: "Y"
     context: "global"
     description: "switch to yazi"
-    command: "~/.config/yazi/switch-to-yazi.sh"
+    command: "~/bin/yhx-switch-yazi"

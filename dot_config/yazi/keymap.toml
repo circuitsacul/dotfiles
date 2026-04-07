@@ -1,7 +1,7 @@
 [mgr]
 prepend_keymap = [
-  { on = "E", run = "shell ~/.config/yazi/open-in-hx.sh" },
-  { on = "L", run = "shell ~/.config/yazi/open-lazygit.sh" },
+  { on = "E", run = "shell ~/bin/yhx-switch-hx" },
+  { on = "L", run = "shell ~/bin/yhx-switch-lazygit" },
   { on = "n", run = "leave", desc = "left"  },
   { on = "e", run = "arrow 1", desc = "down"  },
   { on = "i", run = "arrow -1", desc = "up"    },
