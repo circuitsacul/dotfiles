@@ -3,8 +3,8 @@ set -euo pipefail
 
 layout="z"
 name=""
-auto_name=0
-fresh=0
+auto_name=false
+fresh=false
 
 usage() {
     cat <<EOF
@@ -13,6 +13,7 @@ Usage: zj [-s NAME] [-a] [-n] [-l LAYOUT]
   -a         Auto: create an unnamed session (let zellij pick a name)
   -n         New: don't resurrect an existing session with the same name
   -l LAYOUT  Layout to use when creating (default: z)
+  -c         Use the compact layout
   -h         Show this help
 EOF
 }
@@ -20,31 +21,22 @@ EOF
 while getopts ":s:ancl:h" opt; do
     case "$opt" in
         s) name="$OPTARG" ;;
-        a) auto_name=1 ;;
-        n) fresh=1 ;;
+        a) auto_name=true ;;
+        n) fresh=true ;;
         c) layout="compact" ;;
         l) layout="$OPTARG" ;;
         h) usage; exit 0 ;;
         \?) echo "Unknown option: -$OPTARG" >&2; usage >&2; exit 2 ;;
-        :)  echo "Option -$OPTARG requires an argument" >&2; exit 2 ;;
+        :)  echo "Option -$OPTARG requires an argument" >&2; usage >&2; exit 2 ;;
     esac
 done
 
-if (( auto_name )); then
-    if [[ -n "$name" ]]; then
-        echo "Error: -a and -s are mutually exclusive" >&2
-        exit 2
-    fi
-    exec zellij --layout "$layout"
-fi
+$auto_name && exec zellij --layout "$layout"
 
 if [[ -z "$name" ]]; then
     abs="$(pwd -P)"
     name="${abs//\//:}"
 fi
 
-if (( fresh )); then
-    zellij delete-session "$name" >/dev/null 2>&1 || true
-fi
-
+$fresh && zellij delete-session "$name" >/dev/null 2>&1 || true
 exec zellij attach --create "$name" options --default-layout "$layout"
