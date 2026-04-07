@@ -17,11 +17,12 @@ Usage: zj [-s NAME] [-a] [-n] [-l LAYOUT]
 EOF
 }
 
-while getopts ":s:anl:h" opt; do
+while getopts ":s:ancl:h" opt; do
     case "$opt" in
         s) name="$OPTARG" ;;
         a) auto_name=1 ;;
         n) fresh=1 ;;
+        c) layout="compact" ;;
         l) layout="$OPTARG" ;;
         h) usage; exit 0 ;;
         \?) echo "Unknown option: -$OPTARG" >&2; usage >&2; exit 2 ;;
