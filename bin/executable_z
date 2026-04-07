@@ -1,3 +1,49 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
-exec zellij --layout "z"
+layout="z"
+name=""
+auto_name=0
+fresh=0
+
+usage() {
+    cat <<EOF
+Usage: zj [-s NAME] [-a] [-n] [-l LAYOUT]
+  -s NAME    Use NAME as the session name (default: derived from CWD path)
+  -a         Auto: create an unnamed session (let zellij pick a name)
+  -n         New: don't resurrect an existing session with the same name
+  -l LAYOUT  Layout to use when creating (default: z)
+  -h         Show this help
+EOF
+}
+
+while getopts ":s:anl:h" opt; do
+    case "$opt" in
+        s) name="$OPTARG" ;;
+        a) auto_name=1 ;;
+        n) fresh=1 ;;
+        l) layout="$OPTARG" ;;
+        h) usage; exit 0 ;;
+        \?) echo "Unknown option: -$OPTARG" >&2; usage >&2; exit 2 ;;
+        :)  echo "Option -$OPTARG requires an argument" >&2; exit 2 ;;
+    esac
+done
+
+if (( auto_name )); then
+    if [[ -n "$name" ]]; then
+        echo "Error: -a and -s are mutually exclusive" >&2
+        exit 2
+    fi
+    exec zellij --layout "$layout"
+fi
+
+if [[ -z "$name" ]]; then
+    abs="$(pwd -P)"
+    name="${abs//\//:}"
+fi
+
+if (( fresh )); then
+    zellij delete-session "$name" >/dev/null 2>&1 || true
+fi
+
+exec zellij attach --create "$name" options --default-layout "$layout"
