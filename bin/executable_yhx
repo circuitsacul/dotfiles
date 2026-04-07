@@ -1,7 +1,19 @@
 #!/usr/bin/env bash
 
+sess=""
+
+while getopts "s:a" opt; do
+  case "$opt" in
+    s) sess="$OPTARG" ;;
+    a) sess=$(tr -dc '[:alnum:]' </dev/urandom | head -c 8) ;;
+    *) echo "usage: $0 [-s NAME] [-a] [PATH]" >&2; exit 1 ;;
+  esac
+done
+
+shift $((OPTIND - 1))
+
 proj=$(realpath "${1:-.}") # project root (arg or CWD)
-sess=$(echo "$proj" | tr -c '[:alnum:]' '_' | tr -s '_')
+[[ -z "$sess" ]] && sess=$(echo "$proj" | tr -c '[:alnum:]' '_' | tr -s '_')
 
 if tmux has-session -t="$sess" 2>/dev/null; then
   tmux attach -t "$sess"
