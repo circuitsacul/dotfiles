@@ -1,6 +1,16 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+max_session_len=32
+hash_len=8
+max_folder_len=$((max_session_len - hash_len - 1))
+
+if command -v sha1sum >/dev/null 2>&1; then
+    hash_cmd=sha1sum
+else
+    hash_cmd=shasum
+fi
+
 layout="z"
 name=""
 auto_name=false
@@ -35,7 +45,13 @@ $auto_name && exec zellij --layout "$layout"
 
 if [[ -z "$name" ]]; then
     abs="$(pwd -P)"
-    name="${abs//\//:}"
+
+    hash="$(printf '%s' "$abs" | $hash_cmd | head -c "$hash_len")"
+
+    folder="$(basename "$abs")"
+    folder="${folder:0:max_folder_len}"
+
+    name="${folder}-${hash}"
 fi
 
 $fresh && zellij delete-session "$name" >/dev/null 2>&1 || true
