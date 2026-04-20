@@ -12,20 +12,14 @@ done
 
 shift $((OPTIND - 1))
 
-proj=$(realpath "${1:-.}") # project root (arg or CWD)
-[[ -z "$sess" ]] && sess=$(echo "$proj" | tr -c '[:alnum:]' '_' | tr -s '_')
+proj=$(realpath "${1:-.}")
+[[ -z "$sess" ]] && sess=$(z-session-name "$proj")
 
 if tmux has-session -t="$sess" 2>/dev/null; then
   tmux attach -t "$sess"
 else
-  # create session (detached)
-  tmux new-session -s "$sess" -n tree -d "cd \"$proj\"; yazi"
-
-  # set the project path (assume we started in root) so other apps can be
-  # opened with the current root (e.g. lazygit and helix)
+  tmux new-session -s "$sess" -n tree -d -c "$proj" yazi
   tmux set-option -t "$sess" @project_root "$proj"
-
-  # start on the Yazi window
   tmux select-window -t "$sess:tree"
   tmux attach -t "$sess"
 fi

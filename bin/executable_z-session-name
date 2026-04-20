@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  echo "Usage: z-session-name PATH [MAX_LEN]" >&2
+  exit 1
+}
+
+[[ $# -ge 1 ]] || usage
+
+path="$1"
+max_len="${2:-32}"
+hash_len=8
+max_folder_len=$((max_len - hash_len - 1))
+
+if command -v sha1sum >/dev/null 2>&1; then
+  hash_cmd=sha1sum
+else
+  hash_cmd=shasum
+fi
+
+hash="$(printf '%s' "$path" | $hash_cmd | head -c "$hash_len")"
+folder="$(basename "$path")"
+folder="${folder:0:max_folder_len}"
+printf '%s-%s\n' "$folder" "$hash"
