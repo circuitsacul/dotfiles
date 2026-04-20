@@ -10,13 +10,28 @@
 [alias]
 	dft = difftool
 	dlog = "!f() { GIT_EXTERNAL_DIFF=difft git log -p --ext-diff $@; }; f"
+	wtr = "!f() { \
+		set -euo pipefail; \
+		name=$1; \
+		dir=$(printf '%s' \"$name\" | sed -e 's/%/%25/g' -e 's|/|%2F|g'); \
+		git worktree remove \"$dir\" ; \
+	}; f"
+
 	wt = "!f() { \
 		: git switch; \
 		set -euo pipefail; \
+		name=${1:?missing branch name}; \
+		dir=$(printf '%s' \"$name\" | sed -e 's/%/%25/g' -e 's|/|%2F|g'); \
 		mkdir -p -- .worktrees; \
 		[ -f .worktrees/.gitignore ] || printf '*\n' > .worktrees/.gitignore; \
-		[ -d \".worktrees/$1\" ] || git worktree add -b \"$1\" \".worktrees/$1\"; \
-		cd -- \".worktrees/$1\" && exec \"$SHELL\"; \
+		if [ ! -d \".worktrees/$dir\" ]; then \
+			if git show-ref --verify --quiet -- \"refs/heads/$name\"; then \
+				git worktree add \".worktrees/$dir\" \"$name\"; \
+			else \
+				git worktree add -b \"$name\" \".worktrees/$dir\"; \
+			fi; \
+		fi; \
+		cd -- \".worktrees/$dir\" && exec \"${SHELL:-bash}\"; \
 	}; f"
 
 [commit]
