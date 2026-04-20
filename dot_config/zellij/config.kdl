@@ -218,7 +218,7 @@ keybinds clear-defaults=true {
         bind "Ctrl q" { Quit; }
         bind "Alt t" { NewTab; }
         bind "Ctrl y" {
-            LaunchOrFocusPlugin "file:/home/circuitsacul/.config/zellij/plugins/zellij_forgot.wasm" {
+            LaunchOrFocusPlugin "file:~/.config/zellij/plugins/zellij_forgot.wasm" {
                 floating true
             }
         }
