@@ -60,13 +60,14 @@ keybinds clear-defaults=true {
         bind "7" { GoToTab 7; SwitchToMode "normal"; }
         bind "8" { GoToTab 8; SwitchToMode "normal"; }
         bind "9" { GoToTab 9; SwitchToMode "normal"; }
-        bind "N" { NewTab; SwitchToMode "normal"; }
+        bind "N" { MoveTab "Left"; }
+        bind "O" { MoveTab "Right"; }
         bind "[" { BreakPaneLeft; SwitchToMode "normal"; }
         bind "]" { BreakPaneRight; SwitchToMode "normal"; }
         bind "b" { BreakPane; SwitchToMode "normal"; }
-        bind "e" { GoToNextTab; }
+        bind "e" { MoveTab "Left"; }
         bind "h" { GoToPreviousTab; }
-        bind "i" { GoToPreviousTab; }
+        bind "i" { MoveTab "Right"; }
         bind "j" { GoToNextTab; }
         bind "k" { GoToPreviousTab; }
         bind "l" { GoToNextTab; }
