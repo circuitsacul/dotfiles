@@ -10,6 +10,14 @@
 [alias]
 	dft = difftool
 	dlog = "!f() { GIT_EXTERNAL_DIFF=difft git log -p --ext-diff $@; }; f"
+	wt = "!f() { \
+		: git switch; \
+		set -euo pipefail; \
+		mkdir -p -- .worktrees; \
+		[ -f .worktrees/.gitignore ] || printf '*\n' > .worktrees/.gitignore; \
+		[ -d \".worktrees/$1\" ] || git worktree add -b \"$1\" \".worktrees/$1\"; \
+		cd -- \".worktrees/$1\" && exec \"$SHELL\"; \
+	}; f"
 
 [commit]
 	gpgsign = true
