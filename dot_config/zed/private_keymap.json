@@ -35,8 +35,15 @@
       "space w e": "workspace::ActivatePaneDown",
       "space w i": "workspace::ActivatePaneUp",
       "space w o": "workspace::ActivatePaneRight",
-      "space e": "project_panel::ToggleFocus",
-      "space y": "git_panel::ToggleFocus",
+      "space a": "agent::Toggle",
+      "space shift-a": "agent::ToggleFocus",
+      "space e": "project_panel::Toggle",
+      "space shift-e": "project_panel::ToggleFocus",
+      "space p": "editor::ShowEditPrediction",
+      "space t": "multi_workspace::ToggleWorkspaceSidebar",
+      "space shift-t": "multi_workspace::FocusWorkspaceSidebar",
+      "space l": "git_panel::Toggle",
+      "space shift-l": "git_panel::ToggleFocus",
 
       "ctrl-w n": "workspace::ActivatePaneLeft",
       "ctrl-w e": "workspace::ActivatePaneDown",
@@ -70,8 +77,26 @@
     }
   },
   {
+    "context": "ThreadsSidebar && not_searching",
+    "bindings": {
+      "n": "menu::SelectParent",
+      "e": "menu::SelectNext",
+      "i": "menu::SelectPrevious",
+      "o": "menu::SelectChild",
+      "shift-e": "multi_workspace::NextProject",
+      "shift-i": "multi_workspace::PreviousProject",
+      "enter": "menu::Confirm",
+      "/": "agents_sidebar::FocusSidebarFilter"
+    }
+  },
+  {
     "context": "ProjectPanel && not_editing",
     "bindings": {
+      "space": null,
+      "space e": "workspace::CloseActiveDock",
+      "space shift-e": "project_panel::ToggleFocus",
+      "space space": "project_panel::Open",
+
       "n": "project_panel::CollapseSelectedEntry",
       "e": "menu::SelectNext",
       "i": "menu::SelectPrevious",
@@ -81,6 +106,15 @@
   {
     "context": "GitPanel && ChangesList && !GitBranchSelector",
     "bindings": {
+      "space": null,
+      "shift-space": null,
+      "space l": "workspace::CloseActiveDock",
+      "space shift-l": "git_panel::ToggleFocus",
+
+      "x": "git::ToggleStaged",
+      "shift-x": "git::StageAll",
+      "g x": "git::StageRange",
+
       "n": "git_panel::CollapseSelectedEntry",
       "e": "git_panel::NextEntry",
       "i": "git_panel::PreviousEntry",

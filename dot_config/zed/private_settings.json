@@ -7,9 +7,33 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "edit_predictions": {
+    "allow_data_collection": "no"
+  },
+  "agent": {
+    "default_profile": "ask",
+    "default_model": {
+      "provider": "openai-subscribed",
+      "model": "gpt-5.5",
+      "enable_thinking": true,
+      "effort": "xhigh"
+    },
+    "favorite_models": [
+      {
+        "provider": "openai-subscribed",
+        "model": "gpt-5.5",
+        "enable_thinking": true,
+        "effort": "xhigh"
+      }
+    ],
+    "model_parameters": []
+  },
   "helix_mode": true,
   "agent_servers": {
     "codex-acp": {
+      "default_config_options": {
+        "mode": "read-only"
+      },
       "type": "registry"
     }
   },
