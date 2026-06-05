@@ -31,7 +31,7 @@
   "helix_mode": true,
   "which_key": {
     "enabled": true,
-    "delay_ms": 0
+    "delay_ms": 300
   },
   "agent_servers": {
     "codex-acp": {
