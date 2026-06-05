@@ -1,0 +1,90 @@
+[
+  {
+    "context": "(vim_mode == helix_normal || vim_mode == helix_select) && !menu && !BufferSearchBar",
+    "bindings": {
+      "n": "vim::WrappingLeft",
+      "e": ["vim::Down", { "display_lines": true }],
+      "i": ["vim::Up", { "display_lines": true }],
+      "o": "vim::WrappingRight",
+
+      "k": "vim::NextWordEnd",
+      "shift-k": ["vim::NextWordEnd", { "ignore_punctuation": true }],
+
+      "j": "vim::HelixSelectNext",
+      "shift-j": "vim::HelixSelectPrevious",
+
+      "l": "vim::InsertLineBelow",
+      "shift-l": "vim::InsertLineAbove",
+
+      "shift-e": "vim::JoinLines",
+      "alt-shift-e": "vim::JoinLines",
+
+      "shift-i": null,
+      "alt-shift-i": null,
+
+      "shift-n": "pane::ActivatePreviousItem",
+      "shift-o": "pane::ActivateNextItem",
+
+      "g shift-g": "vim::EndOfDocument",
+      "g n": "vim::StartOfLine",
+      "g o": "vim::EndOfLine",
+      "g e": "vim::Down",
+      "g i": "vim::Up",
+
+      "space w n": "workspace::ActivatePaneLeft",
+      "space w e": "workspace::ActivatePaneDown",
+      "space w i": "workspace::ActivatePaneUp",
+      "space w o": "workspace::ActivatePaneRight",
+      "space e": "project_panel::ToggleFocus",
+      "space y": "git_panel::ToggleFocus",
+
+      "ctrl-w n": "workspace::ActivatePaneLeft",
+      "ctrl-w e": "workspace::ActivatePaneDown",
+      "ctrl-w i": "workspace::ActivatePaneUp",
+      "ctrl-w o": "workspace::ActivatePaneRight",
+
+      "z e": "vim::LineDown",
+      "z i": "vim::LineUp",
+      "shift-z e": "vim::LineDown",
+      "shift-z i": "vim::LineUp"
+    }
+  },
+  {
+    "context": "VimControl && vim_mode == helix_normal && !menu && !BufferSearchBar",
+    "bindings": {
+      "h": "vim::HelixInsert",
+      "shift-h": "vim::InsertFirstNonWhitespace"
+    }
+  },
+  {
+    "context": "vim_mode == helix_select && !menu && !BufferSearchBar",
+    "bindings": {
+      "h": "vim::InsertBefore",
+      "shift-h": "vim::InsertFirstNonWhitespace"
+    }
+  },
+  {
+    "context": "vim_mode == insert",
+    "bindings": {
+      "alt-x": "vim::NormalBefore"
+    }
+  },
+  {
+    "context": "ProjectPanel && not_editing",
+    "bindings": {
+      "n": "project_panel::CollapseSelectedEntry",
+      "e": "menu::SelectNext",
+      "i": "menu::SelectPrevious",
+      "o": "project_panel::ExpandSelectedEntry"
+    }
+  },
+  {
+    "context": "GitPanel && ChangesList && !GitBranchSelector",
+    "bindings": {
+      "n": "git_panel::CollapseSelectedEntry",
+      "e": "git_panel::NextEntry",
+      "i": "git_panel::PreviousEntry",
+      "o": "git_panel::ExpandSelectedEntry"
+    }
+  }
+]
