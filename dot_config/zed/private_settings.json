@@ -29,6 +29,10 @@
     "model_parameters": []
   },
   "helix_mode": true,
+  "which_key": {
+    "enabled": true,
+    "delay_ms": 0
+  },
   "agent_servers": {
     "codex-acp": {
       "default_config_options": {

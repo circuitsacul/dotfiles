@@ -35,6 +35,8 @@
       "space w e": "workspace::ActivatePaneDown",
       "space w i": "workspace::ActivatePaneUp",
       "space w o": "workspace::ActivatePaneRight",
+      "space d": "diagnostics::DeployCurrentFile",
+      "space shift-d": "diagnostics::Deploy",
       "space a": "agent::Toggle",
       "space shift-a": "agent::ToggleFocus",
       "space e": "project_panel::Toggle",
