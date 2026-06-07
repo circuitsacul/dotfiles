@@ -1,0 +1,23 @@
+[Unit]
+After=litellm-network.service
+Requires=litellm-network.service
+
+[Container]
+ContainerName=litellm
+Image=docker.litellm.ai/berriai/litellm:main-latest
+Pull=newer
+Network=litellm.network
+NetworkAlias=litellm
+Volume=%h/.config/litellm:/litellm:Z
+Environment=CHATGPT_TOKEN_DIR=/litellm/chatgpt
+EnvironmentFile=%h/.config/litellm/litellm.env
+PublishPort=127.0.0.1:61743:4000
+NoNewPrivileges=true
+Exec=--config /litellm/config.yaml --host 0.0.0.0 --port 4000
+
+[Service]
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=default.target

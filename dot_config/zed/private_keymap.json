@@ -1,15 +1,7 @@
 [
   {
-    "context": "Workspace && !Editor && !Terminal && !menu",
     "bindings": {
-      "space a": "agent::Toggle",
-      "space shift-a": "agent::ToggleFocus",
-      "space e": "project_panel::Toggle",
-      "space shift-e": "project_panel::ToggleFocus",
-      "space t": "multi_workspace::ToggleWorkspaceSidebar",
-      "space shift-t": "multi_workspace::FocusWorkspaceSidebar",
-      "space l": "git_panel::Toggle",
-      "space shift-l": "git_panel::ToggleFocus"
+      "ctrl-alt-f": "workspace::FocusCenterPane"
     }
   },
   {
@@ -51,15 +43,7 @@
       "space w o": "workspace::ActivatePaneRight",
       "space d": "diagnostics::DeployCurrentFile",
       "space shift-d": "diagnostics::Deploy",
-      "space a": "agent::Toggle",
-      "space shift-a": "agent::ToggleFocus",
-      "space e": "project_panel::Toggle",
-      "space shift-e": "project_panel::ToggleFocus",
       "space p": "editor::ShowEditPrediction",
-      "space t": "multi_workspace::ToggleWorkspaceSidebar",
-      "space shift-t": "multi_workspace::FocusWorkspaceSidebar",
-      "space l": "git_panel::Toggle",
-      "space shift-l": "git_panel::ToggleFocus",
 
       "ctrl-w n": "workspace::ActivatePaneLeft",
       "ctrl-w e": "workspace::ActivatePaneDown",
@@ -93,11 +77,40 @@
     }
   },
   {
+    "context": "(Workspace && !Editor && !Terminal && !menu) || ((vim_mode == helix_normal || vim_mode == helix_select) && !menu && !BufferSearchBar) || (AcpThread && !Editor && !Terminal && !menu) || (ThreadsSidebar && not_searching) || (ProjectPanel && not_editing) || (GitPanel && ChangesList && !GitBranchSelector)",
+    "bindings": {
+      "space a": "agent::Toggle",
+      "space shift-a": "agent::ToggleFocus",
+      "space e": "project_panel::Toggle",
+      "space shift-e": "project_panel::ToggleFocus",
+      "space t": "multi_workspace::FocusWorkspaceSidebar",
+      "space shift-t": "multi_workspace::FocusWorkspaceSidebar",
+      "space l": "git_panel::Toggle",
+      "space shift-l": "git_panel::ToggleFocus",
+      "space n": "agent::NewThread",
+      "space s p": ["projects::OpenRecent", { "create_new_window": false }],
+      "space s w": "git::Worktree",
+      "space s b": "git::Branch"
+    }
+  },
+  {
+    "context": "AcpThread > Editor",
+    "bindings": {
+      "enter": "editor::Newline",
+      "ctrl-enter": "agent::ChatWithFollow"
+    }
+  },
+  {
     "context": "ThreadsSidebar && not_searching",
     "bindings": {
+      "space": null,
+      "space t": "multi_workspace::CloseWorkspaceSidebar",
+      "space shift-t": "multi_workspace::FocusWorkspaceSidebar",
+      "space n": "agents_sidebar::NewThreadInGroup",
+
       "n": "menu::SelectParent",
-      "e": "menu::SelectNext",
-      "i": "menu::SelectPrevious",
+      "e": "editor::MoveDown",
+      "i": "editor::MoveUp",
       "o": "menu::SelectChild",
       "shift-e": "multi_workspace::NextProject",
       "shift-i": "multi_workspace::PreviousProject",
@@ -109,8 +122,10 @@
     "context": "ProjectPanel && not_editing",
     "bindings": {
       "space": null,
-      "space e": "workspace::CloseActiveDock",
-      "space shift-e": "project_panel::ToggleFocus",
+      // "space e": [
+      //   "action::Sequence",
+      //   ["workspace::CloseActiveDock", "workspace::ActivateLastPane"]
+      // ],
       "space space": "project_panel::Open",
 
       "n": "project_panel::CollapseSelectedEntry",
@@ -125,7 +140,6 @@
       "space": null,
       "shift-space": null,
       "space l": "workspace::CloseActiveDock",
-      "space shift-l": "git_panel::ToggleFocus",
 
       "x": "git::ToggleStaged",
       "shift-x": "git::StageAll",
