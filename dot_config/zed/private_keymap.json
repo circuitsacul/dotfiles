@@ -57,24 +57,15 @@
 
       "shift-z e": [
         "action::Sequence",
-        [
-          "vim::LineDown",
-          ["workspace::SendKeystrokes", "shift-z"]
-        ]
+        ["vim::LineDown", ["workspace::SendKeystrokes", "shift-z"]]
       ],
       "shift-z i": [
         "action::Sequence",
-        [
-          "vim::LineUp",
-          ["workspace::SendKeystrokes", "shift-z"]
-        ]
+        ["vim::LineUp", ["workspace::SendKeystrokes", "shift-z"]]
       ],
       "shift-z n": [
         "action::Sequence",
-        [
-          "search::SelectNextMatch",
-          ["workspace::SendKeystrokes", "shift-z"]
-        ]
+        ["search::SelectNextMatch", ["workspace::SendKeystrokes", "shift-z"]]
       ],
       "shift-z shift-n": [
         "action::Sequence",
@@ -106,12 +97,16 @@
     }
   },
   {
-    "context": "(Workspace && !Editor && !Terminal && !menu) || ((vim_mode == helix_normal || vim_mode == helix_select) && !menu && !BufferSearchBar) || (AcpThread && !Editor && !Terminal && !menu) || (ThreadsSidebar && not_searching) || (ProjectPanel && not_editing) || (GitPanel && ChangesList && !GitBranchSelector)",
+    "context": "(Workspace && !Editor && !Terminal && !menu) || ((vim_mode == helix_normal || vim_mode == helix_select) && !menu && !BufferSearchBar) || (AcpThread && !Editor && !Terminal && !menu) || (ThreadsSidebar && not_searching) || (ProjectPanel && not_editing) || (GitPanel && ChangesList && !GitBranchSelector) || (OutlinePanel && not_editing)",
     "bindings": {
       "space a": "agent::Toggle",
       "space shift-a": "agent::ToggleFocus",
       "space e": "project_panel::Toggle",
       "space shift-e": "project_panel::ToggleFocus",
+      "space o": [
+        "action::Sequence",
+        ["outline_panel::ToggleFocus", ["workspace::SendKeystrokes", "escape"]]
+      ],
       "space t": [
         "action::Sequence",
         [
@@ -138,7 +133,19 @@
     "context": "AcpThread > Editor",
     "bindings": {
       "enter": "editor::Newline",
-      "ctrl-enter": "agent::ChatWithFollow"
+      "ctrl-enter": "agent::Chat"
+    }
+  },
+  {
+    "context": "(AcpThread && !Editor && !Terminal && !menu) || (AgentPanel && !Editor && !Terminal && !menu)",
+    "bindings": {
+      "q": "agent::Toggle"
+    }
+  },
+  {
+    "context": "AcpThread > Editor && (vim_mode == helix_normal || vim_mode == helix_select) && !menu",
+    "bindings": {
+      "q": "agent::Toggle"
     }
   },
   {
@@ -148,6 +155,7 @@
       "space t": "multi_workspace::CloseWorkspaceSidebar",
       "space shift-t": "multi_workspace::FocusWorkspaceSidebar",
       "space n": "agents_sidebar::NewThreadInGroup",
+      "q": "multi_workspace::CloseWorkspaceSidebar",
 
       "n": "menu::SelectParent",
       "e": "editor::MoveDown",
@@ -155,7 +163,11 @@
       "o": "menu::SelectChild",
       "shift-e": "multi_workspace::NextProject",
       "shift-i": "multi_workspace::PreviousProject",
-      "enter": "menu::Confirm",
+      "enter": [
+        "action::Sequence",
+        ["menu::Confirm", "multi_workspace::CloseWorkspaceSidebar"]
+      ],
+      "shift-enter": "menu::Confirm",
       "/": "agents_sidebar::FocusSidebarFilter"
     }
   },
@@ -164,11 +176,29 @@
     "bindings": {
       "space": null,
       "space space": "project_panel::Open",
+      "q": "project_panel::Toggle",
+      "enter": [
+        "action::Sequence",
+        ["project_panel::Open", "project_panel::Toggle"]
+      ],
+      "shift-enter": "project_panel::Open",
 
       "n": "project_panel::CollapseSelectedEntry",
       "e": "menu::SelectNext",
       "i": "menu::SelectPrevious",
-      "o": "project_panel::ExpandSelectedEntry"
+      "o": "project_panel::ExpandSelectedEntry",
+      "shift-e": "menu::SelectNext",
+      "shift-i": "menu::SelectPrevious",
+
+      "/": "file_finder::Toggle",
+      "?": "project_panel::NewSearchInDirectory",
+
+      "a": "project_panel::NewFile",
+      "shift-a": "project_panel::NewDirectory",
+      "r": "project_panel::Rename",
+
+      "d": "project_panel::Trash",
+      "shift-d": "project_panel::Delete"
     }
   },
   {
@@ -176,7 +206,8 @@
     "bindings": {
       "space": null,
       "shift-space": null,
-      "space l": "workspace::CloseActiveDock",
+      "space l": "git_panel::Close",
+      "q": "git_panel::Close",
 
       "x": "git::ToggleStaged",
       "shift-x": "git::StageAll",
@@ -186,6 +217,29 @@
       "e": "git_panel::NextEntry",
       "i": "git_panel::PreviousEntry",
       "o": "git_panel::ExpandSelectedEntry"
+    }
+  },
+  {
+    "context": "GitPanel && menu",
+    "bindings": {
+      "q": "menu::Cancel"
+    }
+  },
+  {
+    "context": "OutlinePanel && not_editing",
+    "bindings": {
+      "space": null,
+      "space space": "outline_panel::OpenSelectedEntry",
+      "q": "workspace::ToggleRightDock",
+      "enter": [
+        "action::Sequence",
+        ["outline_panel::OpenSelectedEntry", "workspace::ToggleRightDock"]
+      ],
+      "shift-enter": "outline_panel::OpenSelectedEntry",
+      "n": "outline_panel::CollapseSelectedEntry",
+      "e": "menu::SelectNext",
+      "i": "menu::SelectPrevious",
+      "o": "outline_panel::ExpandSelectedEntry"
     }
   }
 ]
