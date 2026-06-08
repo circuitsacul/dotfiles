@@ -52,8 +52,37 @@
 
       "z e": "vim::LineDown",
       "z i": "vim::LineUp",
-      "shift-z e": "vim::LineDown",
-      "shift-z i": "vim::LineUp"
+      "z n": "search::SelectNextMatch",
+      "z shift-n": "search::SelectPreviousMatch",
+
+      "shift-z e": [
+        "action::Sequence",
+        [
+          "vim::LineDown",
+          ["workspace::SendKeystrokes", "shift-z"]
+        ]
+      ],
+      "shift-z i": [
+        "action::Sequence",
+        [
+          "vim::LineUp",
+          ["workspace::SendKeystrokes", "shift-z"]
+        ]
+      ],
+      "shift-z n": [
+        "action::Sequence",
+        [
+          "search::SelectNextMatch",
+          ["workspace::SendKeystrokes", "shift-z"]
+        ]
+      ],
+      "shift-z shift-n": [
+        "action::Sequence",
+        [
+          "search::SelectPreviousMatch",
+          ["workspace::SendKeystrokes", "shift-z"]
+        ]
+      ]
     }
   },
   {
@@ -83,8 +112,20 @@
       "space shift-a": "agent::ToggleFocus",
       "space e": "project_panel::Toggle",
       "space shift-e": "project_panel::ToggleFocus",
-      "space t": "multi_workspace::FocusWorkspaceSidebar",
-      "space shift-t": "multi_workspace::FocusWorkspaceSidebar",
+      "space t": [
+        "action::Sequence",
+        [
+          "multi_workspace::FocusWorkspaceSidebar",
+          ["workspace::SendKeystrokes", "escape"]
+        ]
+      ],
+      "space shift-t": [
+        "action::Sequence",
+        [
+          "multi_workspace::FocusWorkspaceSidebar",
+          ["workspace::SendKeystrokes", "escape"]
+        ]
+      ],
       "space l": "git_panel::Toggle",
       "space shift-l": "git_panel::ToggleFocus",
       "space n": "agent::NewThread",
@@ -122,10 +163,6 @@
     "context": "ProjectPanel && not_editing",
     "bindings": {
       "space": null,
-      // "space e": [
-      //   "action::Sequence",
-      //   ["workspace::CloseActiveDock", "workspace::ActivateLastPane"]
-      // ],
       "space space": "project_panel::Open",
 
       "n": "project_panel::CollapseSelectedEntry",

@@ -18,6 +18,10 @@
       "enable_thinking": true,
       "effort": "xhigh"
     },
+    "thread_summary_model": {
+      "provider": "openai-subscribed",
+      "model": "gpt-5.4-mini"
+    },
     "favorite_models": [
       {
         "provider": "openai-subscribed",
@@ -36,13 +40,21 @@
   "agent_servers": {
     "codex-acp": {
       "default_config_options": {
-        "mode": "auto"
+        "mode": "read-only"
       },
       "type": "registry"
     }
   },
-  "icon_theme": "Zed (Default)",
+  "icon_theme": {
+    "mode": "light",
+    "light": "Zed (Default)",
+    "dark": "Zed (Default)"
+  },
   "ui_font_size": 16,
   "buffer_font_size": 15,
-  "theme": "Catppuccin Mocha",
+  "theme": {
+    "mode": "dark",
+    "light": "One Light",
+    "dark": "Catppuccin Mocha"
+  },
 }
