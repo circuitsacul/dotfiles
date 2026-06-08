@@ -1,3 +1,5 @@
+README.md
+
 {{ if ne .chezmoi.hostname "circuitsacul-framework-desktop" -}}
 .gitconfig
 {{ end -}}

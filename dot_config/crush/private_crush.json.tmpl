@@ -1,0 +1,63 @@
+{{- $litellmApiKey := .chezmoi.config.data.litellm_master_key -}}
+{
+  "$schema": "https://charm.land/crush.json",
+  "models": {
+    "large": {
+      "model": "gpt-5.5",
+      "provider": "litellm-chatgpt",
+      "reasoning_effort": "xhigh"
+    },
+    "small": {
+      "model": "gpt-5.5",
+      "provider": "litellm-chatgpt",
+      "reasoning_effort": "low"
+    }
+  },
+  "providers": {
+    "litellm-chatgpt": {
+      "name": "LiteLLM ChatGPT",
+      "type": "openai",
+      "base_url": "http://127.0.0.1:61743/v1",
+      "api_key": {{ $litellmApiKey | toJson }},
+      "models": [
+        {
+          "id": "gpt-5.4-mini",
+          "name": "GPT-5.4 Mini",
+          "context_window": 500000,
+          "can_reason": true,
+          "reasoning_levels": [
+            "low",
+            "medium",
+            "high",
+            "xhigh"
+          ],
+          "default_reasoning_effort": "low"
+        },
+        {
+          "id": "gpt-5.5",
+          "name": "GPT-5.5",
+          "context_window": 1000000,
+          "can_reason": true,
+          "reasoning_levels": [
+            "low",
+            "medium",
+            "high",
+            "xhigh"
+          ],
+          "default_reasoning_effort": "xhigh"
+        }
+      ]
+    }
+  },
+  "lsp": {
+    "pyright": {
+      "disabled": true
+    }
+  },
+  "options": {
+    "tui": {
+      "compact_mode": true,
+      "transparent": true
+    }
+  }
+}
