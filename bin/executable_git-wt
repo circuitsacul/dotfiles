@@ -1,0 +1,394 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+    cat <<EOF
+Usage:
+  git wt [-n NAME] [TARGET]
+  git wtr [-f|--force] [NAME]
+
+Direct helper usage:
+  git-wt create [-n NAME] [TARGET]
+  git-wt remove [-f|--force] [NAME]
+  git-wt complete names
+EOF
+}
+
+die() {
+    printf 'git-wt: %s\n' "$*" >&2
+    exit 1
+}
+
+xdg_data_home() {
+    printf '%s\n' "${XDG_DATA_HOME:-$HOME/.local/share}"
+}
+
+slugify() {
+    local value="$1"
+
+    value=${value//\//-}
+    value=${value// /-}
+    value=$(printf '%s' "$value" | sed -e 's/[^A-Za-z0-9._-]/-/g' -e 's/-\{2,\}/-/g' -e 's/^-//' -e 's/-$//')
+
+    if [[ -z "$value" ]]; then
+        value="worktree"
+    fi
+
+    printf '%s\n' "$value"
+}
+
+path_name() {
+    local value
+
+    case "$1" in
+        .)
+            printf '%%2E'
+            return
+            ;;
+        ..)
+            printf '%%2E%%2E'
+            return
+            ;;
+    esac
+
+    value=$(printf '%s' "$1" | sed -e 's/%/%25/g' -e 's|/|%2F|g')
+
+    printf '%s' "$value"
+}
+
+decode_path_name() {
+    local value="$1"
+
+    value=${value//%2F/\/}
+    value=${value//%2E/.}
+    value=${value//%25/%}
+
+    printf '%s' "$value"
+}
+
+random_hex() {
+    od -An -N4 -tx1 /dev/urandom | tr -d ' \n'
+}
+
+git_common_dir() {
+    git rev-parse --path-format=absolute --git-common-dir
+}
+
+repo_key() {
+    local common_dir repo_name repo_hash
+
+    common_dir=$(git_common_dir)
+    repo_name=$(basename "$(dirname "$common_dir")")
+    repo_name=$(slugify "$repo_name")
+    repo_hash=$(printf '%s' "$common_dir" | git hash-object --stdin | cut -c 1-12)
+
+    printf '%s-%s\n' "$repo_name" "$repo_hash"
+}
+
+repo_worktree_dir() {
+    printf '%s/git-wt/%s\n' "$(xdg_data_home)" "$(repo_key)"
+}
+
+worktree_path_for_name() {
+    printf '%s/%s\n' "$(repo_worktree_dir)" "$(path_name "$1")"
+}
+
+current_target() {
+    local branch
+
+    if branch=$(git symbolic-ref --quiet --short HEAD); then
+        printf '%s\n' "$branch"
+    else
+        printf 'HEAD\n'
+    fi
+}
+
+main_worktree() {
+    local line
+
+    while IFS= read -r line; do
+        case "$line" in
+            worktree\ *)
+                printf '%s\n' "${line#worktree }"
+                return
+                ;;
+        esac
+    done < <(git worktree list --porcelain)
+
+    die "could not determine main worktree"
+}
+
+canonical_dir() {
+    (cd "$1" && pwd -P)
+}
+
+same_dir() {
+    local left right
+
+    [[ -d "$1" && -d "$2" ]] || return 1
+    left=$(canonical_dir "$1")
+    right=$(canonical_dir "$2")
+    [[ "$left" == "$right" ]]
+}
+
+registered_worktree_for_current_repo() {
+    local path="$1"
+    local common_dir path_common_dir
+
+    [[ -d "$path" ]] || return 1
+    path_common_dir=$(git -C "$path" rev-parse --path-format=absolute --git-common-dir 2>/dev/null) || return 1
+    common_dir=$(git_common_dir)
+
+    [[ "$path_common_dir" == "$common_dir" ]]
+}
+
+local_branch_exists() {
+    git show-ref --verify --quiet -- "refs/heads/$1"
+}
+
+branch_checked_out() {
+    local branch="$1"
+    local line
+
+    while IFS= read -r line; do
+        if [[ "$line" == "branch refs/heads/$branch" ]]; then
+            return 0
+        fi
+    done < <(git worktree list --porcelain)
+
+    return 1
+}
+
+resolve_commit() {
+    local target="$1"
+
+    git rev-parse --verify --quiet --end-of-options "$target^{commit}"
+}
+
+enter_worktree() {
+    local path="$1"
+
+    cd -- "$path"
+    exec "${SHELL:-bash}"
+}
+
+generated_name_for_target() {
+    local target="$1"
+
+    printf '%s-%s\n' "$(slugify "$target")" "$(random_hex)"
+}
+
+create_worktree() {
+    local name="" target=""
+    local name_set=false
+    local path commit attach=false
+
+    while (($#)); do
+        case "$1" in
+            -n|--name)
+                shift
+                (($#)) || die "missing name after -n"
+                name="$1"
+                name_set=true
+                shift
+                ;;
+            --name=*)
+                name="${1#--name=}"
+                name_set=true
+                shift
+                ;;
+            -h|--help)
+                usage
+                exit 0
+                ;;
+            --)
+                shift
+                break
+                ;;
+            -*)
+                die "unknown option: $1"
+                ;;
+            *)
+                [[ -z "$target" ]] || die "too many targets"
+                target="$1"
+                shift
+                ;;
+        esac
+    done
+
+    while (($#)); do
+        [[ -z "$target" ]] || die "too many targets"
+        target="$1"
+        shift
+    done
+
+    if [[ -z "$target" ]]; then
+        target=$(current_target)
+    fi
+
+    if [[ "$name_set" == true && -z "$name" ]]; then
+        die "missing worktree name"
+    fi
+
+    if [[ -n "$name" ]]; then
+        path=$(worktree_path_for_name "$name")
+        if [[ -e "$path" ]]; then
+            registered_worktree_for_current_repo "$path" || die "path exists but is not this repo's worktree: $path"
+            enter_worktree "$path"
+        fi
+    else
+        local attempts=0
+        while :; do
+            name=$(generated_name_for_target "$target")
+            path=$(worktree_path_for_name "$name")
+            [[ ! -e "$path" ]] && break
+            attempts=$((attempts + 1))
+            ((attempts < 20)) || die "could not generate an unused worktree name"
+        done
+    fi
+
+    if local_branch_exists "$target" && ! branch_checked_out "$target"; then
+        attach=true
+    fi
+
+    if [[ "$attach" == true ]]; then
+        mkdir -p -- "$(dirname "$path")"
+        git worktree add "$path" "$target"
+    else
+        if local_branch_exists "$target"; then
+            commit=$(resolve_commit "refs/heads/$target") || die "invalid target: $target"
+        else
+            commit=$(resolve_commit "$target") || die "invalid target: $target"
+        fi
+
+        mkdir -p -- "$(dirname "$path")"
+        git worktree add --detach "$path" "$commit"
+    fi
+
+    enter_worktree "$path"
+}
+
+remove_path() {
+    local path="$1"
+    shift
+
+    local main
+    main=$(main_worktree)
+
+    [[ -d "$path" ]] || die "no such worktree: $path"
+
+    if same_dir "$path" "$main"; then
+        die "refusing to remove the main worktree: $main"
+    fi
+
+    cd -- "$main"
+    git worktree remove "$@" "$path"
+}
+
+remove_worktree() {
+    local name="" path=""
+    local force_args=()
+
+    while (($#)); do
+        case "$1" in
+            -f|--force)
+                force_args+=(--force)
+                shift
+                ;;
+            -h|--help)
+                usage
+                exit 0
+                ;;
+            --)
+                shift
+                break
+                ;;
+            -*)
+                die "unknown option: $1"
+                ;;
+            *)
+                [[ -z "$name" ]] || die "too many worktree names"
+                name="$1"
+                shift
+                ;;
+        esac
+    done
+
+    while (($#)); do
+        [[ -z "$name" ]] || die "too many worktree names"
+        name="$1"
+        shift
+    done
+
+    if [[ -n "$name" ]]; then
+        path=$(worktree_path_for_name "$name")
+    else
+        path=$(git rev-parse --path-format=absolute --show-toplevel)
+    fi
+
+    remove_path "$path" "${force_args[@]}"
+}
+
+complete_names() {
+    local dir line path name
+
+    git rev-parse --is-inside-work-tree >/dev/null 2>&1 || return 0
+    dir=$(repo_worktree_dir) || return 0
+
+    [[ -d "$dir" ]] || return 0
+
+    while IFS= read -r line; do
+        case "$line" in
+            worktree\ *)
+                path=${line#worktree }
+                case "$path" in
+                    "$dir"/*)
+                        name=${path#"$dir"/}
+                        case "$name" in
+                            */*) ;;
+                            *) decode_path_name "$name"; printf '\n' ;;
+                        esac
+                        ;;
+                esac
+                ;;
+        esac
+    done < <(git worktree list --porcelain)
+}
+
+complete_command() {
+    local kind="${1:-}"
+
+    case "$kind" in
+        names)
+            complete_names
+            ;;
+        -h|--help|help)
+            usage
+            ;;
+        *)
+            die "unknown completion kind: ${kind:-<missing>}"
+            ;;
+    esac
+}
+
+cmd="${1:-create}"
+case "$cmd" in
+    create)
+        shift || true
+        create_worktree "$@"
+        ;;
+    remove)
+        shift || true
+        remove_worktree "$@"
+        ;;
+    complete)
+        shift || true
+        complete_command "$@"
+        ;;
+    -h|--help|help)
+        usage
+        ;;
+    *)
+        create_worktree "$@"
+        ;;
+esac

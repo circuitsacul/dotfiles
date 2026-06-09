@@ -1,0 +1,50 @@
+#compdef git-wt
+
+emulate -L zsh
+setopt local_options no_aliases
+
+if [[ ${words[1]} == git ]]; then
+  if [[ ${words[2]} == wt ]]; then
+    if (( CURRENT <= 2 )); then
+      words=(git-wt "${cur-}")
+      CURRENT=2
+    else
+      local current_word="${words[CURRENT]-}"
+      words=(git-wt "${(@)words[3,-1]}")
+      if [[ -z ${cur-} && -n $current_word ]]; then
+        words+=( "${cur-}" )
+      else
+        (( CURRENT-- ))
+      fi
+    fi
+  else
+    words=(git-wt "${words[CURRENT]:-${cur-}}")
+    CURRENT=2
+  fi
+fi
+
+if (( CURRENT > $#words )); then
+  words+=( "${cur-}" )
+fi
+
+_git_wt_names() {
+  local -a names
+  names=("${(@f)$(_call_program git-wt-names git-wt complete names 2>/dev/null)}")
+  (( $#names )) && _describe -t worktree-names 'worktree names' names
+}
+
+_git_wt_targets() {
+  local -a refs
+  refs=(HEAD "${(@f)$(git for-each-ref --format='%(refname:short)' refs/heads refs/tags refs/remotes 2>/dev/null)}")
+  _describe -t git-refs 'git refs' refs
+}
+
+_arguments -C \
+  '(-h --help)-h[show help]' \
+  '(-h --help)--help[show help]' \
+  '(-n --name)-n[use worktree name]:worktree name:_git_wt_names' \
+  '(-n --name)--name=[use worktree name]:worktree name:_git_wt_names' \
+  ':target:_git_wt_targets'
+
+_ret=0
+return 0

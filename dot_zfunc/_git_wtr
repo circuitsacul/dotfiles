@@ -1,0 +1,44 @@
+#compdef git-wtr
+
+emulate -L zsh
+setopt local_options no_aliases
+
+if [[ ${words[1]} == git ]]; then
+  if [[ ${words[2]} == wtr ]]; then
+    if (( CURRENT <= 2 )); then
+      words=(git-wtr "${cur-}")
+      CURRENT=2
+    else
+      local current_word="${words[CURRENT]-}"
+      words=(git-wtr "${(@)words[3,-1]}")
+      if [[ -z ${cur-} && -n $current_word ]]; then
+        words+=( "${cur-}" )
+      else
+        (( CURRENT-- ))
+      fi
+    fi
+  else
+    words=(git-wtr "${words[CURRENT]:-${cur-}}")
+    CURRENT=2
+  fi
+fi
+
+if (( CURRENT > $#words )); then
+  words+=( "${cur-}" )
+fi
+
+_git_wtr_names() {
+  local -a names
+  names=("${(@f)$(_call_program git-wt-names git-wt complete names 2>/dev/null)}")
+  (( $#names )) && _describe -t worktree-names 'worktree names' names
+}
+
+_arguments -C \
+  '(-h --help)-h[show help]' \
+  '(-h --help)--help[show help]' \
+  '(-f --force)-f[force removal]' \
+  '(-f --force)--force[force removal]' \
+  '::worktree name:_git_wtr_names'
+
+_ret=0
+return 0
