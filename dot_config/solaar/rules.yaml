@@ -27,28 +27,34 @@
 - Rule:
   - Key: [Haptic, pressed]
   - KeyPress:
-    - Control_L
-    - depress
-  - KeyPress:
-    - space
+    - [Control_L, space]
     - click
-- Rule:
-  - Key: [Haptic, released]
-  - KeyPress:
-    - Control_L
-    - release
 ...
 ---
 - Rule:
   - MouseGesture: Mouse Left
-  - KeyPress:
-    - [Super_L, Control_L, Right]
-    - click
+  - Execute:
+    - /usr/bin/busctl
+    - --user
+    - call
+    - org.kde.kglobalaccel
+    - /component/kwin
+    - org.kde.kglobalaccel.Component
+    - invokeShortcut
+    - s
+    - Switch One Desktop to the Right
 - Rule:
   - MouseGesture: Mouse Right
-  - KeyPress:
-    - [Super_L, Control_L, Left]
-    - click
+  - Execute:
+    - /usr/bin/busctl
+    - --user
+    - call
+    - org.kde.kglobalaccel
+    - /component/kwin
+    - org.kde.kglobalaccel.Component
+    - invokeShortcut
+    - s
+    - Switch One Desktop to the Left
 - Rule:
   - MouseGesture: Mouse Down
   - KeyPress:
