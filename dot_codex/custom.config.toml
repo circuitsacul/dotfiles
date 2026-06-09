@@ -1,0 +1,26 @@
+[tui]
+vim_mode_default = true
+
+[tui.keymap.global]
+open_external_editor = "ctrl-e"
+
+[tui.keymap.editor]
+move_line_end = []
+
+[tui.keymap.vim_normal]
+move_left = ["n", "left"]
+move_down = ["e", "down"]
+move_up = ["i", "up"]
+move_right = ["o", "right"]
+
+enter_insert = "h"
+insert_line_start = "shift-h"
+move_word_end = "k"
+open_line_below = "l"
+
+[tui.keymap.vim_operator]
+motion_left = ["n", "left"]
+motion_down = ["e", "down"]
+motion_up = ["i", "up"]
+motion_right = ["o", "right"]
+motion_word_end = "k"
