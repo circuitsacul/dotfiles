@@ -1,5 +1,26 @@
+personality = "pragmatic"
+model = "gpt-5.5"
+model_context_window = 1000000
+model_reasoning_effort = "xhigh"
+plan_mode_reasoning_effort = "xhigh"
+developer_instructions = """
+# Default Editing Assumption
+
+Assume the user wants answers, investigation, debugging, test output, review findings, or explanation by default, not file edits.
+
+Do not edit, create, delete, move, format, refactor, or otherwise mutate files unless the user's request clearly asks you to make changes, implement a fix, update files, add code, remove code, commit, or perform another write operation.
+
+If the user asks how to fix something, prefer explaining the fix or giving a patch/snippet as text unless they explicitly ask you to apply it. If intent is ambiguous and editing files would be a meaningful side effect, ask before editing.
+
+It is still appropriate to inspect files and run read-only diagnostic commands, and you may run tests or build checks.
+"""
+
 [tui]
 vim_mode_default = true
+theme = "catppuccin-mocha"
+status_line = ["model-with-reasoning", "current-dir", "git-branch", "five-hour-limit", "weekly-limit", "fast-mode", "context-used", "context-window-size"]
+status_line_use_colors = true
+session_picker_view = "dense"
 
 [tui.keymap.global]
 open_external_editor = "ctrl-e"
@@ -24,3 +45,20 @@ motion_down = ["e", "down"]
 motion_up = ["i", "up"]
 motion_right = ["o", "right"]
 motion_word_end = "k"
+
+[plugins."github@openai-curated"]
+enabled = true
+
+[features]
+terminal_resize_reflow = true
+memories = true
+prevent_idle_sleep = true
+
+[mcp_servers.context7]
+url = "https://mcp.context7.com/mcp"
+
+[mcp_servers.gh_grep]
+url = "https://mcp.grep.app"
+
+[mcp_servers.gh_grep.tools.searchGitHub]
+approval_mode = "approve"
