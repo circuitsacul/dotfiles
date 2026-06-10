@@ -16,9 +16,9 @@
 	wt = "!f() { exec git-wt create \"$@\"; }; f"
 
 [commit]
-	gpgsign = true
+	gpgsign = {{ .git.gpgsign }}
 [user]
-	email = me@circuitsacul.dev
-	name = circuitsacul
+	email = {{ .git.email | quote }}
+	name = {{ .git.name | quote }}
 [init]
-	defaultBranch = master
+	defaultBranch = {{ .git.defaultBranch | quote }}
