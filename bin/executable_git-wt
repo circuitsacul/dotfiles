@@ -165,8 +165,25 @@ resolve_commit() {
     git rev-parse --verify --quiet --end-of-options "$target^{commit}"
 }
 
+in_zellij() {
+    [[ -n "${ZELLIJ:-}" || -n "${ZELLIJ_PANE_ID:-}" || -n "${ZELLIJ_SESSION_NAME:-}" ]]
+}
+
+enter_worktree_with_zellij() {
+    local path="$1"
+
+    in_zellij || return 1
+    command -v zellij >/dev/null 2>&1 || return 1
+
+    zellij action new-pane --in-place --close-on-exit --cwd "$path" -- "${SHELL:-bash}" >/dev/null 2>&1
+}
+
 enter_worktree() {
     local path="$1"
+
+    if enter_worktree_with_zellij "$path"; then
+        exit 0
+    fi
 
     cd -- "$path"
     exec "${SHELL:-bash}"
