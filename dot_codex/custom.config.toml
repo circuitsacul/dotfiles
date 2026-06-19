@@ -18,6 +18,8 @@ It is still appropriate to inspect files and run read-only diagnostic commands, 
 [tui]
 vim_mode_default = true
 theme = "catppuccin-mocha"
+notification_method = "bel"
+notification_condition = "always"
 status_line = ["model-with-reasoning", "current-dir", "git-branch", "five-hour-limit", "weekly-limit", "fast-mode", "context-used", "context-window-size"]
 status_line_use_colors = true
 session_picker_view = "dense"
