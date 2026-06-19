@@ -6,6 +6,7 @@ personal dotfiles
 ```toml
 [data]
 litellm_master_key = "sk-litellm-secret"
+fireworks_api_key = "fw-..."
 
 [data.git]
 name = "Your Name"
