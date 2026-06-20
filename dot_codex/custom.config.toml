@@ -1,5 +1,6 @@
 personality = "pragmatic"
 model = "gpt-5.5"
+model_provider = "litellm"
 model_context_window = 1000000
 model_reasoning_effort = "xhigh"
 plan_mode_reasoning_effort = "xhigh"
@@ -14,6 +15,16 @@ If the user asks how to fix something, prefer explaining the fix or giving a pat
 
 It is still appropriate to inspect files and run read-only diagnostic commands, and you may run tests or build checks.
 """
+
+[model_providers.litellm]
+name = "LiteLLM"
+base_url = "http://127.0.0.1:61743/v1"
+
+[model_providers.litellm.auth]
+command = "/usr/bin/chezmoi"
+args = ["execute-template", "{{ .chezmoi.config.data.litellm_master_key }}"]
+timeout_ms = 5000
+refresh_interval_ms = 0
 
 [tui]
 vim_mode_default = true
