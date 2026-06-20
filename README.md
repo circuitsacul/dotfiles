@@ -5,6 +5,7 @@ personal dotfiles
 `~/.config/chezmoi/chezmoi.toml`:
 ```toml
 [data]
+profile = "..."
 litellm_master_key = "sk-litellm-secret"
 fireworks_api_key = "fw-..."
 

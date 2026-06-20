@@ -1,5 +1,14 @@
 README.md
 
-{{ if ne .chezmoi.hostname "circuitsacul-framework-desktop" -}}
-.gitconfig
-{{ end -}}
+{{- if eq .chezmoi.config.data.profile "agentbox" }}
+.chezmoiscripts/sysctl-ttl-hoplimit.sh
+.config/containers/systemd
+.config/ghostty
+.config/solaar
+.config/zed
+{{- end }}
+
+{{- if eq .chezmoi.config.data.profile "work" }}
+.config/containers/systemd
+.config/solaar
+{{- end }}
