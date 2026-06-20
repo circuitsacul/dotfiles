@@ -20,6 +20,7 @@ keybind=super+n=previous_tab
 keybind=super+o=next_tab
 keybind=global:super+enter=toggle_quick_terminal
 keybind=super+t=new_tab
+keybind = shift+enter=text:\x1b\r
 
 theme=Catppuccin Mocha
 window-theme=ghostty
