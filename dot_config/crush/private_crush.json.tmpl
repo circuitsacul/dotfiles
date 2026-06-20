@@ -4,18 +4,18 @@
   "models": {
     "large": {
       "model": "gpt-5.5",
-      "provider": "litellm-chatgpt",
+      "provider": "litellm",
       "reasoning_effort": "xhigh"
     },
     "small": {
       "model": "gpt-5.5",
-      "provider": "litellm-chatgpt",
+      "provider": "litellm",
       "reasoning_effort": "low"
     }
   },
   "providers": {
-    "litellm-chatgpt": {
-      "name": "LiteLLM ChatGPT",
+    "litellm": {
+      "name": "LiteLLM",
       "type": "openai",
       "base_url": "http://127.0.0.1:61743/v1",
       "api_key": {{ $litellmApiKey | toJson }},
@@ -50,7 +50,7 @@
           "id": "fireworks-glm-5p2",
           "name": "Fireworks GLM-5.2",
           "context_window": 131072,
-          "can_reason": false
+          "can_reason": true
         }
       ]
     }
