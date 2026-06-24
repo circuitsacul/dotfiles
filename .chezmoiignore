@@ -1,5 +1,9 @@
 README.md
 
+{{- if ne .chezmoi.config.data.profile "work" }}
+.claude/statusline.py
+{{- end }}
+
 {{- if eq .chezmoi.config.data.profile "agentbox" }}
 .chezmoiscripts/sysctl-ttl-hoplimit.sh
 .config/containers/systemd

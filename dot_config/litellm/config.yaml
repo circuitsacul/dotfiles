@@ -18,7 +18,15 @@ model_list:
     litellm_params:
       model: fireworks_ai/accounts/fireworks/models/glm-5p2
       api_key: os.environ/FIREWORKS_AI_API_KEY
-      additional_drop_params: ["tool_choice", "web_search_options", "tools", "client_metadata"]
+      # additional_drop_params: ["web_search_options", "client_metadata", "tool_choice"]
+      # drop_params: true
+    model_info:
+      supports_function_calling: true
+  # - model_name: fireworks-glm-5p2
+  #   litellm_params:
+  #     model: fireworks_ai/accounts/fireworks/models/glm-5p2
+  #     api_key: os.environ/FIREWORKS_AI_API_KEY
+  #     additional_drop_params: ["tool_choice", "web_search_options", "tools", "client_metadata"]
 
 general_settings:
   master_key: os.environ/LITELLM_MASTER_KEY

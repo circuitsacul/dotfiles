@@ -31,3 +31,8 @@ customCommands:
     context: "global"
     description: "switch to yazi"
     command: "~/bin/yhx-switch-yazi"
+  - key: "w"
+    context: "files"
+    description: "WIP commit (no signing, no hooks)"
+    command: 'git commit --no-gpg-sign --no-verify -m "wip"'
+    loadingText: "Committing WIP"

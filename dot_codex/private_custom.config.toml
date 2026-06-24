@@ -1,20 +1,27 @@
-personality = "pragmatic"
+default_permissions = ":read-only"
+personality = "friendly"
 model = "gpt-5.5"
-model_provider = "litellm"
 model_context_window = 1000000
 model_reasoning_effort = "xhigh"
 plan_mode_reasoning_effort = "xhigh"
 developer_instructions = """
 # Default Editing Assumption
 
-Assume the user wants answers, investigation, debugging, test output, review findings, or explanation by default, not file edits.
+Assume the user wants answers, investigation, debugging, test output, review findings, or
+explanation by default, not file edits.
 
-Do not edit, create, delete, move, format, refactor, or otherwise mutate files unless the user's request clearly asks you to make changes, implement a fix, update files, add code, remove code, commit, or perform another write operation.
+Do not edit, create, delete, move, format, refactor, or otherwise mutate files unless the user's
+request clearly asks you to make changes, implement a fix, update files, add code, remove code,
+commit, or perform another write operation.
 
-If the user asks how to fix something, prefer explaining the fix or giving a patch/snippet as text unless they explicitly ask you to apply it. If intent is ambiguous and editing files would be a meaningful side effect, ask before editing.
+If the user asks how to fix something, prefer explaining the fix or giving a patch/snippet as
+text unless they explicitly ask you to apply it. If intent is ambiguous and editing files would be
+a meaningful side effect, ask before editing.
 
-It is still appropriate to inspect files and run read-only diagnostic commands, and you may run tests or build checks.
+It is still appropriate to inspect files and run read-only diagnostic commands, and you may run
+tests or build checks.
 """
+service_tier = "default"
 
 [model_providers.litellm]
 name = "LiteLLM"
