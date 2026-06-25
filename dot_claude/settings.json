@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "defaultMode": "default"
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "python3 ~/.claude/statusline.py"
+  },
+  "enabledPlugins": {
+    "rust-analyzer-lsp@claude-plugins-official": true
+  },
+  "effortLevel": "xhigh",
+  "promptSuggestionEnabled": false,
+  "awaySummaryEnabled": false,
+  "tui": "fullscreen",
+  "skipWorkflowUsageWarning": true,
+  "theme": "dark",
+  "preferredNotifChannel": "terminal_bell",
+  "switchModelsOnFlag": false,
+  "agentPushNotifEnabled": true
+}
