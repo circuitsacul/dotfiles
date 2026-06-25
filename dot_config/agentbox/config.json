@@ -1,0 +1,43 @@
+{
+  "mounts": [
+    {
+      "source": "$PWD/.venv.agentbox",
+      "dest": "/home/agent/session/workspace/.venv",
+      "options": "rw"
+    },
+    {
+      "source": "$XDG_RUNTIME_DIR/$WAYLAND_DISPLAY",
+      "dest": "/home/agent/.runtime/wayland-0",
+      "options": "rw",
+      "if_missing": "require"
+    }
+  ],
+  "forward_env": [
+    "TERM",
+    "COLORTERM",
+    "TERM_PROGRAM",
+    "TERM_PROGRAM_VERSION",
+    "VTE_VERSION",
+    "ZELLIJ",
+    "ZED_TERM",
+    "XTERM_VERSION",
+    "WT_SESSION"
+  ],
+  "forward_env_prefixes": [
+    "ZELLIJ_",
+    "KITTY_",
+    "WEZTERM_",
+    "ITERM_"
+  ],
+  "set_env": {
+    "HOME": "/home/agent",
+    "WAYLAND_DISPLAY": "wayland-0",
+    "XDG_RUNTIME_DIR": "/home/agent/.runtime"
+  },
+  "flags": {
+    "create": [
+      "--security-opt=label=disable"
+    ],
+    "run": []
+  }
+}
