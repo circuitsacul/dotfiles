@@ -1,6 +1,12 @@
 {
   "mounts": [
     {
+      "source": "~/.local/share/chezmoi",
+      "dest": "/home/agent/.local/share/chezmoi",
+      "options": "ro",
+      "if_missing": "require"
+    },
+    {
       "source": "$PWD/.venv.agentbox",
       "dest": "/home/agent/session/workspace/.venv",
       "options": "rw"
