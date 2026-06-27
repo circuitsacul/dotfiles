@@ -1,4 +1,4 @@
-# Default Editing Assumption
+# default editing assumption
 
 Assume the user wants answers, investigation, debugging, test output, review findings, or
 explanation by default, not file edits.
@@ -24,3 +24,7 @@ should be asked for.
   scenarios where something is defined twice and could cause bugs were they to drift. In situations
   that this is impractical, look for ways to make it such that a drift would be caught early (such
   as a compile error, static lint, etc.).
+
+# dynamic workflows + codex
+Any time you're about to run a dynamic workflow, ask the user if they want to use the `codex` skill
+too.

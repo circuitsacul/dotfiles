@@ -2,11 +2,13 @@
   "permissions": {
     "defaultMode": "default"
   },
+  "model": "opus[1m]",
   "statusLine": {
     "type": "command",
     "command": "python3 ~/.claude/statusline.py"
   },
   "enabledPlugins": {
+    "pyright-lsp@claude-plugins-official": true,
     "rust-analyzer-lsp@claude-plugins-official": true
   },
   "effortLevel": "xhigh",
