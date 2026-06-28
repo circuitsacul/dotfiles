@@ -25,6 +25,6 @@ should be asked for.
   that this is impractical, look for ways to make it such that a drift would be caught early (such
   as a compile error, static lint, etc.).
 
-# dynamic workflows + codex
-Any time you're about to run a dynamic workflow, ask the user if they want to use the `codex` skill
-too.
+# codex subagent
+
+If the user asks you to interact with codex, load the `codex-subagent` skill first.
