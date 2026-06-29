@@ -23,6 +23,14 @@ tests or build checks.
 """
 service_tier = "default"
 
+[permissions.subagent.filesystem]
+"/" = "read"
+"/tmp" = "write"
+
+[permissions.subagent.network]
+enabled = true
+mode = "full"
+
 [model_providers.litellm]
 name = "LiteLLM"
 base_url = "http://127.0.0.1:61743/v1"

@@ -5,121 +5,50 @@ description: >-
   continuation thread through the Codex MCP relay workflow. Use when the user asks to ask Codex,
   consult Codex, run Codex in parallel, continue a prior Codex thread, or avoid blocking the main
   Claude Code session while Codex works.
-argument-hint: "[prompt or thread-id + prompt]"
+argument-hint: "[prompt, or thread-id + prompt]"
 ---
 
 # Codex Subagent
-These instructions explain how to use codex as a subagent.
 
-## Key Details
-1. claude-code subagents (both new and forks) run _asynchronously_, meaning that they do not block
-   the primary session while running.
-2. by contrast, the codex MCP tool _does_ block the primary session. Because of this, all calls
-   into codex should pass through a relay subagent.
+How to run Codex without blocking this session, and without paying for Codex's prompt or response
+in this session's token budget.
+
+## Why
+1. claude-code subagents run asynchronously -- they do not block this session.
+2. the Codex MCP tool blocks its caller, so Codex is always called through the `codex-relay`
+   subagent, which backgrounds it.
+3. Codex has the same filesystem access you do. The relay passes Codex its prompt via a file and
+   has Codex write its response back to that same file. So neither the prompt nor the response
+   passes through the relay -- it only ever sees a filepath and a thread ID.
 
 ## Usage
-1. First, formulate the prompt you want to give to codex. Remember that codex has _equal_ access to
-   the filesystem as you. Only include in the prompt what codex _can't_ get on its own (i.e.,
-   context only present in the claude-code session.)
-2. Then, spawn a new Sonnet subagent. Use the correct prompt template (
-   `## reply-relay-prompt-template` to reply to a prevous codex thread,
-   `## start-relay-prompt-template` to start a new codex thread.)
-3. The relay subagent will run in the background; you can either continue work or stop and wait for
-   it to finish.
-4. When the relay finishes, it will return a file pointer to codex's verbatim response, as well as
-   the thread ID.
-5. Replying to a codex thread should follow the same steps, starting from 1, using the returned
-   thread ID.
+1. Formulate the prompt for Codex. Include only what Codex cannot get on its own (context that
+   exists only in this session); it can read the repo and files itself.
 
-## reply-relay-prompt-template
-Use this prompt template as the prompt to a new relay agent when you want to reply to a previous
-codex thread.
+2. Write that prompt to a fresh, uniquely-named file under `/tmp` (e.g. your session scratchpad
+   directory). It MUST be under `/tmp`: Codex writes its response into this file, and its
+   permission profile only grants write access to `/tmp`. Use a new filename for every call so
+   calls never clobber each other.
 
-template variables:
-- {thread-id}: the thread ID of the codex thread you're replying to
-- {prompt}: the exact prompt you want sent to codex
-- {output-file}: the exact filepath you want codex's answer to be put in. Choose a unique filepath
-                 per call, to prevent different calls from clobbering each other.
+3. Spawn the `codex-relay` subagent (Agent tool, `subagent_type: codex-relay`). The codex-relay
+   subagent expects a prompt where each line is `parameter: value`. Pass these parameters:
+   - `filepath: absolute path to the file from step 2`
+   - `threadId: <thread id>` (only when continuing a previous Codex thread -- see steb 6)
+   - you may also provide other tool-call overrides, such as `model`
 
-=== PROMPT TEMPLATE START ===
-You are a relay subagent. Your only job is to call the codex MCP tool with the prompt I give you,
-wait for codex to finish, write codex's reply and thread ID to a file, and return the filepath
-and thread ID.
+4. The relay runs in the background, and claude-code will wake you when it finishes. Either end
+   your turn, or continue parallel work while waiting. When the relay finishes, it will return
+   a `threadId`.
 
-=== CODEX PROMPT START ===
-{prompt}
-=== CODEX PROMPT END ===
+5. To read Codex's answer, read back the file from step 2, using an offset = N, where N is the last
+   line you wrote. If the `=== CODEX RESPONSE ===` marker is not present, you may not have the full
+   output -- re-read the full file in this case.
 
-Steps:
+6. To continue the thread, repeat from step 1 with a new file, passing the `threadId` the relay
+   returned.
 
-1. Load the codex MCP tool: ToolSearch query "select:mcp__codex__codex-reply"
-
-2. Call codex: `mcp__codex__codex-reply` with
-   - `threadId`: "{thread-id}"
-   - `prompt`: the exact CODEX PROMPT from above
-
-3. When codex responds, capture its full output, as well as the returned top-level `threadId`.
-
-4. Using the `Write` tool;
-   at this filepath: `{output-file}`;
-   write these exact contents:
-      line 1: the returned top-level `threadId` (format: `threadId: <thread ID>`)
-      line 2: blank
-      line 3: codex's full, verbatim, non-summarized output
-
-   Do not put anything else in the file.
-
-5. Return the filepath that you wrote to, the top-level `threadId`, and a short note. Never include
-   _any_ part of codex's response, or any summary of it, in your response.
-
-Note: if at any point a step fails, return what you did and the exact error, and stop.
-=== PROMPT TEMPLATE END ===
-
-## start-relay-prompt-template
-Use this prompt template as the prompt to a new relay agent when you want to start a new codex
-thread.
-
-template variables:
-- {model}: the codex model to use (e.g. `gpt-5.5` or `gpt-5.3-codex-spark` -- default to `gpt-5.5`)
-- {effort}: the effort the codex model should use (e.g. `high` or `xhigh` -- default to `high`)
-- {sandbox}: the sandbox mode to use (e.g. `read-only` or `workspace-write` -- default to `read-only`)
-- {prompt}: the exact prompt you want sent to codex
-- {output-file}: the exact filepath you want codex's answer to be put in. Choose a unique filepath
-                 per call, to prevent different calls from clobbering each other.
-
-=== PROMPT TEMPLATE START ===
-You are a relay subagent. Your only job is to call the codex MCP tool with the prompt I give you,
-wait for codex to finish, write codex's reply and thread ID to a file, and return the filepath
-and thread ID.
-
-=== CODEX PROMPT START ===
-{prompt}
-=== CODEX PROMPT END ===
-
-Steps:
-
-1. Load the codex MCP tool: ToolSearch query "select:mcp__codex__codex"
-
-2. Call codex: `mcp__codex__codex` with
-   - prompt: the exact CODEX PROMPT from above
-   - model: "{model}"
-   - config: { "model_reasoning_effort": "{effort}" }
-   - approval-policy: "on-request"
-   - sandbox: "{sandbox}"
-
-3. When codex responds, capture its full output, as well as the returned top-level `threadId`.
-
-4. Using the `Write` tool;
-   at this filepath: `{output-file}`;
-   write these exact contents:
-      line 1: the returned top-level `threadId` (format: `threadId: <thread ID>`)
-      line 2: blank
-      line 3: codex's full, verbatim, non-summarized output
-
-   Do not put anything else in the file.
-
-5. Return the filepath that you wrote to, the top-level `threadId`, and a short note. Never include
-   _any_ part of codex's response, or any summary of it, in your response.
-
-Note: if at any point a step fails, return what you did and the exact error, and stop.
-=== PROMPT TEMPLATE END ===
+## Notes
+- Track the `(filepath, threadId)` pair for each call: the filepath holds that call's answer, and
+  the threadId is how you reply to it.
+- Defaults (model, reasoning effort, permission profile) live in Codex config and the `codex-relay`
+  definition. Pass overrides only when you need to deviate.
