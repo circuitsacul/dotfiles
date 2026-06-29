@@ -41,9 +41,7 @@
     "XDG_RUNTIME_DIR": "/home/agent/.runtime"
   },
   "flags": {
-    "create": [
-      "--security-opt=label=disable"
-    ],
+    "create": [],
     "run": []
   }
 }

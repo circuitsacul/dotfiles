@@ -79,6 +79,4 @@ url = "https://mcp.context7.com/mcp"
 
 [mcp_servers.gh_grep]
 url = "https://mcp.grep.app"
-
-[mcp_servers.gh_grep.tools.searchGitHub]
-approval_mode = "approve"
+default_tools_approval_mode = "approve"
