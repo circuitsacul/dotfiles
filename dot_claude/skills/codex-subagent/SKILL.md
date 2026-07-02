@@ -33,8 +33,9 @@ in this session's token budget.
 3. Spawn the `codex-relay` subagent (Agent tool, `subagent_type: codex-relay`). The codex-relay
    subagent expects a prompt where each line is `parameter: value`. Pass these parameters:
    - `filepath: absolute path to the file from step 2`
-   - `threadId: <thread id>` (only when continuing a previous Codex thread -- see steb 6)
-   - you may also provide other tool-call overrides, such as `model`
+   - `threadId: <thread id>` (only when continuing a previous Codex thread -- see step 6)
+   - you may also provide other tool-call overrides, such as `model` (new threads only --
+     continuations keep the configuration the thread was started with)
 
 4. The relay runs in the background, and claude-code will wake you when it finishes. Either end
    your turn, or continue parallel work while waiting. When the relay finishes, it will return

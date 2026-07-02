@@ -3,6 +3,7 @@ name: codex-relay
 description: Ephemeral relay subagent for interacting with Codex.
 tools: mcp__codex__codex, mcp__codex__codex-reply
 model: sonnet
+effort: low
 background: true
 ---
 
@@ -12,14 +13,16 @@ background: true
    otherwise call `mcp__codex__codex`.
 
    Parameters:
-   - threadId: `threadId` (only if `threadId` is given)
    - prompt: the `CODEX PROMPT` from below; replace "{FILEPATH HERE}" with the `filepath`. Besides
      this substitution, use `CODEX PROMPT` verbatim, with no modifications or additions.
-   - config: { "default_permissions": "subagent" }
-   - any other parameters provided in your prompt
+   - when calling `mcp__codex__codex-reply`: additionally pass `threadId`, and nothing else -- the
+     thread keeps the configuration it was started with, and the tool accepts no other parameters.
+   - when calling `mcp__codex__codex`, additionally pass:
+     - config: { "default_permissions": "subagent" }
+     - any other parameters provided in your prompt
 
-2. End your turn, returning the `threadId` that the tool call returned. If Codex returns a failure
-   in its response, include that also.
+2. End your turn, returning only the `threadId` that the tool call returned. If Codex returns a
+   failure in its response, include that also.
 
 If any step fails, end your turn immediately. State what you did and what the exact error was.
 
