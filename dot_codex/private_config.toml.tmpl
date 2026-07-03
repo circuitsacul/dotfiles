@@ -1,4 +1,8 @@
+{{ if eq .chezmoi.config.data.profile "agentbox" -}}
+default_permissions = "orchestrator"
+{{ else -}}
 default_permissions = ":read-only"
+{{ end -}}
 personality = "friendly"
 model = "gpt-5.5"
 model_context_window = 1000000
@@ -31,13 +35,29 @@ service_tier = "default"
 enabled = true
 mode = "full"
 
+# orchestrator: read everything, write /tmp plus the state paths a spawned `claude -p`
+# needs (see skills/claude-subagent). Grants must be directories (file grants panic the
+# sandbox); claude runs with CLAUDE_CONFIG_DIR=~/.claude so its top-level .claude.json
+# lands inside the ~/.claude grant. No workspace write -- the sandbox is what keeps a
+# permissive claude subagent from editing the repo.
+[permissions.orchestrator.filesystem]
+"/" = "read"
+"/tmp" = "write"
+"~/.claude" = "write"
+"~/.cache/claude" = "write"
+"~/.cache/claude-cli-nodejs" = "write"
+
+[permissions.orchestrator.network]
+enabled = true
+mode = "full"
+
 [model_providers.litellm]
 name = "LiteLLM"
 base_url = "http://127.0.0.1:61743/v1"
 
 [model_providers.litellm.auth]
 command = "/usr/bin/chezmoi"
-args = ["execute-template", "{{ .chezmoi.config.data.litellm_master_key }}"]
+args = ["execute-template", "{{ "{{" }} .chezmoi.config.data.litellm_master_key {{ "}}" }}"]
 timeout_ms = 5000
 refresh_interval_ms = 0
 

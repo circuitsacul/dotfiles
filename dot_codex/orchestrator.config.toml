@@ -1,0 +1,3 @@
+# Opt-in profile for hosts where orchestrator permissions are not the default:
+#   codex --profile orchestrator
+default_permissions = "orchestrator"
