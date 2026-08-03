@@ -1,6 +1,9 @@
-README.md
+{{ if ne .profile "agentbox-pistuff" }}.local/share/chezmoi-variants/agentbox-pistuff{{ end }}
 
-{{- if eq .chezmoi.config.data.profile "agentbox" }}
+README.md
+archive
+
+{{- if hasPrefix "agentbox" .profile }}
 .chezmoiscripts/sysctl-ttl-hoplimit.sh
 .config/containers/systemd
 .config/ghostty
@@ -11,7 +14,7 @@ README.md
 .config/agentbox
 {{- end }}
 
-{{- if eq .chezmoi.config.data.profile "work" }}
+{{- if eq .profile "work" }}
 .config/containers/systemd
 .config/solaar
 .config/agentbox

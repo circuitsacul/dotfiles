@@ -1,0 +1,8 @@
+{
+	"askClaude": {
+		"enabled": false
+	},
+	"provider": {
+		"pathToClaudeCodeExecutable": "/home/agent/.local/bin/claude"
+	}
+}

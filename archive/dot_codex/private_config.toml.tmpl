@@ -94,6 +94,9 @@ motion_up = ["i", "up"]
 motion_right = ["o", "right"]
 motion_word_end = "k"
 
+[tui.model_availability_nux]
+"gpt-5.5" = 1
+
 [plugins."github@openai-curated"]
 enabled = true
 
@@ -108,3 +111,7 @@ url = "https://mcp.context7.com/mcp"
 [mcp_servers.gh_grep]
 url = "https://mcp.grep.app"
 default_tools_approval_mode = "approve"
+{{ if hasPrefix "agentbox" .profile }}
+[projects."{{ .chezmoi.homeDir }}/session/workspace"]
+trust_level = "trusted"
+{{ end -}}

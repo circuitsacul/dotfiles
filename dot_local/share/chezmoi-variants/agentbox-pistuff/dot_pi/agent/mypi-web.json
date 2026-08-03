@@ -1,0 +1,10 @@
+{
+  "openaiModel": "openai-codex/gpt-5.6-sol",
+  "xaiModel": "xai-auth/grok-4.5",
+  "providers": [
+    "exa",
+    "openai",
+    "xai"
+  ],
+  "mode": "all"
+}

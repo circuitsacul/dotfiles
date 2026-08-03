@@ -1,13 +1,6 @@
 ###############################################################################
 # Rust
-###############################################################################
-[language-server.rust-analyzer]
-command = "rustup"
-args = ["run", "nightly", "rust-analyzer"]
-
 [language-server.rust-analyzer.config]
-# config = { completion = { autoimport = { enable = false }, postfix = { enable = false }, limit = 200 } }
-# procMacro = { enable = false }
 diagnostics = { disabled = ["unlinked-file"] }
 check.command = "clippy"
 cargo.features = "all"
@@ -17,17 +10,9 @@ name = "rust"
 
 ###############################################################################
 # Python
-###############################################################################
 [[language]]
 name = "python"
 language-servers = ["ruff", "pyright"]
 
 [language-server.ty.config]
 diagnosticMode = "workspace"
-
-###############################################################################
-# Misc
-###############################################################################
-[[language]]
-name = "helm"
-file-types = ["helm"]

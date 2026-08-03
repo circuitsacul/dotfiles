@@ -30,15 +30,19 @@ How to run Claude Code without blocking your work and without losing its output.
    ```
    CLAUDE_CONFIG_DIR="$HOME/.claude" \
    claude -p --output-format json --permission-mode bypassPermissions \
-     --append-system-prompt 'You are a subagent driven by another agent through the CLI. Your output is consumed by that agent, not shown directly to a human. Answer directly and completely, without asking clarifying questions. Do not modify any files unless your prompt explicitly asks for file changes.' \
-     > "$OUT" 2> "$OUT.err" <<'CLAUDE_PROMPT'
+     --append-system-prompt 'You are a subagent driven by another agent through the CLI. Your output is consumed by that agent, not shown directly to a human. Answer directly and completely, without asking clarifying questions. Do not modify any source files unless your prompt explicitly asks for file changes (tests/cloning under /tmp, build-artifacts, etc. are fine).' \
+     > "$OUT" 2> "$OUT.err" <<'EOF'
    ...the prompt...
-   CLAUDE_PROMPT
+   EOF
    ```
 
    Add `--model <model>` only when the user asks for a specific model. The prompt can also be
    composed with a pipeline instead of a heredoc, e.g. splicing in an earlier response with
    `jq -r .result earlier.out`.
+
+   Don't further restrict permissions -- prefer using prose to tell it what to do or not do. e.g.,
+   if the user says "don't modify source files," the correct course of action would be to include
+   those instructions in the prompt, rather than modifying the permissions granted to claude.
 
 3. Poll the process handle until it exits; do other work or wait in between. On a nonzero exit,
    read `$OUT.err`.

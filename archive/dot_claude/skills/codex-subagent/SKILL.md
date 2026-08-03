@@ -34,8 +34,8 @@ in this session's token budget.
    subagent expects a prompt where each line is `parameter: value`. Pass these parameters:
    - `filepath: absolute path to the file from step 2`
    - `threadId: <thread id>` (only when continuing a previous Codex thread -- see step 6)
-   - you may also provide other tool-call overrides, such as `model` (new threads only --
-     continuations keep the configuration the thread was started with)
+   - optionally, tool-call overrides from the "Tool-call parameters" section below (new threads
+     only -- continuations keep the configuration the thread was started with)
 
 4. The relay runs in the background, and claude-code will wake you when it finishes. Either end
    your turn, or continue parallel work while waiting. When the relay finishes, it will return
@@ -47,6 +47,33 @@ in this session's token budget.
 
 6. To continue the thread, repeat from step 1 with a new file, passing the `threadId` the relay
    returned.
+
+## Tool-call parameters
+
+The relay forwards every `parameter: value` line other than `filepath` and `threadId` verbatim
+onto the `mcp__codex__codex` tool call. That tool rejects unknown keys, so use these exact names;
+do not invent shorthands (e.g. there is no top-level `effort` parameter):
+
+- `model`: model name override, e.g. `gpt-5.2` or `gpt-5.2-codex`.
+- `sandbox`: `read-only`, `workspace-write`, or `danger-full-access`.
+- `approval-policy`: approval policy for shell commands: `untrusted`, `on-request`, or `never`.
+- `cwd`: working directory for the session.
+- `base-instructions`: replaces Codex's default base instructions.
+- `developer-instructions`: injected as a developer-role message.
+- `compact-prompt`: prompt used when Codex compacts its conversation.
+- `config`: JSON object of `config.toml` overrides -- any setting without a dedicated parameter
+  above goes here. Most common: reasoning effort, e.g.
+  `config: { "default_permissions": "subagent", "model_reasoning_effort": "xhigh" }`
+  (effort values: `low`, `medium`, `high`, `xhigh`).
+
+The relay adds `config: { "default_permissions": "subagent" }` to every new-thread call on its
+own. If you pass your own `config`, include `"default_permissions": "subagent"` in it so the
+result does not depend on how the relay merges the two objects.
+
+This list mirrors the `mcp__codex__codex` tool schema and the `codex-relay` definition
+(`~/.claude/agents/codex-relay.md`); those remain the source of truth. If a call fails parameter
+validation, this list has drifted -- re-check the schema (ToolSearch `select:mcp__codex__codex`)
+and the relay definition instead of guessing.
 
 ## Notes
 - Track the `(filepath, threadId)` pair for each call: the filepath holds that call's answer, and

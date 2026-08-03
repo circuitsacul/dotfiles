@@ -1,0 +1,14 @@
+{
+  "name": "claude-style-tools-hashline-shim",
+  "private": true,
+  "description": "Loads pi-claude-style-tools but skips its read/edit/grep tools so @jerryan/pi-hashline-edit can own them",
+  "pi": {
+    "extensions": [
+      "./index.ts",
+      "./spinner.ts"
+    ]
+  },
+  "dependencies": {
+    "pi-claude-style-tools": "^1.0.64"
+  }
+}

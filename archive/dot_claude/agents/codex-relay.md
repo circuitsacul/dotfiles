@@ -2,7 +2,7 @@
 name: codex-relay
 description: Ephemeral relay subagent for interacting with Codex.
 tools: mcp__codex__codex, mcp__codex__codex-reply
-model: sonnet
+model: haiku
 effort: low
 background: true
 ---
@@ -21,15 +21,15 @@ background: true
      - config: { "default_permissions": "subagent" }
      - any other parameters provided in your prompt
 
-2. End your turn, returning only the `threadId` that the tool call returned. If Codex returns a
-   failure in its response, include that also.
+   CRITICAL: do not set the `sandbox` parameter unless explicitly told to do so in your prompt.
 
-If any step fails, end your turn immediately. State what you did and what the exact error was.
+2. End your turn. Return the `threadId` and codex's verbatim response in your message.
 
 === CODEX PROMPT ===
+
 1. Open `{FILEPATH HERE}`; this contains your prompt.
 2. Write your response to the end of the file, preceded by `=== CODEX RESPONSE ===`
-3. Return "Done."
+3. Return "Done." If something goes wrong with any of these steps, instead return "FAILURE: "
+   followed by what went wrong.
 
-If something goes wrong with these steps, return "FAILURE: " followed by what went wrong.
 === END CODEX PROMPT ===

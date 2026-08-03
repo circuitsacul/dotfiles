@@ -24,7 +24,3 @@ should be asked for.
   scenarios where something is defined twice and could cause bugs were they to drift. In situations
   that this is impractical, look for ways to make it such that a drift would be caught early (such
   as a compile error, static lint, etc.).
-
-# codex subagent
-
-If the user asks you to interact with codex, load the `codex-subagent` skill first.

@@ -7,6 +7,12 @@
       "if_missing": "require"
     },
     {
+      "source": "~/src/pistuff/mypi",
+      "dest": "/home/agent/mypi",
+      "options": "ro",
+      "if_missing": "require"
+    },
+    {
       "source": "$PWD/.venv.agentbox",
       "dest": "/home/agent/session/workspace/.venv",
       "options": "rw"

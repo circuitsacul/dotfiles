@@ -1,0 +1,32 @@
+{
+  "lastChangelogVersion": "0.80.7",
+  "theme": "catppuccin-mocha-peach",
+  "packages": [
+    "/home/agent/mypi"
+  ],
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-5.6-sol",
+  "defaultThinkingLevel": "medium",
+  "outputPad": 0,
+  "editorPaddingX": 0,
+  "terminal": {
+    "showTerminalProgress": true,
+    "showImages": false
+  },
+  "steeringMode": "all",
+  "followUpMode": "one-at-a-time",
+  "hideThinkingBlock": false,
+  "collapseChangelog": true,
+  "quietStartup": false,
+  "enableInstallTelemetry": false,
+  "transport": "sse",
+  "retry": {
+    "enabled": true,
+    "maxRetries": 3,
+    "baseDelayMs": 1000,
+    "provider": {
+      "maxRetries": 1,
+      "maxRetryDelayMs": 60000
+    }
+  }
+}

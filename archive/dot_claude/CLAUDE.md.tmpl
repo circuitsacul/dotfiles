@@ -1,0 +1,16 @@
+{{ template "agent-instructions.md" . }}
+# running under pi
+
+You may be running as a bridged model inside pi (via pi-claude-bridge / the Agent SDK) rather
+than as the claude-code CLI. If your available tools are pi's (e.g. a `subagent` tool, or tools
+named `mcp__custom-tools__*`), assume the pi world:
+
+- pi is the orchestrator. Its config lives in `~/.pi/agent/` (settings, AGENTS.md, skills,
+  prompts); skills and slash commands come from pi, not from `~/.claude/skills`.
+- For subagents, use pi's `subagent` tool (model + thinking overrides, async runs, resume).
+  claude-code subagents (`~/.claude/agents/*`), claude-code-registered MCP servers, and the
+  Task/Agent machinery are not available.
+- claude-code-specific machinery (plan/permission modes, `/config` settings, hooks,
+  auto mode) does not apply; pi runs tools without permission prompts.
+- Memories written in claude-code-era sessions may describe that harness, not pi. When a memory
+  conflicts with what you observe, trust the pi environment and update the memory.

@@ -1,0 +1,23 @@
+{
+  "lastChangelogVersion": "0.80.3",
+  "theme": "dark",
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-5.5",
+  "defaultThinkingLevel": "xhigh",
+  "packages": [
+    "npm:pi-web-access",
+    "npm:@ayulab/pi-rewind",
+    "npm:pi-claude-bridge",
+    "npm:pi-mcp-adapter",
+    "npm:@jerryan/pi-hashline-edit",
+    "npm:@juicesharp/rpiv-todo",
+    "npm:@gotgenes/pi-subagents"
+  ],
+  "enableInstallTelemetry": false,
+  "hideThinkingBlock": true,
+  "collapseChangelog": true,
+  "quietStartup": true,
+  "outputPad": 0,
+  "editorPaddingX": 0,
+  "steeringMode": "all"
+}
