@@ -1,0 +1,11 @@
+[Unit]
+Description=Radicle Node
+After=network-online.target
+
+[Service]
+ExecStart=/home/circuitsacul/.local/share/cargo/bin/radicle-node
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=default.target
