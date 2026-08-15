@@ -5,7 +5,6 @@ archive
 
 {{- if hasPrefix "agentbox" .profile }}
 .chezmoiscripts/sysctl-ttl-hoplimit.sh
-.config/containers/systemd
 .config/ghostty
 .config/solaar
 .config/zed
@@ -18,4 +17,9 @@ archive
 .config/containers/systemd
 .config/solaar
 .config/agentbox
+{{- end }}
+
+{{- if ne .profile "home" }}
+.config/containers/systemd
+.config/systemd
 {{- end }}
