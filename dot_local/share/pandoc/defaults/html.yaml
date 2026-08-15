@@ -1,8 +1,11 @@
-from: markdown
+from: markdown+tex_math_single_backslash
 to: html5
 toc: true
 standalone: true
 embed-resources: true
+
+html-math-method:
+  method: mathml
 
 css:
   - ${USERDATA}/compact.css
