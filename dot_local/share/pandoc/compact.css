@@ -1,0 +1,725 @@
+/*
+ * Compact, readable Pandoc HTML
+ *
+ * - Responsive 76-character reading width
+ * - Compact vertical spacing
+ * - Catppuccin theming: Latte in light mode, Mocha in dark mode,
+ *   following the system color scheme automatically
+ * - No external fonts or JavaScript
+ * - Pandoc syntax-highlighting support
+ *
+ * The full Catppuccin palette is exposed as --ctp-* custom properties.
+ * They are the single source of truth for every color here, and the
+ * Mermaid filter (filters/mermaid.lua) reads them at render time to
+ * theme diagrams, so document and diagrams cannot drift apart.
+ * Palette reference: https://catppuccin.com/palette
+ */
+
+:root {
+  color-scheme: light dark;
+
+  /* Catppuccin Latte */
+  --ctp-rosewater: #dc8a78;
+  --ctp-flamingo: #dd7878;
+  --ctp-pink: #ea76cb;
+  --ctp-mauve: #8839ef;
+  --ctp-red: #d20f39;
+  --ctp-maroon: #e64553;
+  --ctp-peach: #fe640b;
+  --ctp-yellow: #df8e1d;
+  --ctp-green: #40a02b;
+  --ctp-teal: #179299;
+  --ctp-sky: #04a5e5;
+  --ctp-sapphire: #209fb5;
+  --ctp-blue: #1e66f5;
+  --ctp-lavender: #7287fd;
+  --ctp-text: #4c4f69;
+  --ctp-subtext1: #5c5f77;
+  --ctp-subtext0: #6c6f85;
+  --ctp-overlay2: #7c7f93;
+  --ctp-overlay1: #8c8fa1;
+  --ctp-overlay0: #9ca0b0;
+  --ctp-surface2: #acb0be;
+  --ctp-surface1: #bcc0cc;
+  --ctp-surface0: #ccd0da;
+  --ctp-base: #eff1f5;
+  --ctp-mantle: #e6e9ef;
+  --ctp-crust: #dce0e8;
+
+  /*
+   * Semantic roles, mapped per the Catppuccin style guide. Defined once;
+   * only the raw palette above changes between light and dark.
+   */
+  --background: var(--ctp-base);
+  --foreground: var(--ctp-text);
+  --muted: var(--ctp-subtext0);
+
+  --surface: var(--ctp-mantle);
+  --surface-alt: var(--ctp-crust);
+  --border: var(--ctp-surface0);
+
+  --accent: var(--ctp-blue);
+  --selection: color-mix(in srgb, var(--ctp-overlay2) 25%, transparent);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Catppuccin Mocha */
+    --ctp-rosewater: #f5e0dc;
+    --ctp-flamingo: #f2cdcd;
+    --ctp-pink: #f5c2e7;
+    --ctp-mauve: #cba6f7;
+    --ctp-red: #f38ba8;
+    --ctp-maroon: #eba0ac;
+    --ctp-peach: #fab387;
+    --ctp-yellow: #f9e2af;
+    --ctp-green: #a6e3a1;
+    --ctp-teal: #94e2d5;
+    --ctp-sky: #89dceb;
+    --ctp-sapphire: #74c7ec;
+    --ctp-blue: #89b4fa;
+    --ctp-lavender: #b4befe;
+    --ctp-text: #cdd6f4;
+    --ctp-subtext1: #bac2de;
+    --ctp-subtext0: #a6adc8;
+    --ctp-overlay2: #9399b2;
+    --ctp-overlay1: #7f849c;
+    --ctp-overlay0: #6c7086;
+    --ctp-surface2: #585b70;
+    --ctp-surface1: #45475a;
+    --ctp-surface0: #313244;
+    --ctp-base: #1e1e2e;
+    --ctp-mantle: #181825;
+    --ctp-crust: #11111b;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--background);
+  color: var(--foreground);
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  font-size: 16px;
+  line-height: 1.48;
+}
+
+body {
+  max-width: 76ch;
+  margin: 0 auto;
+  padding: 1.35rem 1rem 3rem;
+}
+
+::selection {
+  background: var(--selection);
+}
+
+/* Document metadata */
+
+#title-block-header {
+  margin-bottom: 1.4rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid var(--border);
+}
+
+#title-block-header .title {
+  margin: 0 0 0.25rem;
+}
+
+#title-block-header .subtitle,
+#title-block-header .author,
+#title-block-header .date {
+  margin: 0.15rem 0;
+  color: var(--muted);
+}
+
+/* Headings */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: 1.2;
+  margin: 1.35em 0 0.45em;
+  font-weight: 650;
+}
+
+h1 {
+  font-size: 1.8rem;
+}
+
+h2 {
+  padding-bottom: 0.2rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 1.42rem;
+}
+
+h3 {
+  font-size: 1.18rem;
+}
+
+h4 {
+  font-size: 1rem;
+}
+
+h5,
+h6 {
+  font-size: 0.92rem;
+}
+
+body>h1:first-child,
+body>h2:first-child {
+  margin-top: 0;
+}
+
+/* Normal content */
+
+p,
+ul,
+ol,
+dl,
+blockquote,
+pre,
+table,
+figure {
+  margin-top: 0.7rem;
+  margin-bottom: 0.7rem;
+}
+
+ul,
+ol {
+  padding-left: 1.55rem;
+}
+
+li+li {
+  margin-top: 0.14rem;
+}
+
+li>ul,
+li>ol {
+  margin-top: 0.2rem;
+  margin-bottom: 0.2rem;
+}
+
+dt {
+  font-weight: 650;
+}
+
+dd {
+  margin: 0.2rem 0 0.65rem 1.25rem;
+}
+
+hr {
+  margin: 1.6rem 0;
+  border: 0;
+  border-top: 1px solid var(--border);
+}
+
+/* Links */
+
+a {
+  color: var(--accent);
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.14em;
+}
+
+a:hover {
+  text-decoration-thickness: 0.14em;
+}
+
+a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Quotes */
+
+blockquote {
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0.1rem 0 0.1rem 0.9rem;
+  border-left: 3px solid var(--border);
+  color: var(--muted);
+}
+
+blockquote> :first-child {
+  margin-top: 0;
+}
+
+blockquote> :last-child {
+  margin-bottom: 0;
+}
+
+/* Inline and block code */
+
+code,
+kbd,
+samp {
+  font-family:
+    ui-monospace,
+    "SFMono-Regular",
+    Consolas,
+    "Liberation Mono",
+    monospace;
+}
+
+:not(pre)>code {
+  padding: 0.08em 0.3em;
+  border: 1px solid var(--border);
+  border-radius: 0.25rem;
+  background: var(--surface);
+  font-size: 0.88em;
+  overflow-wrap: anywhere;
+}
+
+kbd {
+  padding: 0.08em 0.35em;
+  border: 1px solid var(--border);
+  border-radius: 0.25rem;
+  background: var(--surface);
+  box-shadow: 0 1px 0 var(--border);
+  font-size: 0.84em;
+}
+
+pre {
+  overflow-x: auto;
+  white-space: pre;
+  overflow-wrap: normal;
+  word-break: normal;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 0.4rem;
+  background: var(--surface);
+  tab-size: 4;
+}
+
+pre code {
+  white-space: pre;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-size: 0.86rem;
+  line-height: 1.4;
+}
+
+/* Pandoc wraps highlighted code in div.sourceCode. */
+
+div.sourceCode {
+  overflow-x: auto;
+  margin: 0.7rem 0;
+  border: 1px solid var(--border);
+  border-radius: 0.4rem;
+  background: var(--surface);
+}
+
+div.sourceCode pre {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+pre>code.sourceCode>span {
+  line-height: 1.4;
+}
+
+/* Tables */
+
+table {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  font-size: 0.94rem;
+}
+
+caption {
+  margin-bottom: 0.4rem;
+  color: var(--muted);
+  text-align: left;
+}
+
+th,
+td {
+  padding: 0.35rem 0.55rem;
+  border: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  background: var(--surface);
+  font-weight: 650;
+}
+
+tbody tr:nth-child(even) {
+  background: var(--surface-alt);
+}
+
+/* Images and figures */
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+figure {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+figcaption {
+  margin-top: 0.35rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+img.image-expandable {
+  cursor: zoom-in;
+}
+
+img.image-expandable:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Table of contents */
+
+nav[role="doc-toc"] {
+  margin: 1rem 0 1.5rem;
+  padding: 0.7rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.4rem;
+  background: var(--surface);
+}
+
+nav[role="doc-toc"] h2 {
+  margin-top: 0;
+  border-bottom: 0;
+}
+
+nav[role="doc-toc"] ul {
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+/* Footnotes */
+
+.footnotes {
+  margin-top: 2rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.footnotes p {
+  margin: 0.35rem 0;
+}
+
+/* Task lists */
+
+ul.task-list {
+  padding-left: 1.4rem;
+}
+
+input[type="checkbox"] {
+  accent-color: var(--accent);
+}
+
+/*
+ * Pandoc syntax token classes, colored per the Catppuccin style guide
+ * (same mapping as the official Catppuccin port for Pygments).
+ *
+ * The extra "html" selector gives these enough specificity to override
+ * the static colors generated by Pandoc's built-in highlighting theme.
+ */
+
+/* Alerts, errors */
+html code span.al,
+html code span.er {
+  color: var(--ctp-red);
+}
+
+/* Comments, documentation */
+html code span.an,
+html code span.co,
+html code span.cv,
+html code span.do,
+html code span.in {
+  color: var(--ctp-overlay2);
+}
+
+/* Warnings */
+html code span.wa {
+  color: var(--ctp-yellow);
+}
+
+/* Keywords, control flow, imports */
+html code span.cf,
+html code span.im,
+html code span.kw,
+html code span.ot {
+  color: var(--ctp-mauve);
+  font-weight: normal;
+}
+
+/* Builtins */
+html code span.bu {
+  color: var(--ctp-red);
+}
+
+/* Types */
+html code span.dt {
+  color: var(--ctp-yellow);
+}
+
+/* Numbers, constants */
+html code span.bn,
+html code span.cn,
+html code span.dv,
+html code span.fl {
+  color: var(--ctp-peach);
+}
+
+/* Strings, characters; attributes per Pygments Name.Attribute */
+html code span.at,
+html code span.ch,
+html code span.st,
+html code span.vs {
+  color: var(--ctp-green);
+}
+
+/* Escapes, regexes, preprocessor */
+html code span.pp,
+html code span.sc,
+html code span.ss {
+  color: var(--ctp-pink);
+}
+
+/* Functions */
+html code span.ex,
+html code span.fu {
+  color: var(--ctp-blue);
+}
+
+/* Operators */
+html code span.op {
+  color: var(--ctp-sky);
+}
+
+/* Variables */
+html code span.va {
+  color: var(--ctp-text);
+}
+
+@media (max-width: 600px) {
+  body {
+    padding: 1rem 0.8rem 2rem;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+  }
+}
+
+/* Mermaid diagrams */
+
+.pandoc-mermaid {
+  margin: 0.8rem 0;
+}
+
+.mermaid-render {
+  overflow-x: auto;
+  text-align: center;
+}
+
+.mermaid-render svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.mermaid-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.35rem;
+  margin-bottom: 0.25rem;
+}
+
+.mermaid-control,
+.image-dialog-close {
+  padding: 0.2rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 0.3rem;
+  background: var(--surface);
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.mermaid-control:hover,
+.image-dialog-close:hover {
+  color: var(--foreground);
+  background: var(--surface-alt);
+}
+
+.mermaid-control:focus-visible,
+.image-dialog-close:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.mermaid-render+.mermaid-source {
+  margin-top: 0;
+}
+
+html.mermaid-dialog-open,
+html.image-dialog-open {
+  overflow: hidden;
+}
+
+.mermaid-dialog,
+.image-dialog {
+  max-width: none;
+  max-height: none;
+  margin: auto;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 0.6rem;
+  background: var(--background);
+  color: var(--foreground);
+  box-shadow: 0 1rem 3rem color-mix(in srgb, var(--ctp-crust) 45%, transparent);
+}
+
+.mermaid-dialog {
+  width: min(96vw, 100rem);
+  height: 92vh;
+}
+
+.image-dialog {
+  position: fixed;
+  inset: 0;
+  overflow: visible;
+  border-radius: 0;
+  width: fit-content;
+  height: fit-content;
+}
+
+.mermaid-dialog[open] {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+}
+
+.image-dialog[open] {
+  display: block;
+}
+
+.mermaid-dialog::backdrop,
+.image-dialog::backdrop {
+  background: color-mix(in srgb, var(--ctp-crust) 72%, transparent);
+  backdrop-filter: blur(2px);
+}
+
+.mermaid-dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.45rem 0.55rem 0.45rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.mermaid-dialog-title {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mermaid-dialog-viewport,
+.image-dialog-viewport {
+  min-width: 0;
+  min-height: 0;
+  overscroll-behavior: contain;
+}
+
+.mermaid-dialog-viewport {
+  overflow: auto;
+  padding: 1rem;
+}
+
+.image-dialog-viewport {
+  overflow: hidden;
+  padding: 0;
+}
+
+.image-dialog-image {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: calc(96vw - 2px);
+  max-height: calc(100vh - 5rem);
+  max-height: calc(100dvh - 5rem);
+  object-fit: contain;
+  cursor: zoom-out;
+}
+
+.image-dialog-close {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 0.45rem);
+  z-index: 1;
+  white-space: nowrap;
+  box-shadow: 0 0.15rem 0.5rem color-mix(in srgb, var(--ctp-crust) 55%, transparent);
+}
+
+.mermaid-dialog .mermaid-render {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow: visible;
+}
+
+.mermaid-dialog .mermaid-render svg {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+}
+
+@media (max-width: 600px) {
+  .mermaid-dialog {
+    width: 96vw;
+    height: 94vh;
+  }
+
+  .mermaid-dialog-viewport {
+    padding: 0.5rem;
+  }
+}

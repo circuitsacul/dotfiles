@@ -1,0 +1,12 @@
+from: markdown
+to: html5
+toc: true
+standalone: true
+embed-resources: true
+
+css:
+  - ${USERDATA}/compact.css
+
+filters:
+  - mermaid.lua
+  - image-lightbox.lua

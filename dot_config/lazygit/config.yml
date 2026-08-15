@@ -1,6 +1,7 @@
 git:
-  pagers:
-    - externalDiffCommand: 'difft'
+  diffRenderers:
+    - command: 'difft'
+      type: extDiff
 os:
   open: '~/bin/yhx-switch-hx {{filename}}'
   edit: '~/bin/yhx-switch-hx {{filename}}'
