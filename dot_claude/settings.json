@@ -1,8 +1,8 @@
 {
   "permissions": {
-    "defaultMode": "default"
+    "defaultMode": "auto"
   },
-  "model": "opus[1m]",
+  "model": "fable-5",
   "workflowKeywordTriggerEnabled": false,
   "statusLine": {
     "type": "command",

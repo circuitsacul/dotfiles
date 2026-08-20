@@ -1,4 +1,5 @@
 {{ if ne .profile "agentbox-pistuff" }}.local/share/chezmoi-variants/agentbox-pistuff{{ end }}
+{{ if not (hasPrefix "agentbox" .profile) }}.codex{{ end }}
 
 README.md
 archive
