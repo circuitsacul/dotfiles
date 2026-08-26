@@ -1,18 +1,14 @@
-###############################################################################
-# Rust
 [language-server.rust-analyzer.config]
 diagnostics = { disabled = ["unlinked-file"] }
 check.command = "clippy"
 cargo.features = "all"
 
+[language-server.ty.config]
+diagnosticMode = "workspace"
+
 [[language]]
 name = "rust"
 
-###############################################################################
-# Python
 [[language]]
 name = "python"
-language-servers = ["ruff", "pyright"]
-
-[language-server.ty.config]
-diagnosticMode = "workspace"
+language-servers = ["ty", "ruff"]
