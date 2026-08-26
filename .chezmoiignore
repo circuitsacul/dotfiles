@@ -23,4 +23,5 @@ archive
 {{- if ne .profile "home" }}
 .config/containers/systemd
 .config/systemd
+.zshrc
 {{- end }}
