@@ -23,19 +23,24 @@ zstyle ':z4h:ssh:*'                   enable 'no'
 fpath=(~/.zfunc $fpath)
 z4h init || return
 
+export GPG_TTY=$TTY
+
+export EDITOR="hx"
+export SUDO_EDITOR="hx"
+
+# XDG-violator wall of shame
+export GOPATH="$HOME/.local/share/go"
+export CARGO_HOME="$HOME/.local/share/cargo"
+export RUSTUP_HOME="$HOME/.local/share/rustup"
+
 path=(
   ~/bin
   ~/.local/bin
   ~/.local/share/cargo/bin
+  ${commands[go]:+$(go env GOBIN)}
+  /usr/local/go/bin
   $path
 )
-
-# Export environment variables.
-export GPG_TTY=$TTY
-export CARGO_HOME="$HOME/.local/share/cargo"
-export RUSTUP_HOME="$HOME/.local/share/rustup"
-export EDITOR="hx"
-export SUDO_EDITOR="hx"
 
 # Source additional local files if they exist.
 z4h source ~/.env.zsh
