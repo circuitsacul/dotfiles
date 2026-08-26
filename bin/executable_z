@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-layout="z"
+layout="compact"
 name=""
 auto_name=false
 fresh=false
@@ -12,18 +12,16 @@ Usage: zj [-s NAME] [-a] [-n] [-l LAYOUT]
   -s NAME    Use NAME as the session name (default: derived from CWD path)
   -a         Auto: create an unnamed session (let zellij pick a name)
   -n         New: don't resurrect an existing session with the same name
-  -l LAYOUT  Layout to use when creating (default: z)
-  -c         Use the compact layout
+  -l LAYOUT  Layout to use when creating (default: compact)
   -h         Show this help
 EOF
 }
 
-while getopts ":s:ancl:h" opt; do
+while getopts ":s:anl:h" opt; do
     case "$opt" in
         s) name="$OPTARG" ;;
         a) auto_name=true ;;
         n) fresh=true ;;
-        c) layout="compact" ;;
         l) layout="$OPTARG" ;;
         h) usage; exit 0 ;;
         \?) echo "Unknown option: -$OPTARG" >&2; usage >&2; exit 2 ;;
