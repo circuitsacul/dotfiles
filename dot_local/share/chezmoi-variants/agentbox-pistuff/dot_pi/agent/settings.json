@@ -1,12 +1,12 @@
 {
-  "lastChangelogVersion": "0.84.2",
+  "lastChangelogVersion": "0.84.3",
   "theme": "catppuccin-mocha-peach",
   "packages": [
     "/home/agent/mypi"
   ],
-  "defaultProvider": "claude-code",
-  "defaultModel": "claude-fable-5",
-  "defaultThinkingLevel": "high",
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-5.6-luna",
+  "defaultThinkingLevel": "max",
   "outputPad": 0,
   "editorPaddingX": 0,
   "terminal": {
@@ -32,5 +32,12 @@
   "showCacheMissNotices": true,
   "tuiMode": "fullscreen",
   "fullscreenExitOutput": "resume-hint",
-  "fullscreenScrollbar": "always"
+  "fullscreenScrollbar": "always",
+  "enabledModels": [
+    "openai-codex/gpt-5.6-luna",
+    "openai-codex/gpt-5.6-sol",
+    "claude-code/claude-fable-5",
+    "xai/grok-4.6",
+    "kimi-coding/k3"
+  ]
 }
