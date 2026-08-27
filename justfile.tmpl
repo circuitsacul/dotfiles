@@ -1,0 +1,10 @@
+[default]
+_:
+    echo "ok"
+
+{{- if eq .platform "linux" }}
+
+cafe:
+    systemd-inhibit --what=idle:sleep --why="manual caffeine" sleep infinity
+
+{{- end }}

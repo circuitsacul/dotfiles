@@ -1,27 +1,33 @@
-{{ if ne .profile "agentbox-pistuff" }}.local/share/chezmoi-variants/agentbox-pistuff{{ end }}
-{{ if not (hasPrefix "agentbox" .profile) }}.codex{{ end }}
-
 README.md
 archive
 
-{{- if hasPrefix "agentbox" .profile }}
+# only home
+{{ if ne .profile "home" }}
 .chezmoiscripts/sysctl-ttl-hoplimit.sh
-.config/ghostty
+.config/containers
 .config/solaar
-.config/zed
 .config/litellm
-.config/crush
 .config/agentbox
-{{- end }}
-
-{{- if eq .profile "work" }}
-.config/containers/systemd
-.config/solaar
-.config/agentbox
-{{- end }}
-
-{{- if ne .profile "home" }}
-.config/containers/systemd
 .config/systemd
 .zshrc
-{{- end }}
+{{ end }}
+
+# not home
+{{ if eq .profile "home" }}
+.claude
+.codex
+{{ end }}
+
+# not work
+{{ if ne .platform "linux" }}
+.config/environment.d
+{{ end }}
+
+# not agentbox
+{{ if hasPrefix "agentbox" .profile }}
+.config/ghostty
+.config/zed
+{{ end }}
+
+# agentbox variants
+{{ if ne .profile "agentbox-pistuff" }}.local/share/chezmoi-variants/agentbox-pistuff{{ end }}

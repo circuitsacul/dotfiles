@@ -6,6 +6,7 @@ personal dotfiles
 ```toml
 [data]
 profile = "..."
+platform = "linux"
 litellm_master_key = "sk-litellm-secret"
 fireworks_api_key = "fw-..."
 
