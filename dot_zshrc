@@ -37,8 +37,12 @@ path=(
   ~/bin
   ~/.local/bin
   ~/.local/share/cargo/bin
-  ${commands[go]:+$(go env GOBIN)}
   /usr/local/go/bin
+  $path
+)
+
+(( $+commands[go] )) && path=(
+  "$(go env GOBIN)"
   $path
 )
 
