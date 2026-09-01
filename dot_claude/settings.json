@@ -1,8 +1,12 @@
 {
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
   "permissions": {
     "defaultMode": "auto"
   },
-  "model": "fable-5",
+  "model": "fable[1m]",
   "workflowKeywordTriggerEnabled": false,
   "statusLine": {
     "type": "command",
