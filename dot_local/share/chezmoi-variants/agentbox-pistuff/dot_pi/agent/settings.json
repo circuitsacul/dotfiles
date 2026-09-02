@@ -36,8 +36,9 @@
   "enabledModels": [
     "openai-codex/gpt-5.6-luna",
     "openai-codex/gpt-5.6-sol",
-    "claude-code/claude-fable-5",
     "xai/grok-4.6",
-    "kimi-coding/k3"
+    "kimi-coding/k3",
+    "claude-code/claude-fable-5-1",
+    "claude-code/claude-opus-5[1m]"
   ]
 }
