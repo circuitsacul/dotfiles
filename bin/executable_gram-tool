@@ -1,0 +1,94 @@
+#!/usr/bin/env bash
+# Gram's local terminal tools. No tmux or global EDITOR/YAZI_CONFIG_HOME changes.
+set -euo pipefail
+
+usage() {
+  echo 'usage: gram-tool {yazi|lazygit|open [--wait] [--line=N] -- FILE...}' >&2
+  exit 2
+}
+
+need() {
+  command -v "$1" >/dev/null || { echo "gram-tool: missing executable: $1" >&2; exit 127; }
+}
+
+open_files() {
+  local line='' wait=false file
+  local -a paths=()
+  while (($#)); do
+    case "$1" in
+      --wait) wait=true; shift ;;
+      --line=*) line=${1#--line=}; shift
+        [[ $line =~ ^[1-9][0-9]*$ ]] || usage ;;
+      --) shift; break ;;
+      -*) usage ;;
+      *) break ;;
+    esac
+  done
+  (($#)) || usage
+  for file in "$@"; do
+    [[ -n $file && ! -d $file ]] || { echo "gram-tool: expected a file: $file" >&2; return 2; }
+    # Absolute paths protect leading dashes and preserve spaces/metacharacters.
+    [[ $file = /* ]] || file=$PWD/$file
+    [[ -z $line ]] || file+=":$line:1"
+    paths+=("$file")
+  done
+  set -- -- "${paths[@]}"
+  if $wait; then set -- --wait "$@"; fi
+  need gram
+  # Normal path-based window routing. --reuse would replace a workspace;
+  # --new would force a new window. Neither is appropriate here.
+  gram "$@"
+}
+
+(($#)) || usage
+mode=$1
+shift
+if [[ $mode = open ]]; then
+  open_files "$@"
+  exit
+fi
+(($# == 0)) || usage
+
+# Match Gram: macOS uses ~/.config even when XDG_CONFIG_HOME is set.
+if [[ $(uname -s) == Darwin ]]; then
+  config=$HOME/.config/gram
+else
+  config=${XDG_CONFIG_HOME:-$HOME/.config}/gram
+fi
+# Read task context from the environment, never interpolate filenames into shell
+# source in tasks.jsonc. With no saved file, Yazi starts at the project root.
+root=${GRAM_WORKTREE_ROOT:-$PWD}
+
+case "$mode" in
+  yazi)
+    need yazi
+    need gram
+    [[ -r $config/yazi/keymap.toml ]] || { echo "gram-tool: apply the Gram Yazi config first" >&2; exit 1; }
+    chooser=$(mktemp "${TMPDIR:-/tmp}/gram-yazi.XXXXXXXX")
+    trap 'rm -f -- "$chooser"' EXIT
+    trap 'exit 129' HUP
+    trap 'exit 130' INT
+    trap 'exit 143' TERM
+    cd -- "$root"
+    YAZI_CONFIG_HOME="$config/yazi" yazi --chooser-file "$chooser" -- "${GRAM_FILE:-$root}"
+    set --
+    # Yazi uses newline-separated paths, with no guaranteed final newline.
+    while IFS= read -r file || [[ -n $file ]]; do
+      if [[ -n $file && ! -d $file ]]; then set -- "$@" "$file"; fi
+    done < "$chooser"
+    if (($#)); then open_files -- "$@"; fi
+    ;;
+  lazygit)
+    need lazygit
+    need gram
+    [[ -r $config/lazygit.yml ]] || { echo "gram-tool: apply the Gram Lazygit config first" >&2; exit 1; }
+    cd -- "$root"
+    # Git's commit/rebase editors must wait; normal file browsing must not.
+    export EDITOR='"$HOME/bin/gram-tool" open --wait --'
+    export VISUAL="$EDITOR" GIT_EDITOR="$EDITOR" GIT_SEQUENCE_EDITOR="$EDITOR"
+    # Pass ONLY this derived config. Lazygit's multi-file merge appends custom
+    # commands, so an overlay would leave the original YHX commands active.
+    exec lazygit --use-config-file="$config/lazygit.yml"
+    ;;
+  *) usage ;;
+esac

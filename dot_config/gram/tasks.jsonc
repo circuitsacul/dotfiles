@@ -1,0 +1,32 @@
+[
+  // Start/restart tools. Resume Yazi via Ctrl-Alt-T; Lazygit via its center tab.
+  // Keep task labels constant so reruns replace their own tab, not other tools.
+  // File/project variables are read by the helper from its environment. Gram
+  // substitutes variables into shell source, so don't put paths in commands.
+  {
+    "label": "Gram: yazi",
+    "command": "exec \"$HOME/bin/gram-tool\" yazi",
+    "shell": { "program": "/bin/bash" },
+    "use_new_terminal": false,
+    "allow_concurrent_runs": true,
+    "reveal": "always",
+    "reveal_target": "dock",
+    "hide": "on_success",
+    "show_command": false,
+    "show_summary": false,
+    "save": "none"
+  },
+  {
+    "label": "Gram: lazygit",
+    "command": "exec \"$HOME/bin/gram-tool\" lazygit",
+    "shell": { "program": "/bin/bash" },
+    "use_new_terminal": false,
+    "allow_concurrent_runs": true,
+    "reveal": "always",
+    "reveal_target": "center",
+    "hide": "on_success",
+    "show_command": false,
+    "show_summary": false,
+    "save": "none"
+  }
+]

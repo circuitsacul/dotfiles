@@ -1,0 +1,16 @@
+{{- /* Keep shared navigation in one place, but never call the YHX shims. */ -}}
+{{- $config := include "dot_config/yazi/keymap.toml" | fromToml -}}
+{{- $keys := list -}}
+{{- range $config.mgr.prepend_keymap -}}
+{{- if not (hasPrefix "shell ~/bin/yhx-switch-" .run) -}}
+{{- $keys = append $keys . -}}
+{{- end -}}
+{{- end -}}
+{{- $keys = append $keys (dict "on" "E" "run" "quit" "desc" "Cancel and return to Gram") -}}
+{{- /* Interactive open bypasses --chooser-file; all open keys must choose. */ -}}
+{{- range list "<Enter>" "<S-Enter>" "O" -}}
+{{- $keys = append $keys (dict "on" . "run" "open" "desc" "Open selected files in Gram and exit") -}}
+{{- end -}}
+{{- $config = setValueAtPath "mgr.prepend_keymap" $keys $config -}}
+# Generated from the main Yazi keymap; isolated from its YHX opener and shims.
+{{ $config | toToml }}

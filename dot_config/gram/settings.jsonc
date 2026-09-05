@@ -1,0 +1,34 @@
+{
+  // Gram's Helix mode supplies selection-first editing, not just Vim motions.
+  "base_keymap": "Minimal",
+  "helix_mode": true,
+  "which_key": { "enabled": true, "delay_ms": 300 },
+  "vim": {
+    "use_system_clipboard": "never",
+    "cursor_shape": {
+      "normal": "block",
+      "insert": "bar",
+      "visual": "underline"
+    }
+  },
+
+  "theme": "Catppuccin Mocha",
+  "ui_font_size": 16,
+  "buffer_font_size": 15,
+  "relative_line_numbers": "enabled",
+  "soft_wrap": "editor_width",
+  "preferred_line_length": 100,
+  "wrap_guides": [100],
+  "indent_guides": { "enabled": false },
+  "scroll_beyond_last_line": "off",
+
+  // Keep files open when navigating with the keyboard.
+  "preview_tabs": { "enabled": false },
+  "project_panel": { "starts_open": false, "dock": "left" },
+  "outline_panel": { "dock": "right" },
+  "terminal": {
+    "dock": "bottom",
+    "default_height": 400,
+    "working_directory": "current_project_directory"
+  }
+}

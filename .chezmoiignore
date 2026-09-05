@@ -1,5 +1,6 @@
 README.md
 archive
+.llm
 
 # only home
 {{ if ne .profile "home" }}
@@ -27,6 +28,8 @@ archive
 {{ if hasPrefix "agentbox" .profile }}
 .config/ghostty
 .config/zed
+.config/gram
+bin/gram-tool
 {{ end }}
 
 # agentbox variants

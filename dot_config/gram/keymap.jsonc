@@ -1,0 +1,267 @@
+[
+  // These shortcuts also work in insert mode, panels, and terminal applications.
+  // Ctrl-Alt-F chooses the first pane outside terminals; inside terminals it
+  // toggles dock focus, like Ctrl-Alt-T. Center TUIs use ordinary tab navigation.
+  {
+    "bindings": {
+      "ctrl-shift-p": "command_palette::Toggle",
+      "ctrl-alt-p": "file_finder::Toggle",
+      "ctrl-alt-f": ["workspace::ActivatePane", 0],
+      // Toggle visibility without closing tabs or stopping terminal processes.
+      "ctrl-t": "workspace::ToggleBottomDock",
+      "ctrl-alt-t": "terminal_panel::ToggleFocus",
+      // No context matches at the focused node, overriding native Helix's
+      // Alt-N/O syntax selection too. Keep these keys free of later overrides.
+      "alt-n": "pane::ActivatePreviousItem",
+      "alt-o": "pane::ActivateNextItem",
+      "alt-shift-n": "workspace::ActivatePaneLeft",
+      "alt-shift-e": "workspace::ActivatePaneDown",
+      "alt-shift-i": "workspace::ActivatePaneUp",
+      "alt-shift-o": "workspace::ActivatePaneRight",
+      "ctrl-alt-n": "workspace::ActivatePaneLeft",
+      "ctrl-alt-e": "workspace::ActivatePaneDown",
+      "ctrl-alt-i": "workspace::ActivatePaneUp",
+      "ctrl-alt-o": "workspace::ActivatePaneRight",
+      "ctrl-alt-z": "workspace::ToggleZoom"
+    }
+  },
+  {
+    "context": "!Terminal",
+    "bindings": {
+      "ctrl-s": "workspace::Save",
+      "ctrl-shift-s": "workspace::SaveAll",
+      "ctrl-shift-o": "workspace::Open"
+    }
+  },
+  {
+    "context": "Terminal",
+    "bindings": {
+      // From dock terminals, return to the last center pane without stopping
+      // the process. From center terminals this focuses the dock instead.
+      "ctrl-alt-f": "terminal_panel::ToggleFocus",
+      // Create a shell even when the dock already contains a TUI task.
+      "cmd-t": "workspace::NewTerminal",
+      "ctrl-alt-[": "pane::ActivatePreviousItem",
+      "ctrl-alt-]": "pane::ActivateNextItem"
+    }
+  },
+  {
+    "context": "Editor && mode != full",
+    "bindings": { "ctrl-a": "editor::SelectAll" }
+  },
+
+  // Disable complete inherited sequences, not just their prefixes. Nulling
+  // "ctrl-w" alone does NOT clear Ctrl-W O or any other longer binding.
+  {
+    "context": "(vim_mode == helix_normal || vim_mode == helix_select) || (!Editor && !Terminal)",
+    "bindings": {
+      "ctrl-w o": null,
+      "ctrl-w ctrl-o": null,
+      "ctrl-w a": null,
+      "ctrl-w ctrl-a": null
+    }
+  },
+  {
+    "context": "Editor && mode == full && (vim_mode == helix_normal || vim_mode == helix_select) && !menu",
+    "bindings": {
+      "space": null,
+      "shift-z shift-q": null,
+      "shift-z shift-z": null,
+      // Stock scroll macros replay H/L, which now enter insert mode.
+      "z ^": null,
+      "z +": null
+    }
+  },
+  {
+    "context": "Editor && mode == full && (vim_mode == helix_normal || vim_mode == helix_select) && !menu",
+    "bindings": {
+      // Logical Colemak-DH letters, not QWERTY key equivalents. These actions
+      // move in normal mode and extend the selection in select mode.
+      "n": "vim::WrappingLeft",
+      "e": ["vim::Down", { "display_lines": true }],
+      "i": ["vim::Up", { "display_lines": true }],
+      "o": "vim::WrappingRight",
+      "h": "vim::HelixInsert",
+      "shift-h": "vim::InsertFirstNonWhitespace",
+      "l": "vim::InsertLineBelow",
+      "shift-l": "vim::InsertLineAbove",
+      "k": "vim::NextWordEnd",
+      "shift-k": ["vim::NextWordEnd", { "ignore_punctuation": true }],
+      "j": "vim::HelixSelectNext",
+      "shift-j": "vim::HelixSelectPrevious",
+      "shift-e": "vim::JoinLines",
+      // Gram has no Helix keep/remove-selection-by-regex actions. Don't let
+      // the old Vim I (insert) silently do something unrelated.
+      "shift-i": null,
+      "shift-n": "pane::ActivatePreviousItem",
+      "shift-o": "pane::ActivateNextItem",
+
+      "g g": "vim::StartOfDocument",
+      "g shift-g": "vim::EndOfDocument",
+      "g n": "vim::StartOfLine",
+      "g o": "vim::EndOfLine",
+      "g e": "vim::Down",
+      "g i": "vim::Up",
+      "g s": "vim::FirstNonWhitespace",
+      "g t": "vim::WindowTop",
+      "g c": "vim::WindowMiddle",
+      "g b": "vim::WindowBottom",
+      "g d": "editor::GoToDefinition",
+      "g shift-d": "editor::GoToDeclaration",
+      "g y": "editor::GoToTypeDefinition",
+      "g shift-i": "editor::GoToImplementation",
+      "g r": "editor::FindAllReferences",
+      "g f": "editor::OpenSelectedFilename",
+      "g .": "vim::HelixGotoLastModification",
+
+      "z e": "vim::LineDown",
+      "z i": "vim::LineUp",
+      "z z": "editor::ScrollCursorCenter",
+      "z t": "editor::ScrollCursorTop",
+      "z b": "editor::ScrollCursorBottom",
+      "z a": "editor::ToggleFold",
+      "z f": "editor::FoldSelectedRanges",
+      "z o": "editor::UnfoldLines",
+      "z shift-o": "editor::UnfoldAll",
+
+      "space space": "command_palette::Toggle",
+      "space f": "file_finder::Toggle",
+      "space b": "tab_switcher::Toggle",
+      "space s": "outline::Toggle",
+      "space shift-s": "project_symbols::Toggle",
+      "space /": "project_search::ToggleFocus",
+      "space a": "editor::ToggleCodeActions",
+      "space r": "editor::Rename",
+      "space k": "editor::Hover",
+      "space d": "diagnostics::DeployCurrentFile",
+      "space shift-d": "diagnostics::Deploy",
+      "space c": "editor::ToggleComments",
+      "space h": "editor::SelectAllMatches",
+      "space y": "editor::Copy",
+      "space p": "editor::Paste",
+      "space q": "pane::CloseActiveItem",
+
+      // Yazi in the dock, Lazygit in a center tab; uppercase opens native panels.
+      "space e": ["task::Spawn", { "task_name": "Gram: yazi" }],
+      "space shift-e": "project_panel::ToggleFocus",
+      "space l": ["task::Spawn", { "task_name": "Gram: lazygit" }],
+      "space shift-l": "git_panel::ToggleFocus",
+      "space o": "outline_panel::ToggleFocus",
+      "space t": "terminal_panel::ToggleFocus",
+      "space shift-t": "task::Spawn",
+      "space ,": "gram::OpenSettingsFile",
+      "space ?": "gram::OpenKeymapFile",
+
+      // S: horizontal split (below); V: vertical split (right).
+      "space w n": "workspace::ActivatePaneLeft",
+      "space w e": "workspace::ActivatePaneDown",
+      "space w i": "workspace::ActivatePaneUp",
+      "space w o": "workspace::ActivatePaneRight",
+      "space w s": "pane::SplitDown",
+      "space w v": "pane::SplitRight",
+      "space w q": "pane::CloseActiveItem",
+      "space w z": "workspace::ToggleZoom",
+      "space w =": "vim::ResetPaneSizes",
+      "ctrl-w n": "workspace::ActivatePaneLeft",
+      "ctrl-w e": "workspace::ActivatePaneDown",
+      "ctrl-w i": "workspace::ActivatePaneUp",
+      "ctrl-w o": "workspace::ActivatePaneRight",
+      "ctrl-w s": "pane::SplitDown",
+      "ctrl-w v": "pane::SplitRight",
+      "ctrl-w q": "pane::CloseActiveItem",
+      "ctrl-w z": "workspace::ToggleZoom",
+      "ctrl-w =": "vim::ResetPaneSizes"
+    }
+  },
+  {
+    "context": "Editor && vim_mode == insert",
+    "bindings": { "alt-x": "vim::NormalBefore" }
+  },
+
+  // Picker queries, rename fields and search inputs must still accept n/e/i/o.
+  // Alt-E/I navigate results without consuming printable characters.
+  {
+    "context": "Picker || menu || (Picker > Editor)",
+    "bindings": {
+      "alt-e": "menu::SelectNext",
+      "alt-i": "menu::SelectPrevious"
+    }
+  },
+  {
+    "context": "Editor && (showing_completions || showing_code_actions)",
+    "bindings": {
+      "alt-e": "editor::ContextMenuNext",
+      "alt-i": "editor::ContextMenuPrevious"
+    }
+  },
+  {
+    "context": "BufferSearchBar > Editor",
+    "bindings": {
+      "alt-e": "search::SelectNextMatch",
+      "alt-i": "search::SelectPreviousMatch"
+    }
+  },
+
+  // Native panels: same home row and Enter to open. In project/Git lists,
+  // Q closes the panel; Escape keeps its native switch-away behavior.
+  // These panels themselves carry "menu", so !menu would disable their keys.
+  {
+    "context": "ProjectPanel && not_editing",
+    "bindings": {
+      "n": "project_panel::CollapseSelectedEntry",
+      "e": "menu::SelectNext",
+      "i": "menu::SelectPrevious",
+      "o": "project_panel::ExpandSelectedEntry",
+      "enter": "project_panel::Open",
+      "q": "project_panel::Toggle",
+      "/": "file_finder::Toggle",
+      "a": "project_panel::NewFile",
+      "shift-a": "project_panel::NewDirectory",
+      "r": "project_panel::Rename",
+      "d": ["project_panel::Trash", { "skip_prompt": false }],
+      "shift-d": ["project_panel::Delete", { "skip_prompt": false }]
+    }
+  },
+  {
+    "context": "OutlinePanel && not_editing",
+    "bindings": {
+      "n": "outline_panel::CollapseSelectedEntry",
+      "e": "menu::SelectNext",
+      "i": "menu::SelectPrevious",
+      "o": "outline_panel::ExpandSelectedEntry",
+      "enter": "outline_panel::OpenSelectedEntry",
+      "q": "outline_panel::ToggleFocus",
+      "escape": "outline_panel::Toggle"
+    }
+  },
+  {
+    // Space o opens the outline with its filter focused. Bind at the child
+    // editor too so Escape closes it instead of merely leaving the filter.
+    "context": "OutlinePanel > Editor",
+    "bindings": { "escape": "outline_panel::Toggle" }
+  },
+  {
+    // Close the project-search tab from its query/replace/filter fields, while
+    // keeping Escape's native search behavior and leaving buffer search alone.
+    "context": "ProjectSearchBar || (ProjectSearchBar > Editor)",
+    "bindings": { "ctrl-q": "pane::CloseActiveItem" }
+  },
+  {
+    "context": "GitPanel && ChangesList && !GitBranchSelector",
+    "bindings": {
+      "n": "git_panel::CollapseSelectedEntry",
+      "e": "git_panel::NextEntry",
+      "i": "git_panel::PreviousEntry",
+      "o": "git_panel::ExpandSelectedEntry",
+      "q": "git_panel::Close",
+      "x": "git::ToggleStaged",
+      "shift-x": "git::StageAll",
+      "alt-shift-x": "git::UnstageAll"
+    }
+  },
+  {
+    // Close from the commit editor too, without changing Escape or typed text.
+    "context": "GitPanel || (GitPanel > Editor)",
+    "bindings": { "ctrl-q": "git_panel::Close" }
+  }
+]

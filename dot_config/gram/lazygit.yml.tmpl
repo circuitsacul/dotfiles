@@ -1,0 +1,19 @@
+{{- /* Derive one complete config: Lazygit overlays APPEND customCommands. */ -}}
+{{- $config := include "dot_config/lazygit/config.yml" | fromYaml -}}
+{{- $open := `"$HOME/bin/gram-tool" open` -}}
+{{- $config = setValueAtPath "os.open" (printf "%s -- {{filename}}" $open) $config -}}
+{{- $config = setValueAtPath "os.edit" (printf "%s -- {{filename}}" $open) $config -}}
+{{- $config = setValueAtPath "os.editAtLine" (printf "%s --line={{line}} -- {{filename}}" $open) $config -}}
+{{- $config = setValueAtPath "os.editAtLineAndWait" (printf "%s --wait --line={{line}} -- {{filename}}" $open) $config -}}
+{{- $config = setValueAtPath "os.openDirInEditor" `gram -- {{dir}}` $config -}}
+{{- $config = setValueAtPath "os.editInTerminal" false $config -}}
+{{- $commands := list -}}
+{{- range $config.customCommands -}}
+{{- if not (hasPrefix "~/bin/yhx-switch-" .command) -}}
+{{- $commands = append $commands . -}}
+{{- end -}}
+{{- end -}}
+{{- $config = setValueAtPath "customCommands" $commands $config -}}
+# Generated from the main Lazygit config, without its tmux/YHX integration.
+# Change shared bindings in dot_config/lazygit/config.yml, then re-apply chezmoi.
+{{ $config | toYaml }}
