@@ -15,11 +15,16 @@ shift $((OPTIND - 1))
 proj=$(realpath "${1:-.}")
 [[ -z "$sess" ]] && sess=$(z-session-name "$proj")
 
-if tmux has-session -t="$sess" 2>/dev/null; then
-  tmux attach -t "$sess"
-else
+if ! tmux has-session -t="$sess" 2>/dev/null; then
   tmux new-session -s "$sess" -n tree -d -c "$proj" yazi
   tmux set-option -t "$sess" @project_root "$proj"
   tmux select-window -t "$sess:tree"
-  tmux attach -t "$sess"
 fi
+
+destroy_unattached=off
+if [[ -n "${ZELLIJ:-}" ]]; then
+  destroy_unattached=on
+fi
+
+tmux attach-session -t "=$sess" \; \
+  set-option -t "=$sess:" destroy-unattached "$destroy_unattached"
