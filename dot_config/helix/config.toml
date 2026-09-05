@@ -39,6 +39,8 @@ l = ":run-shell-command ~/bin/yhx-switch-lazygit"
 ###################################################################################################
 # colemak-dh key mappings
 [keys.normal]
+"A-n" = "goto_previous_buffer"
+"A-o" = "goto_next_buffer"
 N = "goto_previous_buffer"
 O = "goto_next_buffer"
 
@@ -87,9 +89,14 @@ i="jump_view_up"
 o="jump_view_right"
 
 [keys.insert]
+"A-n" = "goto_previous_buffer"
+"A-o" = "goto_next_buffer"
 "A-x" = "normal_mode" # Maps Alt-X to enter normal mode
 
 [keys.select]
+"A-n" = "goto_previous_buffer"
+"A-o" = "goto_next_buffer"
+
 n="extend_char_left"
 e="extend_visual_line_down"
 i="extend_visual_line_up"
