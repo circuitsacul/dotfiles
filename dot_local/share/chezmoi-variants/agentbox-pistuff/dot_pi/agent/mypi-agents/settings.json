@@ -1,3 +1,11 @@
 {
-  "maxDepth": 1
+  "maxDepth": 1,
+  "keys": {
+    "info": [
+      "t"
+    ],
+    "output": [
+      "r"
+    ]
+  }
 }
