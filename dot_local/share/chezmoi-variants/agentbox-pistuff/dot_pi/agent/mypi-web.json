@@ -1,10 +1,9 @@
 {
-  "openaiModel": "openai-codex/gpt-5.6-sol",
-  "xaiModel": "xai/grok-4.5",
+  "openaiModel": "openai-codex/gpt-6-astra",
+  "xaiModel": "xai/grok-4.6",
   "providers": [
     "exa",
-    "openai",
-    "xai"
+    "openai"
   ],
   "mode": "all"
 }
