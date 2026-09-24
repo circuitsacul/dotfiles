@@ -1,3 +1,6 @@
+[language-server.markdown-oxide]
+command = "markdown-oxide"
+
 [language-server.rust-analyzer.config]
 diagnostics = { disabled = ["unlinked-file"] }
 check.command = "clippy"
@@ -5,6 +8,11 @@ cargo.features = "all"
 
 [language-server.ty.config]
 diagnosticMode = "workspace"
+
+[[language]]
+name = "markdown"
+language-servers = ["markdown-oxide"]
+roots = [".moxide.toml"]
 
 [[language]]
 name = "rust"

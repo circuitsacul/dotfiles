@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.85.1",
+  "lastChangelogVersion": "0.87.1",
   "theme": "catppuccin-mocha-peach",
   "packages": [
     "/home/agent/mypi"
@@ -34,12 +34,12 @@
   "fullscreenExitOutput": "resume-hint",
   "fullscreenScrollbar": "always",
   "enabledModels": [
-    "openai-codex/gpt-5.6-luna",
-    "openai-codex/gpt-5.6-sol",
     "openai-codex/gpt-6-astra",
-    "xai/grok-4.6",
     "kimi-coding/k3",
     "claude-code/claude-fable-5-1",
-    "claude-code/claude-opus-5[1m]"
+    "openai-codex/gpt-6-luna",
+    "openai-codex/gpt-6-sol",
+    "xai/grok-4.7",
+    "claude-code/claude-opus-5-5[1m]"
   ]
 }

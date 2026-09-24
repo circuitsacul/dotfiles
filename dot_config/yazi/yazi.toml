@@ -1,2 +1,2 @@
 [opener]
-edit = [{ run = '~/bin/yhx-switch-hx "$@"' }]
+edit = [{ run = '~/bin/yhx-switch-hx %s' }]
