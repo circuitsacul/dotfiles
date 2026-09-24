@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Open a daily note (default: today's) from the notebook in its yhx session.
+# Usage: note [DATE...]  -- DATE as accepted by `markdown-oxide daily`, e.g. yesterday, +1
+set -euo pipefail
+
+# Override in chezmoi.toml:
+#   [data.notebook]
+#   moxide = "..."  # markdown-oxide vault (holds .moxide.toml)
+#   root = "..."    # yhx session root (default: moxide)
+{{- $moxide := dig "notebook" "moxide" (joinPath .chezmoi.homeDir "notebook/moxide") . }}
+{{- $root := dig "notebook" "root" $moxide . }}
+moxide={{ $moxide | replace "'" "'\\''" | printf "'%s'" }}
+root={{ $root | replace "'" "'\\''" | printf "'%s'" }}
+
+# markdown-oxide resolves (and creates) the note and hands its path to $EDITOR; echo captures it.
+# Using a yhx-launching EDITOR instead would leak it into a tmux server started by yhx.
+note=$(cd -- "$moxide" && EDITOR=echo markdown-oxide daily "$@")
+exec yhx "$root" -- edit "$note"

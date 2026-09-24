@@ -3,7 +3,10 @@ set -euo pipefail
 
 usage() {
   cat <<EOF
-Usage: yhx [-s NAME] [-a] [PATH]
+Usage: yhx [-s NAME] [-a] [PATH [-- WINDOW [ARGS...]]]
+  Attach to (creating if needed) the session for PATH. With WINDOW, first run
+  \`yhx-switch WINDOW ARGS...\` in it (see \`yhx-switch -h\`); PATH is then required.
+
   -s NAME  Use NAME as the tmux session name (default: derived from PATH)
   -a       Use a random session name
   -h       Show this help
@@ -31,6 +34,11 @@ if [[ $sess == *[.:]* ]]; then
 fi
 
 proj=$(realpath "${1:-.}")
+(($# == 0)) || shift
+if (($#)); then
+  [[ $1 == -- && $# -ge 2 ]] || { usage >&2; exit 2; }
+  shift
+fi
 [[ -n $sess ]] || sess=$(z-session-name "$proj")
 
 if ! tmux has-session -t "=$sess" 2>/dev/null; then
@@ -43,6 +51,9 @@ if ! tmux has-session -t "=$sess" 2>/dev/null; then
   tmux kill-window -t "$placeholder"
   trap - ERR
 fi
+
+# Before attaching, which blocks when run outside tmux.
+(($# == 0)) || yhx-switch -s "$sess" "$@"
 
 destroy_unattached=off
 [[ -z ${ZELLIJ:-} ]] || destroy_unattached=on
