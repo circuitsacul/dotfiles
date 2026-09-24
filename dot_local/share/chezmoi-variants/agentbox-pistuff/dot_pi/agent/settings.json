@@ -4,9 +4,9 @@
   "packages": [
     "/home/agent/mypi"
   ],
-  "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-5.6-luna",
-  "defaultThinkingLevel": "high",
+  "defaultProvider": "claude-code",
+  "defaultModel": "claude-opus-5-5[1m]",
+  "defaultThinkingLevel": "medium",
   "outputPad": 0,
   "editorPaddingX": 0,
   "terminal": {
