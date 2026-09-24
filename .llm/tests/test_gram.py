@@ -164,7 +164,7 @@ class ConfigTests(unittest.TestCase):
         self.assertEqual(base["keybinding"], derived["keybinding"])
         self.assertEqual(base["git"], derived["git"])
         self.assertEqual(derived["customCommands"], [c for c in base["customCommands"]
-                         if not c["command"].startswith("~/bin/yhx-switch-")])
+                         if "yhx-switch" not in c["command"]])
         self.assertNotIn("yhx-switch", json.dumps(derived))
         self.assertIn("--wait", derived["os"]["editAtLineAndWait"])
         self.assertNotIn("--wait", derived["os"]["edit"])

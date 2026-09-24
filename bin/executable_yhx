@@ -1,30 +1,55 @@
 #!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  cat <<EOF
+Usage: yhx [-s NAME] [-a] [PATH]
+  -s NAME  Use NAME as the tmux session name (default: derived from PATH)
+  -a       Use a random session name
+  -h       Show this help
+EOF
+}
 
 sess=""
-
-while getopts "s:a" opt; do
+while getopts ":s:ah" opt; do
   case "$opt" in
     s) sess="$OPTARG" ;;
-    a) sess=$(tr -dc '[:alnum:]' </dev/urandom | head -c 8) ;;
-    *) echo "usage: $0 [-s NAME] [-a] [PATH]" >&2; exit 1 ;;
+    a)
+      rand=$(LC_ALL=C tr -dc '[:alnum:]' < <(head -c 512 /dev/urandom))
+      sess="${rand:0:8}"
+      ;;
+    h) usage; exit 0 ;;
+    *) usage >&2; exit 2 ;;
   esac
 done
-
 shift $((OPTIND - 1))
 
-proj=$(realpath "${1:-.}")
-[[ -z "$sess" ]] && sess=$(z-session-name "$proj")
+# tmux silently rewrites these characters, so the session could never be found again.
+if [[ $sess == *[.:]* ]]; then
+  echo "yhx: session name must not contain '.' or ':'" >&2
+  exit 2
+fi
 
-if ! tmux has-session -t="$sess" 2>/dev/null; then
-  tmux new-session -s "$sess" -n tree -d -c "$proj" yazi
-  tmux set-option -t "$sess" @project_root "$proj"
-  tmux select-window -t "$sess:tree"
+proj=$(realpath "${1:-.}")
+[[ -n $sess ]] || sess=$(z-session-name "$proj")
+
+if ! tmux has-session -t "=$sess" 2>/dev/null; then
+  # A session can't be empty; the placeholder window lets yhx-switch own every window definition.
+  placeholder=$(tmux new-session -d -P -F '#{window_id}' -s "$sess" -c "$proj" cat)
+  # Don't leave a half-built session (just the placeholder) behind for the next run to attach to.
+  trap 'tmux kill-session -t "=$sess" 2>/dev/null' ERR
+  tmux set-option -t "=$sess:" @project_root "$proj"
+  yhx-switch -s "$sess" tree
+  tmux kill-window -t "$placeholder"
+  trap - ERR
 fi
 
 destroy_unattached=off
-if [[ -n "${ZELLIJ:-}" ]]; then
-  destroy_unattached=on
-fi
+[[ -z ${ZELLIJ:-} ]] || destroy_unattached=on
 
-tmux attach-session -t "=$sess" \; \
-  set-option -t "=$sess:" destroy-unattached "$destroy_unattached"
+if [[ -n ${TMUX:-} ]]; then
+  attach=(switch-client -t "=$sess")
+else
+  attach=(attach-session -t "=$sess")
+fi
+tmux "${attach[@]}" \; set-option -t "=$sess:" destroy-unattached "$destroy_unattached"

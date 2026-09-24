@@ -1,0 +1,101 @@
+#!/usr/bin/env bash
+# Focus a window of a yhx tmux session, (re)creating it if it was closed.
+set -euo pipefail
+
+usage() {
+  cat <<EOF
+Usage: yhx-switch [-s SESSION] WINDOW [ARGS...]
+  tree [PATH]                file tree (yazi), revealing PATH
+  edit [--line=N] [FILE...]  editor (helix), opening FILEs
+  lazygit                    lazygit
+
+  -s SESSION  Target SESSION instead of the calling pane's session
+  -h          Show this help
+EOF
+}
+
+session=""
+while getopts ":s:h" opt; do
+  case "$opt" in
+    s) session="$OPTARG" ;;
+    h) usage; exit 0 ;;
+    *) usage >&2; exit 2 ;;
+  esac
+done
+shift $((OPTIND - 1))
+[[ $# -ge 1 ]] || { usage >&2; exit 2; }
+window="$1"
+shift
+
+# An empty session part means the calling pane's session.
+sess_t="${session:+=$session}:"
+
+# Per window: `cmd` creates it, `update` applies ARGS to an already-running one.
+update() { :; }
+case "$window" in
+  tree)
+    focus=""
+    [[ $# -eq 0 ]] || focus=$(realpath -- "$1")
+    # exec keeps the PID, so the pane PID doubles as yazi's client ID for `ya emit-to`.
+    cmd=(sh -c 'exec yazi --client-id "$$" "$@"' yazi ${focus:+"$focus"})
+    update() {
+      [[ -n $focus ]] || return 0
+      # Find yazi by its start command, not the active pane, in case the window was split.
+      local pid
+      pid=$(tmux list-panes -t "$win_t" -f '#{m:*yazi --client-id*,#{pane_start_command}}' -F '#{pane_pid}')
+      ya emit-to "${pid%%$'\n'*}" reveal "$focus"
+    }
+    ;;
+  edit)
+    line=""
+    if [[ ${1:-} == --line=* ]]; then
+      line="${1#--line=}"
+      shift
+    fi
+    files=()
+    for f in "$@"; do
+      [[ $f == /* ]] || f="$PWD/$f" # helix resolves paths against its own cwd
+      files+=("$f")
+    done
+    if [[ -n $line ]] && ! [[ $line =~ ^[0-9]+$ && $# -eq 1 ]]; then
+      echo "yhx-switch: --line=N needs a number and exactly one FILE" >&2
+      exit 2
+    fi
+    if [[ $# -eq 0 ]]; then
+      cmd=(hx .)
+    else
+      cmd=(hx ${line:+"+$line"} "${files[@]}")
+    fi
+    update() {
+      ((${#files[@]})) || return 0
+      local open=":open" f
+      for f in "${files[@]}"; do
+        open+=" '${f//\'/\'\'}'"
+      done
+      tmux send-keys -t "$win_t" Escape
+      tmux send-keys -t "$win_t" -l "$open"
+      tmux send-keys -t "$win_t" Enter
+      [[ -z $line ]] || tmux send-keys -t "$win_t" ":goto $line" Enter
+    }
+    ;;
+  lazygit)
+    cmd=(lazygit)
+    ;;
+  *)
+    usage >&2
+    exit 2
+    ;;
+esac
+
+# Look the window up by exact name rather than via a `:=name` target, which fails as
+# ambiguous (and would look missing) if duplicates ever exist; the first one wins.
+ids=$(tmux list-windows -t "$sess_t" -f "#{==:#{window_name},$window}" -F '#{window_id}')
+win_t="${ids%%$'\n'*}"
+
+if [[ -n $win_t ]]; then
+  tmux select-window -t "$win_t"
+  update
+else
+  proj=$(tmux show-option -v -t "$sess_t" @project_root)
+  tmux new-window -t "$sess_t" -n "$window" -c "$proj" "${cmd[@]}"
+fi

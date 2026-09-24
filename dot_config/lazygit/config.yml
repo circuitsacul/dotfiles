@@ -3,9 +3,9 @@ git:
     - command: 'difft'
       type: extDiff
 os:
-  open: '~/bin/yhx-switch-hx {{filename}}'
-  edit: '~/bin/yhx-switch-hx {{filename}}'
-  editAtLine: '~/bin/yhx-switch-hx --line={{line}} {{filename}}'
+  open: '~/bin/yhx-switch edit {{filename}}'
+  edit: '~/bin/yhx-switch edit {{filename}}'
+  editAtLine: '~/bin/yhx-switch edit --line={{line}} {{filename}}'
   editInTerminal: false
 keybinding:
   status:
@@ -27,11 +27,11 @@ customCommands:
   - key: "E"
     context: "global"
     description: "switch to helix"
-    command: "~/bin/yhx-switch-hx"
+    command: "~/bin/yhx-switch edit"
   - key: "Y"
     context: "global"
     description: "switch to yazi"
-    command: "~/bin/yhx-switch-yazi"
+    command: "~/bin/yhx-switch tree"
   - key: "w"
     context: "files"
     description: "WIP commit (no signing, no hooks)"

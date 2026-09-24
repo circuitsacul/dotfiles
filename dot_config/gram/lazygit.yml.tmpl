@@ -9,7 +9,7 @@
 {{- $config = setValueAtPath "os.editInTerminal" false $config -}}
 {{- $commands := list -}}
 {{- range $config.customCommands -}}
-{{- if not (hasPrefix "~/bin/yhx-switch-" .command) -}}
+{{- if not (contains "yhx-switch" .command) -}}
 {{- $commands = append $commands . -}}
 {{- end -}}
 {{- end -}}

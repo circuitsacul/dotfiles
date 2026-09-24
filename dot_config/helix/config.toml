@@ -31,10 +31,13 @@ hidden = false
 
 ###################################################################################################
 # YHX scripts
+# Helix can't shell-escape expansions yet (helix#14149 would add %quote{}). Single quotes
+# cover most names, but a name with a ' can break out of them; accepted, since opening an
+# untrusted repo in helix is already unsafe.
 [keys.normal.space]
-e = ":run-shell-command ~/bin/yhx-switch-yazi %{buffer_name}"
-E = ":run-shell-command ~/bin/yhx-switch-yazi"
-l = ":run-shell-command ~/bin/yhx-switch-lazygit"
+e = ":run-shell-command ~/bin/yhx-switch tree '%{buffer_name}'"
+E = ":run-shell-command ~/bin/yhx-switch tree"
+l = ":run-shell-command ~/bin/yhx-switch lazygit"
 
 ###################################################################################################
 # colemak-dh key mappings
