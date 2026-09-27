@@ -7,4 +7,22 @@ _:
 cafe:
     systemd-inhibit --what=idle:sleep --why="manual caffeine" sleep infinity
 
+# Update Radicle Desktop without changing its AppImageLauncher-integrated path.
+update-radicle-desktop:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    appimage="$HOME/Applications/radicle-desktop-amd64_63e2215ab76ccabb9a8128ee455f8387.AppImage"
+    if [[ ! -f "$appimage" ]]; then
+        printf 'Installed AppImage not found: %s\n' "$appimage" >&2
+        exit 1
+    fi
+    tmp=$(mktemp "${appimage}.download.XXXXXX")
+    trap 'rm -f -- "$tmp"' EXIT
+    curl --fail --location --show-error --output "$tmp" \
+        https://files.radicle.dev/releases/radicle-desktop/latest/radicle-desktop-amd64.AppImage
+    chmod --reference="$appimage" "$tmp"
+    chmod u+x "$tmp"
+    mv -f -- "$tmp" "$appimage"
+    printf 'Updated %s\n' "$appimage"
+
 {{- end }}
