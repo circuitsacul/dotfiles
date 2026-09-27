@@ -41,19 +41,25 @@ if (($#)); then
 fi
 [[ -n $sess ]] || sess=$(z-session-name "$proj")
 
+# Before attaching, which blocks when run outside tmux.
 if ! tmux has-session -t "=$sess" 2>/dev/null; then
   # A session can't be empty; the placeholder window lets yhx-switch own every window definition.
   placeholder=$(tmux new-session -d -P -F '#{window_id}' -s "$sess" -c "$proj" cat)
   # Don't leave a half-built session (just the placeholder) behind for the next run to attach to.
   trap 'tmux kill-session -t "=$sess" 2>/dev/null' ERR
   tmux set-option -t "=$sess:" @project_root "$proj"
-  yhx-switch -s "$sess" tree
+  # Create only the window that will be shown. A yazi started hidden never gets its
+  # terminal-probe reply, so (since yazi 26.9.1) it stalls 5s on quit.
+  if (($#)); then
+    yhx-switch -s "$sess" "$@"
+  else
+    yhx-switch -s "$sess" tree
+  fi
   tmux kill-window -t "$placeholder"
   trap - ERR
+elif (($#)); then
+  yhx-switch -s "$sess" "$@"
 fi
-
-# Before attaching, which blocks when run outside tmux.
-(($# == 0)) || yhx-switch -s "$sess" "$@"
 
 destroy_unattached=off
 [[ -z ${ZELLIJ:-} ]] || destroy_unattached=on
