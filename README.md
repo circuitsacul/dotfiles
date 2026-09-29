@@ -15,4 +15,9 @@ name = "Your Name"
 email = "you@example.com"
 gpgsign = true
 defaultBranch = "master"
+
+# optional
+[data.notebook]
+moxide = "/home/you/notebook/moxide"
+root = "/home/you/notebook/moxide"
 ```
