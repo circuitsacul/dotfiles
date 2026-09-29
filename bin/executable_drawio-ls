@@ -1,0 +1,239 @@
+#!/usr/bin/env -S uv run --quiet --script
+# ruff: noqa: EXE001  # chezmoi sets +x on deploy (executable_ prefix)
+# /// script
+# requires-python = ">=3.10"
+# dependencies = ["pygls>=2.1,<3", "tree-sitter>=0.25,<0.27", "tree-sitter-markdown>=0.5,<0.6"]
+# ///
+"""Language server for Markdown notes: a code action on a link or image whose
+target is a draw.io diagram (`*.drawio.svg`, `*.drawio`) opens it in draw.io,
+first creating a blank diagram if the file is missing or empty.
+
+Runs next to markdown-oxide in Helix (`space a`). Links are found with the
+tree-sitter grammar Helix highlights with; targets resolve as in Obsidian
+(see `resolve_target`), so a diagram created here also works there.
+"""
+
+import html
+import os
+import re
+import secrets
+import subprocess
+from collections.abc import Iterator
+from html.entities import html5
+from urllib.parse import unquote, urlsplit
+
+import tree_sitter_markdown
+from lsprotocol import types
+from pygls.lsp.server import LanguageServer
+from tree_sitter import Language, Node, Parser, Range
+
+LAUNCHER = os.path.expanduser("~/bin/drawio")
+COMMAND = "drawio-ls.open"
+SUFFIXES = (".drawio.svg", ".drawio")
+# CommonMark backslash escapes (group 1) and character references (group 2).
+MARKDOWN_ESCAPE = re.compile(
+    r"\\([!-/:-@\[-`{-~])|&(#[0-9]{1,7}|#[xX][0-9a-fA-F]{1,6}|[A-Za-z][A-Za-z0-9]{0,31});"
+)
+
+server = LanguageServer("drawio-ls", "1.0")
+block_parser = Parser(Language(tree_sitter_markdown.language()))
+inline_parser = Parser(Language(tree_sitter_markdown.inline_language()))
+
+
+def blank_diagram(path: str) -> str:
+    """A blank diagram that draw.io opens as an editable document.
+
+    draw.io only treats an SVG as editable if its `content` attribute starts
+    with "<mxfile " (note the space), so the element needs an attribute.
+    """
+    diagram_id = secrets.token_urlsafe(15)
+    mxfile = (
+        f'<mxfile host="drawio-ls"><diagram id="{diagram_id}" name="Page-1"><mxGraphModel><root>'
+        '<mxCell id="0"/><mxCell id="1" parent="0"/></root></mxGraphModel></diagram></mxfile>'
+    )
+    if path.endswith(".svg"):
+        return (
+            '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="1px" height="1px" '
+            f'viewBox="-0.5 -0.5 1 1" content="{html.escape(mxfile, quote=True)}"/>\n'
+        )
+    return mxfile + "\n"
+
+
+def missing_or_empty(path: str) -> bool:
+    return not os.path.isfile(path) or os.path.getsize(path) == 0
+
+
+def open_in_drawio(path: str) -> None:
+    """Open `path` in draw.io, first seeding a blank diagram if it is missing or empty."""
+    if not path.lower().endswith(SUFFIXES):
+        raise ValueError("not a draw.io diagram: " + path)
+    if missing_or_empty(path):
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, "w", encoding="utf-8") as file:
+            file.write(blank_diagram(path.lower()))
+    # Detached, with stdio closed: our stdout is the LSP channel.
+    subprocess.Popen(
+        [LAUNCHER, path],
+        cwd=os.path.dirname(path),
+        stdin=subprocess.DEVNULL,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        start_new_session=True,
+    )
+
+
+def touching(node: Node, first: int, last: int) -> Iterator[Node]:
+    """Nodes under `node` (inclusive) that touch the byte span [first, last)."""
+    if node.start_byte < last and node.end_byte >= first:
+        yield node
+        for child in node.children:
+            yield from touching(child, first, last)
+
+
+def inline_ranges(node: Node) -> list[Range]:
+    """`node` minus its named children (block continuations), as Helix injects it."""
+    ranges: list[Range] = []
+    point, byte = node.start_point, node.start_byte
+    for child in node.named_children:
+        ranges.append(Range(point, child.start_point, byte, child.start_byte))
+        point, byte = child.end_point, child.end_byte
+    ranges.append(Range(point, node.end_point, byte, node.end_byte))
+    return [r for r in ranges if r.end_byte > r.start_byte]
+
+
+def link_destinations(source: bytes, first: int, last: int) -> Iterator[str]:
+    """Destinations of the inline links and images touching bytes [first, last)."""
+    last = max(last, first + 1)  # also hit a link that ends right at the cursor
+    for block in touching(block_parser.parse(source).root_node, first, last):
+        if block.type in ("inline", "pipe_table_cell"):
+            inline_parser.included_ranges = inline_ranges(block)
+            for node in touching(inline_parser.parse(source).root_node, first, last):
+                if node.type in ("inline_link", "image"):
+                    for child in node.children:
+                        if child.type == "link_destination":
+                            yield source[child.start_byte : child.end_byte].decode()
+
+
+def vault_matches(root: str, target: str) -> list[str]:
+    """Vault files whose root-relative path ends with `target`, case-insensitively.
+
+    Hidden directories (`.obsidian`, `.git`, `.trash`, ...) are skipped, as in Obsidian.
+    """
+    suffix = "/" + target.lower()
+    matches: list[str] = []
+    for directory, subdirs, files in os.walk(root):
+        subdirs[:] = [name for name in subdirs if not name.startswith(".")]
+        for name in files:
+            path = os.path.join(directory, name)
+            if ("/" + os.path.relpath(path, root)).lower().endswith(suffix):
+                matches.append(path)
+    return matches
+
+
+def resolve_target(target: str, note: str, root: str) -> str:
+    """Absolute path a vault-relative link `target` in `note` refers to, as in Obsidian.
+
+    - "/x": x in the vault root.
+    - "./x", "../x": relative to the note's folder.
+    - otherwise an existing file: x in the vault root, else any vault file whose
+      path ends with "/x" (a unique name or partial path, Obsidian's default
+      "shortest path" link format); ties prefer the note's folder, then the
+      shallowest path.
+    - otherwise a new file: "dir/x" goes in the vault root (as in Obsidian); a
+      bare name goes next to the note. Obsidian would use its attachment folder
+      setting, but finds the file wherever it is, so the choice only matters here.
+    """
+    note_dir = os.path.dirname(note)
+    if target.startswith("/"):
+        return os.path.normpath(os.path.join(root, target.lstrip("/")))
+    if target.startswith(("./", "../")):
+        return os.path.normpath(os.path.join(note_dir, target))
+    in_root = os.path.normpath(os.path.join(root, target))
+    if os.path.isfile(in_root):
+        return in_root
+    matches = vault_matches(root, target)
+    if matches:
+        return min(
+            matches,
+            key=lambda path: (
+                os.path.dirname(path) != note_dir,
+                os.path.relpath(path, root).count(os.sep),
+                path,
+            ),
+        )
+    if "/" in target:
+        return in_root
+    return os.path.normpath(os.path.join(note_dir, target))
+
+
+def unescape_markdown(text: str) -> str:
+    """`text` with Markdown escapes and character references decoded, as CommonMark does."""
+
+    def decode(match: re.Match[str]) -> str:
+        escaped, reference = match.groups()
+        if escaped is not None:
+            return escaped
+        if reference.startswith("#"):
+            return html.unescape(match[0])
+        # Only exact entity names; html.unescape would also decode "&notit;" as "&not" + "it;".
+        return html5.get(reference + ";", match[0])
+
+    return MARKDOWN_ESCAPE.sub(decode, text)
+
+
+def diagram_path(destination: str, note: str, root: str) -> str | None:
+    """Absolute path of a diagram link destination in `note`; None for other targets.
+
+    Markdown escapes are decoded before the destination is split as a URL, which
+    happens before percent-decoding so that encoded filename characters (such as
+    "%23" for "#") are not read as URL syntax. Queries and fragments are ignored.
+    """
+    if destination.startswith("<"):
+        destination = destination[1:-1]
+    try:
+        url = urlsplit(unescape_markdown(destination))
+    except ValueError:  # e.g. a malformed IPv6 authority, "//[x"
+        return None
+    if url.scheme or url.netloc:
+        return None
+    target = unquote(url.path)
+    if not target.lower().endswith(SUFFIXES):
+        return None
+    return resolve_target(target, note, root)
+
+
+@server.feature(types.TEXT_DOCUMENT_CODE_ACTION)
+def code_actions(params: types.CodeActionParams) -> list[types.CodeAction]:
+    document = server.workspace.get_text_document(params.text_document.uri)
+    source = document.source
+    first, last = (
+        len(source[: document.offset_at_position(position)].encode())
+        for position in (params.range.start, params.range.end)
+    )
+    root = server.workspace.root_path or os.getcwd()
+    actions: list[types.CodeAction] = []
+    paths: set[str] = set()
+    for destination in link_destinations(source.encode(), first, last):
+        path = diagram_path(destination, document.path, root)
+        if path is None or path in paths:
+            continue
+        paths.add(path)
+        verb = "create and open" if missing_or_empty(path) else "open"
+        title = f"draw.io: {verb} {os.path.relpath(path, root)}"
+        command = types.Command(title=title, command=COMMAND, arguments=[path])
+        actions.append(types.CodeAction(title=title, command=command))
+    return actions
+
+
+@server.command(COMMAND)
+def open_diagram(path: str) -> None:
+    try:
+        open_in_drawio(path)
+    except (OSError, ValueError) as error:  # Helix only logs failed commands; show it
+        message = types.ShowMessageParams(
+            type=types.MessageType.Error, message=f"drawio-ls: {error}"
+        )
+        server.window_show_message(message)
+
+
+server.start_io()

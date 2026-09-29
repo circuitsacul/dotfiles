@@ -1,17 +1,25 @@
 [language-server.markdown-oxide]
 command = "markdown-oxide"
 
+# ~/bin/drawio-ls: `space a` on a link to a *.drawio.svg creates/opens it in draw.io.
+[language-server.drawio-ls]
+command = "drawio-ls"
+
 [language-server.rust-analyzer.config]
 diagnostics = { disabled = ["unlinked-file"] }
 check.command = "clippy"
 cargo.features = "all"
+
+# Resolve imports of PEP 723 scripts (e.g. bin/executable_drawio-ls) from their inline deps.
+[language-server.ty]
+environment = { TY_UV = "scripts" }
 
 [language-server.ty.config]
 diagnosticMode = "workspace"
 
 [[language]]
 name = "markdown"
-language-servers = ["markdown-oxide"]
+language-servers = ["markdown-oxide", "drawio-ls"]
 roots = [".moxide.toml"]
 
 [[language]]

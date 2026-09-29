@@ -12,6 +12,7 @@ archive
 .config/systemd
 .zshrc
 bin/drawio
+bin/drawio-ls
 {{ end }}
 
 # not home
