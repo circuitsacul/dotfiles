@@ -1,0 +1,11 @@
+[opener]
+edit = [{ run = '~/bin/yhx-switch edit %s' }]
+{{- if eq .profile "home" }}
+drawio = [{ run = '~/bin/drawio %s1', orphan = true, desc = "draw.io" }]
+
+[open]
+prepend_rules = [
+  { url = "*.drawio", use = ["drawio", "edit"] },
+  { url = "*.drawio.svg", use = ["drawio", "open", "edit"] },
+]
+{{- end }}

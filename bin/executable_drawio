@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+args=()
+for a in "$@"; do
+  # An already-running draw.io resolves a new file against its own cwd.
+  [[ $a == /* || ! -e $a ]] || a="$PWD/$a"
+  args+=("$a")
+done
+exec flatpak run com.jgraph.drawio.desktop "${args[@]}"

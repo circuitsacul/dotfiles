@@ -11,6 +11,7 @@ archive
 .config/agentbox
 .config/systemd
 .zshrc
+bin/drawio
 {{ end }}
 
 # not home
