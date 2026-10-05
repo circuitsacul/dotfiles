@@ -1,38 +1,59 @@
 /* hide tabs */
 .toolbar-items {
-    visibility: collapse;
+  visibility: collapse;
 }
 
 /* move close/min/max buttons to left */
 #titlebar {
-appearance: none !important;
-height: 0px;
+  appearance: none !important;
+  height: 0px;
 }
 
-#titlebar > #toolbar-menubar {
-margin-top: 0px;
+#titlebar>#toolbar-menubar {
+  margin-top: 0px;
 }
 
 #TabsToolbar {
-min-width: 0 !important;
-min-height: 0 !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
 }
 
-#TabsToolbar > .titlebar-buttonbox-container {
-display: block;
-position: absolute;
-top: 12px;
-left: 0px;
+#TabsToolbar>.titlebar-buttonbox-container {
+  display: block;
+  position: absolute;
+  top: 12px;
+  left: 0px;
 }
 
 #main-window[sizemode="fullscreen"] #customizableui-special-spring4 {
-display: none !important;
+  display: none !important;
 }
 
-/* hide treastyletabs extension title bar */
-/*#sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] #sidebar-header {*/
-/*  display: none;*/
-/*}*/
-#sidebar-header {
-display: none;
+/* Hide Firefox's old and revamped sidebar headers. */
+#sidebar-header,
+#sidebar-panel-header {
+  display: none !important;
+}
+
+/* Restore the flush, square Sidebery panel after the Firefox 157 update.
+ * These selectors target Firefox's wrapper, not Sidebery's internal styles.
+ */
+#sidebar-box[sidebarcommand="_3c078156-979c-498b-8990-85f7987dd929_-sidebar-action"] {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+#sidebar-box[sidebarcommand="_3c078156-979c-498b-8990-85f7987dd929_-sidebar-action"] #sidebar {
+  margin: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Remove Firefox's extra launcher column while Sidebery is open. */
+:root:has(#sidebar-box[sidebarcommand="_3c078156-979c-498b-8990-85f7987dd929_-sidebar-action"]:not([hidden])) :is(#sidebar-main, #sidebar-container, #sidebar-launcher-splitter) {
+  display: none !important;
 }
