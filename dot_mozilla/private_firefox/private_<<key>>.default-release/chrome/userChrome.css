@@ -57,3 +57,22 @@
 :root:has(#sidebar-box[sidebarcommand="_3c078156-979c-498b-8990-85f7987dd929_-sidebar-action"]:not([hidden])) :is(#sidebar-main, #sidebar-container, #sidebar-launcher-splitter) {
   display: none !important;
 }
+
+/* Remove the resize gutter while retaining a 4px draggable area.
+ * The splitter overlaps the page edge instead of taking up layout space.
+ */
+#sidebar-box[sidebarcommand="_3c078156-979c-498b-8990-85f7987dd929_-sidebar-action"]+#sidebar-splitter {
+  --splitter-width: 4px !important;
+  width: var(--splitter-width) !important;
+  min-width: var(--splitter-width) !important;
+  padding: 0 !important;
+  border: none !important;
+  margin-block: 0 !important;
+  margin-inline: 0 calc(-1 * var(--splitter-width)) !important;
+  background: transparent !important;
+}
+
+/* Mirror the overlap if Sidebery is moved to the other side. */
+#sidebar-box[sidebarcommand="_3c078156-979c-498b-8990-85f7987dd929_-sidebar-action"][sidebar-positionend]+#sidebar-splitter {
+  margin-inline: calc(-1 * var(--splitter-width)) 0 !important;
+}
