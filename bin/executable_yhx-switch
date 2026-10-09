@@ -35,7 +35,14 @@ update() { :; }
 case "$window" in
   tree)
     focus=""
-    [[ $# -eq 0 ]] || focus=$(realpath -- "$1")
+    if [[ $# -gt 0 && ( $1 != "[scratch]" || -e $1 ) ]]; then
+      if [[ -e $1 ]]; then
+        focus=$(realpath -- "$1")
+      else
+        focus=$(realpath -- "$(dirname -- "$1")")
+        focus="${focus%/}/$(basename -- "$1")"
+      fi
+    fi
     # exec keeps the PID, so the pane PID doubles as yazi's client ID for `ya emit-to`.
     cmd=(sh -c 'exec yazi --client-id "$$" "$@"' yazi ${focus:+"$focus"})
     update() {
