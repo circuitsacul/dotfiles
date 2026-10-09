@@ -173,16 +173,6 @@ keybinds clear-defaults=true {
             SwitchToMode "normal"
         }
     }
-    shared {
-        bind "F1" {
-            MessagePlugin "compact-bar" {
-                name "toggle_tooltip"
-                payload "1"
-                floating false
-                tooltip "F1"
-            }
-        }
-    }
     shared_except "locked" {
         bind "Alt left" { MoveFocusOrTab "left"; }
         bind "Alt down" { MoveFocus "down"; }
@@ -312,8 +302,23 @@ keybinds clear-defaults=true {
 // changing these requires a restart to take effect
 plugins {
     about location="zellij:about"
-    compact-bar location="zellij:compact-bar" {
-        tooltip "F1"
+    compact-bar location="file:~/.config/zellij/plugins/zjstatus.wasm" {
+        format_left "{mode} {tabs}"
+        format_center ""
+        format_right "{datetime}"
+        format_space ""
+
+        border_enabled "false"
+        hide_frame_for_single_pane "false"
+
+        mode_normal "#[fg=#89B4FA,bold]{name}"
+
+        tab_normal "#[fg=#6C7086] {name} "
+        tab_active "#[fg=#9399B2,bold] {name} "
+
+        datetime "#[fg=#6C7086,bold] {format} "
+        datetime_format "%H:%M"
+        datetime_timezone {{ .timezone | quote }}
     }
     configuration location="zellij:configuration"
     filepicker location="zellij:strider" {

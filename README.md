@@ -7,6 +7,7 @@ personal dotfiles
 [data]
 profile = "..."
 platform = "linux"
+timezone = "America/New_York" # optional; defaults to "Etc/UTC"
 litellm_master_key = "sk-litellm-secret"
 fireworks_api_key = "fw-..."
 

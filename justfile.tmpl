@@ -2,6 +2,19 @@
 _:
     echo "ok"
 
+update-zjstatus:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    plugin="$HOME/.config/zellij/plugins/zjstatus.wasm"
+    mkdir -p -- "$(dirname -- "$plugin")"
+    tmp=$(mktemp "${plugin}.download.XXXXXX")
+    trap 'rm -f -- "$tmp"' EXIT
+    curl --fail --location --show-error --output "$tmp" \
+        https://github.com/dj95/zjstatus/releases/latest/download/zjstatus.wasm
+    chmod 644 "$tmp"
+    mv -f -- "$tmp" "$plugin"
+    printf 'Updated %s\n' "$plugin"
+
 {{- if eq .platform "linux" }}
 
 cafe:
