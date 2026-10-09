@@ -8,8 +8,8 @@ prepend_rules = [
   { url = "*.drawio", use = ["drawio", "edit"] },
   { url = "*.drawio.svg", use = ["drawio", "open", "edit"] },
 ]
-{{- end }}
 
 [plugin]
 prepend_preloaders = [{ url = "*.drawio.svg", run = "magick" }]
 prepend_previewers = [{ url = "*.drawio.svg", run = "magick" }]
+{{- end }}
