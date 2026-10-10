@@ -1,11 +1,14 @@
 {
-  "lastChangelogVersion": "0.87.1",
+  "defaultTools": [
+    "+codemode"
+  ],
+  "lastChangelogVersion": "1.1.0",
   "theme": "catppuccin-mocha-peach",
   "packages": [
     "/home/agent/mypi"
   ],
-  "defaultProvider": "claude-code",
-  "defaultModel": "claude-opus-5-5",
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-6.1-sol",
   "defaultThinkingLevel": "medium",
   "outputPad": 0,
   "editorPaddingX": 0,
@@ -38,11 +41,12 @@
     "kimi-coding/k3",
     "claude-code/claude-fable-5-1",
     "openai-codex/gpt-6-luna",
-    "openai-codex/gpt-6-sol",
     "xai/grok-4.7",
     "claude-code/claude-opus-5-5",
     "openrouter/xiaomi/mimo-v2.6-pro",
     "openrouter/xiaomi/mimo-v2.6-pro-ultraspeed",
-    "claude-code/claude-sonnet-5-5"
+    "claude-code/claude-sonnet-5-5",
+    "openai-codex/gpt-6.1-sol",
+    "claude-code/claude-haiku-5-5"
   ]
 }

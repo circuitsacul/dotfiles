@@ -15,6 +15,8 @@ a meaningful side effect, ask before editing.
 It is still appropriate to inspect files and run read-only diagnostic commands, and you may run
 tests or build checks.
 """
+model = "gpt-6-astra"
+model_reasoning_effort = "high"
 
 [projects."/home/agent/session/workspace"]
 trust_level = "trusted"
@@ -27,6 +29,7 @@ notification_condition = "always"
 status_line = ["model-with-reasoning", "current-dir", "git-branch", "five-hour-limit", "weekly-limit", "fast-mode", "context-used", "context-window-size"]
 status_line_use_colors = true
 session_picker_view = "dense"
+screen_reader_detection_done = true
 
 [tui.keymap.global]
 open_external_editor = "ctrl-e"
@@ -51,6 +54,9 @@ motion_down = ["e", "down"]
 motion_up = ["i", "up"]
 motion_right = ["o", "right"]
 motion_word_end = "k"
+
+[tui.model_availability_nux]
+"gpt-6.1-sol" = 2
 
 [plugins."github@openai-curated"]
 enabled = true

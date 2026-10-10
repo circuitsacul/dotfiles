@@ -313,8 +313,9 @@ plugins {
 
         mode_normal "#[fg=#89B4FA,bold]{name}"
 
-        tab_normal "#[fg=#6C7086] {name} "
-        tab_active "#[fg=#9399B2,bold] {name} "
+        tab_normal "#[fg=#6C7086] {name}{bell_indicator} "
+        tab_active "#[fg=#9399B2,bold] {name}{bell_indicator} "
+        tab_bell_indicator " [!]"
 
         datetime "#[fg=#6C7086,bold] {format} "
         datetime_format "%H:%M"
