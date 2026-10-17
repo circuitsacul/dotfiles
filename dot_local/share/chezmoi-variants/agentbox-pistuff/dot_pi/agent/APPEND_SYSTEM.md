@@ -20,6 +20,10 @@ should be asked for.
 # style guide
 - default to ASCII-only, unless there is a clear reason to use non-ASCII text; for example, instead
   of using an em-dash, either rephrase or use a different separator (such as `--`, `;`, `,`, etc.).
+  TUI design, diagrams, etc. may use non-ASCII text.
+- prefer a max-width of 100 characters for markdown files and codeblocks; exceptions:
+  - regular chat messages should not be wrapped
+  - if a file has a pre-existing style, follow that instead
 - prefer single-source-of-truth as much as possible; this does not necessarily mean DRY, but avoid
   scenarios where something is defined twice and could cause bugs were they to drift. In situations
   that this is impractical, look for ways to make it such that a drift would be caught early (such

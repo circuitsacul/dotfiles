@@ -1,7 +1,7 @@
 README.md
 archive
 .llm
-.mozilla
+manual
 
 # only home
 {{ if ne .profile "home" }}
