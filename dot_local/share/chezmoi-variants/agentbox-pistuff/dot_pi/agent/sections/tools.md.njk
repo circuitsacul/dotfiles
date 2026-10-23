@@ -1,0 +1,10 @@
+---
+order: 10
+---
+{% for tool in tools | selectattr("snippet") %}
+- {{ tool.name }}: {{ tool.snippet }}
+{% else %}
+(none)
+{% endfor %}
+
+In addition to the tools above, you may have access to other custom tools depending on the project.

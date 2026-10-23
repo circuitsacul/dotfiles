@@ -1,0 +1,32 @@
+---
+order: 20
+---
+{# Pi's stock <rules> (core/system-prompt.ts buildRules) with two changes: no
+   "Be concise in your responses", and codemode's guideline replaced. Like stock,
+   rules are trimmed and deduplicated in order of first appearance. #}
+{% set rules = [] %}
+{% if ("bash" in toolNames or "powershell" in toolNames) and not ("grep" in toolNames or "find" in toolNames or "ls" in toolNames) %}
+{% if "bash" in toolNames and "powershell" in toolNames %}
+{% set rules = rules.concat(["Use bash or PowerShell for file operations like listing, searching, and finding files"]) %}
+{% elif "powershell" in toolNames %}
+{% set rules = rules.concat(["Use PowerShell for file operations like listing, searching, and finding files"]) %}
+{% else %}
+{% set rules = rules.concat(["Use bash for file operations like ls, rg, find"]) %}
+{% endif %}
+{% endif %}
+{% for tool in tools %}
+{% if tool.name == "codemode" %}
+{% set rules = rules.concat(["Use codemode only when a script does something direct calls cannot: feeding one tool's output into another, filtering or aggregating large output before it reaches the context, or generating calls from data that is only known at runtime. A known set of independent calls (e.g. reading several files) should be ordinary direct calls in one message; the harness already runs those in parallel, and codemode gains nothing."]) %}
+{% else %}
+{% set rules = rules.concat(tool.guidelines) %}
+{% endif %}
+{% endfor %}
+{% set rules = rules.concat(promptGuidelines, ["Show file paths clearly when working with files"]) %}
+{% set seen = [] %}
+{% for rule in rules %}
+{% set text = rule | trim %}
+{% if text and text not in seen %}
+{% set seen = seen.concat([text]) %}
+- {{ text }}
+{% endif %}
+{% endfor %}

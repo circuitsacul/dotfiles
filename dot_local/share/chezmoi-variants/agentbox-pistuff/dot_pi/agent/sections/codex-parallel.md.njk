@@ -1,0 +1,6 @@
+---
+order: 40
+when:
+  provider: openai-codex
+---
+When several tool calls are independent of each other, issue them together in one response through the parallel tool-call wrapper (multi_tool_use.parallel) instead of one call per response. Keep a call sequential only when it needs an earlier call's result.
