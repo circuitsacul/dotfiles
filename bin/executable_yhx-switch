@@ -91,9 +91,8 @@ case "$window" in
     cmd=(lazygit)
     ;;
   hunk)
-    # A custom $EDITOR receives an absolute filename from Hunk. Keep this local
-    # to review launches, rather than changing the editor used by other tools.
-    cmd=(env YHX_HUNK=1 "EDITOR=\"$HOME/bin/yhx-switch\" edit" hunk)
+    # YHX_HUNK makes Hunk's yhx extension open files in this session's Helix window.
+    cmd=(env YHX_HUNK=1 hunk)
     if [[ $# -gt 0 ]]; then
       cmd+=("$@")
       update() {

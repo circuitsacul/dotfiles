@@ -15,7 +15,9 @@ paths = [{{ .hunk_radicle | toJson }}]
 "hunk.review.stepUp" = ["i", "up"]
 "hunk.review.scrollCodeRight" = ["o", "right", "shift+right"]
 
-"hunk.review.editSelectedFile" = "h"
+# The yhx extension runs this itself outside yhx (see extensions/yhx.ts).
+"hunk.review.editSelectedFile" = false
+"yhx.edit" = "h"
 "hunk.search.next" = "j"
 "hunk.search.previous" = "J"
 
