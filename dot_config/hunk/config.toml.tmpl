@@ -1,0 +1,45 @@
+theme = "catppuccin-mocha"
+mode = "auto"
+line_numbers = true
+wrap_lines = false
+animations = false
+
+{{ if .hunk_radicle -}}
+[extensions]
+paths = [{{ .hunk_radicle | toJson }}]
+
+{{ end -}}
+[keybindings]
+"hunk.review.scrollCodeLeft" = ["n", "left", "shift+left"]
+"hunk.review.stepDown" = ["e", "down"]
+"hunk.review.stepUp" = ["i", "up"]
+"hunk.review.scrollCodeRight" = ["o", "right", "shift+right"]
+
+"hunk.review.editSelectedFile" = "h"
+"hunk.search.next" = "j"
+"hunk.search.previous" = "J"
+
+"yhx.editor" = "H"
+# TODO: ctrl/cmd/alt -enter instead?
+"hunk.review.saveNote" = ["alt+s", "ctrl+s"]
+
+{{ if .hunk_radicle -}}
+{{ $radicle := base .hunk_radicle -}}
+"{{ $radicle }}.pick" = "P"
+"{{ $radicle }}.threads" = "T"
+"{{ $radicle }}.nextThread" = ">"
+"{{ $radicle }}.previousThread" = "<"
+"{{ $radicle }}.reply" = "C"
+"{{ $radicle }}.focus" = "F"
+"{{ $radicle }}.submit" = "S"
+"{{ $radicle }}.editComment" = "E"
+"{{ $radicle }}.delete" = "D"
+"{{ $radicle }}.refresh" = "r"
+
+{{ end -}}
+"hunk.history.nextCommit" = ["e", "down"]
+"hunk.history.previousCommit" = ["i", "up"]
+"hunk.history.extendNext" = ["E", "shift+down"]
+"hunk.history.extendPrevious" = ["I", "shift+up"]
+"hunk.history.nextMatch" = "j"
+"hunk.history.previousMatch" = "J"

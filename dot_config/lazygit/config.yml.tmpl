@@ -1,0 +1,82 @@
+# chezmoi:template:left-delimiter="[[" right-delimiter="]]"
+git:
+  diffRenderers:
+    - command: 'difft'
+      type: extDiff
+os:
+  open: '~/bin/yhx-switch edit {{filename}}'
+  edit: '~/bin/yhx-switch edit {{filename}}'
+  editAtLine: '~/bin/yhx-switch edit --line={{line}} {{filename}}'
+  editInTerminal: false
+keybinding:
+  status:
+    openConfigFile: ''
+    editConfigFile: ''
+  universal:
+    prevBlock-alt: 'n'
+    nextBlock-alt: 'o'
+    nextItem-alt: 'e'
+    prevItem-alt: 'i'
+    edit: 'h'
+    openFile: 'H'
+    new: 'c'
+  branches:
+    createPullRequest: 'b'
+  commits:
+    openInBrowser: 'b'
+customCommands:
+  - key: 'U'
+    description: 'Hunk'
+    commandMenu:
+      - key: 'u'
+        context: 'global'
+        description: 'switch to hunk'
+        command: '~/bin/yhx-switch hunk'
+[[- if .hunk_radicle ]]
+      - key: 'r'
+        context: 'global'
+        description: 'review radicle patch'
+        command: '~/bin/yhx-switch hunk rad'
+[[- end ]]
+      - key: 'd'
+        context: 'commits, subCommits, reflogCommits'
+        description: 'review selected commit'
+        command: '~/bin/yhx-switch hunk show {{.SelectedCommit.Hash | quote}}'
+      - key: 'd'
+        context: 'files'
+        description: 'review selected path (unstaged; staged-only files use index)'
+        command: >-
+          ~/bin/yhx-switch hunk diff
+          {{if and .SelectedFile .SelectedFile.HasStagedChanges
+          (not .SelectedFile.HasUnstagedChanges)}}--staged {{end}}
+          -- {{.SelectedPath | quote}}
+      - key: 'd'
+        context: 'localBranches'
+        description: 'review HEAD vs selected branch'
+        command: '~/bin/yhx-switch hunk diff HEAD {{.SelectedLocalBranch.Name | quote}}'
+      - key: 'm'
+        context: 'localBranches'
+        description: 'review merge-base of selected branch'
+        prompts:
+          - type: 'input'
+            key: 'BaseBranch'
+            title: 'Base branch for merge-base review'
+            initialValue: 'master'
+            suggestions:
+              preset: 'branches'
+        command: >-
+          ~/bin/yhx-switch hunk diff
+          {{printf "%s...%s" .Form.BaseBranch .SelectedLocalBranch.Name | quote}}
+  - key: "E"
+    context: "global"
+    description: "switch to helix"
+    command: "~/bin/yhx-switch edit"
+  - key: "Y"
+    context: "global"
+    description: "switch to yazi"
+    command: "~/bin/yhx-switch tree"
+  - key: "w"
+    context: "files"
+    description: "WIP commit (no signing, no hooks)"
+    command: 'git commit --no-gpg-sign --no-verify -m "wip"'
+    loadingText: "Committing WIP"

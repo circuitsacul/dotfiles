@@ -8,6 +8,8 @@ Usage: yhx-switch [-s SESSION] WINDOW [ARGS...]
   tree [PATH]                file tree (yazi), revealing PATH
   edit [--line=N] [FILE...]  editor (helix), opening FILEs
   lazygit                    lazygit
+  hunk                       focus/create a working-tree review (hunk)
+  hunk ARGS...              replace/create the Hunk window with this review
 
   -s SESSION  Target SESSION instead of the calling pane's session
   -h          Show this help
@@ -87,6 +89,22 @@ case "$window" in
     ;;
   lazygit)
     cmd=(lazygit)
+    ;;
+  hunk)
+    # A custom $EDITOR receives an absolute filename from Hunk. Keep this local
+    # to review launches, rather than changing the editor used by other tools.
+    cmd=(env YHX_HUNK=1 "EDITOR=\"$HOME/bin/yhx-switch\" edit" hunk)
+    if [[ $# -gt 0 ]]; then
+      cmd+=("$@")
+      update() {
+        local proj
+        proj=$(tmux show-option -v -t "$sess_t" @project_root)
+        # Explicit reviews replace the old process, including any unsaved review work.
+        tmux respawn-window -k -t "$win_t" -c "$proj" "${cmd[@]}"
+      }
+    else
+      cmd+=(diff --watch)
+    fi
     ;;
   *)
     usage >&2

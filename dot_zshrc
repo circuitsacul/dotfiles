@@ -69,6 +69,8 @@ compdef _directories md
 (( $+commands[uv] )) && eval "$(uv generate-shell-completion zsh)"
 (( $+commands[tombi] )) && eval "$(tombi completion zsh)"
 
+(( $+commands[mise] )) && eval "$(mise activate zsh)"
+
 # Define named directories: ~w <=> Windows home directory on WSL.
 [[ -z $z4h_win_home ]] || hash -d w=$z4h_win_home
 
