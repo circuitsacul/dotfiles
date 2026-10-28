@@ -1,6 +1,60 @@
 {
   "providers": {
     "kimi-coding": {
+      "models": [
+        {
+          "id": "k3.1-pro",
+          "name": "Kimi K3.1 Pro",
+          "api": "openai-completions",
+          "reasoning": true,
+          "input": ["text", "image"],
+          "contextWindow": 1048576,
+          "thinkingLevelMap": {
+            "off": null,
+            "minimal": null,
+            "low": "low",
+            "medium": null,
+            "high": "high",
+            "xhigh": null,
+            "max": "max"
+          },
+          "compat": {
+            "supportsStrictMode": false,
+            "supportsStore": false,
+            "supportsDeveloperRole": false,
+            "supportsReasoningEffort": true,
+            "maxTokensField": "max_tokens",
+            "thinkingFormat": "openai",
+            "requiresReasoningContentOnAssistantMessages": true
+          }
+        },
+        {
+          "id": "k3.1-pro-highspeed",
+          "name": "Kimi K3.1 Pro Highspeed",
+          "api": "openai-completions",
+          "reasoning": true,
+          "input": ["text", "image"],
+          "contextWindow": 1048576,
+          "thinkingLevelMap": {
+            "off": null,
+            "minimal": null,
+            "low": "low",
+            "medium": null,
+            "high": "high",
+            "xhigh": null,
+            "max": "max"
+          },
+          "compat": {
+            "supportsStrictMode": false,
+            "supportsStore": false,
+            "supportsDeveloperRole": false,
+            "supportsReasoningEffort": true,
+            "maxTokensField": "max_tokens",
+            "thinkingFormat": "openai",
+            "requiresReasoningContentOnAssistantMessages": true
+          }
+        }
+      ],
       "modelOverrides": {
         "k3-256k": {
           "cost": { "input": 3, "output": 15, "cacheRead": 0.3, "cacheWrite": 0 }
@@ -8,11 +62,6 @@
       }
     },
     "meta": {
-      "modelOverrides": {
-        "muse-wonder-1.0": {
-          "cost": { "input": 4, "output": 20, "cacheRead": 0.2, "cacheWrite": 0 }
-        }
-      },
       "models": [
         {
           "id": "muse-wonder-full-1.0",
