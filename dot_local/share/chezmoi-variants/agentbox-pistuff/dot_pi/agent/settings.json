@@ -2,7 +2,7 @@
   "defaultTools": [
     "+codemode"
   ],
-  "lastChangelogVersion": "1.4.0",
+  "lastChangelogVersion": "1.5.0",
   "theme": "catppuccin-mocha-peach",
   "packages": [
     "/home/agent/mypi"
@@ -50,6 +50,8 @@
     "meta/muse-wonder-1.0",
     "meta/muse-wonder-full-1.0",
     "kimi-coding/k3.1-pro",
-    "kimi-coding/k3.1-pro-highspeed"
-  ]
+    "kimi-coding/k3.1-pro-highspeed",
+    "openai-codex/gpt-6.1-terra"
+  ],
+  "deviceId": "9e920bce-da94-4bc9-bb37-dc8992a6e90d"
 }
