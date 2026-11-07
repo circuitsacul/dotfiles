@@ -39,18 +39,9 @@
   "enabledModels": [
     "openai-codex/gpt-6-astra",
     "claude-code/claude-fable-5-1",
-    "openai-codex/gpt-6-luna",
-    "xai/grok-4.7",
     "claude-code/claude-opus-5-5",
-    "openrouter/xiaomi/mimo-v2.6-pro",
-    "openrouter/xiaomi/mimo-v2.6-pro-ultraspeed",
     "claude-code/claude-sonnet-5-5",
     "openai-codex/gpt-6.1-sol",
-    "claude-code/claude-haiku-5-5",
-    "meta/muse-wonder-1.0",
-    "meta/muse-wonder-full-1.0",
-    "kimi-coding/k3.1-pro",
-    "kimi-coding/k3.1-pro-highspeed",
     "openai-codex/gpt-6.1-terra"
   ],
   "deviceId": "9e920bce-da94-4bc9-bb37-dc8992a6e90d"
