@@ -6,7 +6,7 @@
   "permissions": {
     "defaultMode": "auto"
   },
-  "model": "opus",
+  "model": "fable",
   "workflowKeywordTriggerEnabled": false,
   "statusLine": {
     "type": "command",

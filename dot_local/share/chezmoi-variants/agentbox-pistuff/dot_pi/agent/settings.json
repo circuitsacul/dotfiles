@@ -2,7 +2,7 @@
   "defaultTools": [
     "+codemode"
   ],
-  "lastChangelogVersion": "1.5.0",
+  "lastChangelogVersion": "1.5.2",
   "theme": "catppuccin-mocha-peach",
   "packages": [
     "/home/agent/mypi"
@@ -38,7 +38,7 @@
   "fullscreenScrollbar": "always",
   "enabledModels": [
     "openai-codex/gpt-6-astra",
-    "claude-code/claude-fable-5-1",
+    "claude-code/claude-fable-5-2",
     "claude-code/claude-opus-5-5",
     "claude-code/claude-sonnet-5-5",
     "openai-codex/gpt-6.1-sol",
