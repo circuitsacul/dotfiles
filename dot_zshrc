@@ -7,6 +7,8 @@ zstyle ':z4h:' start-tmux no
 zstyle ':z4h:' term-shell-integration 'yes'
 zstyle ':z4h:autosuggestions' forward-char 'accept'
 zstyle ':z4h:fzf-complete' recurse-dirs 'yes'
+zstyle ':z4h:fzf-complete' find-flags \
+  -maxdepth 2 -name '.*' -prune -print -o -print
 zstyle ':z4h:direnv' enable 'yes'
 zstyle ':z4h:direnv:success' notify 'yes'
 
