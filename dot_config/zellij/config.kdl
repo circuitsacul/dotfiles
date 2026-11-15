@@ -29,6 +29,14 @@ keybinds preset="default" {
         bind "I" { Resize "Decrease Up"; }
         bind "O" { Resize "Decrease Right"; }
         unbind "h" "j" "k" "l" "H" "J" "K" "L"
+        bind "F1" {
+            MessagePlugin "compact-bar" {
+                name "toggle_tooltip"
+                payload "1"
+                floating false
+                tooltip "F1"
+            }
+        }
     }
     pane {
         bind "n" { MoveFocus "Left"; }
@@ -39,6 +47,14 @@ keybinds preset="default" {
         bind "j" { TogglePaneEmbedOrFloating; SwitchToMode "Normal"; } // default: e
         bind "k" { TogglePanePinned; SwitchToMode "Normal"; } // default: i
         unbind "l"
+        bind "F1" {
+            MessagePlugin "compact-bar" {
+                name "toggle_tooltip"
+                payload "1"
+                floating false
+                tooltip "F1"
+            }
+        }
     }
     move {
         bind "n" { MovePane "Left"; }
@@ -47,6 +63,14 @@ keybinds preset="default" {
         bind "o" { MovePane "Right"; }
         bind "h" { MovePane; } // default: n
         unbind "j" "k" "l"
+        bind "F1" {
+            MessagePlugin "compact-bar" {
+                name "toggle_tooltip"
+                payload "1"
+                floating false
+                tooltip "F1"
+            }
+        }
     }
     tab {
         bind "n" "i" { GoToPreviousTab; }
@@ -56,6 +80,14 @@ keybinds preset="default" {
         bind "N" { MoveTab "Left"; }
         bind "O" { MoveTab "Right"; }
         unbind "j" "k" "l"
+        bind "F1" {
+            MessagePlugin "compact-bar" {
+                name "toggle_tooltip"
+                payload "1"
+                floating false
+                tooltip "F1"
+            }
+        }
     }
     shared_among "scroll" "search" {
         bind "e" { ScrollDown; }
@@ -72,11 +104,117 @@ keybinds preset="default" {
         bind "n" { PageScrollUp; }
         bind "o" { PageScrollDown; }
         bind "j" { EditScrollback; SwitchToMode "Normal"; } // default: e
+        bind "F1" {
+            MessagePlugin "compact-bar" {
+                name "toggle_tooltip"
+                payload "1"
+                floating false
+                tooltip "F1"
+            }
+        }
     }
     search {
         // exception: n / p (next / previous match) and o (whole word) keep their defaults, so
         // there is no n / o paging here
         unbind "j"
+        bind "F1" {
+            MessagePlugin "compact-bar" {
+                name "toggle_tooltip"
+                payload "1"
+                floating false
+                tooltip "F1"
+            }
+        }
+    }
+    normal {
+        bind "F1" {
+            MessagePlugin "compact-bar" {
+                name "toggle_tooltip"
+                payload "1"
+                floating false
+                tooltip "F1"
+            }
+        }
+    }
+    locked {
+        bind "F1" {
+            MessagePlugin "compact-bar" {
+                name "toggle_tooltip"
+                payload "1"
+                floating false
+                tooltip "F1"
+            }
+        }
+    }
+    entersearch {
+        bind "F1" {
+            MessagePlugin "compact-bar" {
+                name "toggle_tooltip"
+                payload "1"
+                floating false
+                tooltip "F1"
+            }
+        }
+    }
+    renametab {
+        bind "F1" {
+            MessagePlugin "compact-bar" {
+                name "toggle_tooltip"
+                payload "1"
+                floating false
+                tooltip "F1"
+            }
+        }
+    }
+    renamepane {
+        bind "F1" {
+            MessagePlugin "compact-bar" {
+                name "toggle_tooltip"
+                payload "1"
+                floating false
+                tooltip "F1"
+            }
+        }
+    }
+    session {
+        bind "F1" {
+            MessagePlugin "compact-bar" {
+                name "toggle_tooltip"
+                payload "1"
+                floating false
+                tooltip "F1"
+            }
+        }
+    }
+    prompt {
+        bind "F1" {
+            MessagePlugin "compact-bar" {
+                name "toggle_tooltip"
+                payload "1"
+                floating false
+                tooltip "F1"
+            }
+        }
+    }
+    tmux {
+        bind "F1" {
+            MessagePlugin "compact-bar" {
+                name "toggle_tooltip"
+                payload "1"
+                floating false
+                tooltip "F1"
+            }
+        }
+    }
+    renamesession {
+        bind "F1" {
+            MessagePlugin "compact-bar" {
+                name "toggle_tooltip"
+                payload "1"
+                floating false
+                tooltip "F1"
+            }
+        }
     }
 }
 
