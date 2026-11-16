@@ -259,6 +259,10 @@ ui {
         hide_session_name true
     }
 }
+terminal {
+    font "JetBrainsMono Nerd Font Mono"
+    font_size 12
+}
 web_client {
     font "monospace"
 }
