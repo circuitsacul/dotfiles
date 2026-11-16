@@ -1,0 +1,86 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+layout="compact"
+name=""
+fresh=false
+kill_origin=false
+new_window=false
+
+usage() {
+    cat <<EOF
+Usage: zt [-s NAME] [-n] [-l LAYOUT] [-k] [-w]
+  Open the session for the current folder in the Zellij terminal. Inside Zellij, the current
+  window switches to it; outside Zellij (or with -w), it opens in a new window.
+
+  -s NAME    Use NAME as the session name (default: derived from CWD path)
+  -n         New: don't resurrect an existing session with the same name
+  -l LAYOUT  Layout to use when creating (default: compact)
+  -k         Kill: after switching, delete the session this window came from
+  -w         Window: open a new window instead of switching this one
+  -h         Show this help
+EOF
+}
+
+die() {
+    echo "zt: $*" >&2
+    exit 1
+}
+
+while getopts ":s:nl:kwh" opt; do
+    case "$opt" in
+        s) name="$OPTARG" ;;
+        n) fresh=true ;;
+        l) layout="$OPTARG" ;;
+        k) kill_origin=true ;;
+        w) new_window=true ;;
+        h) usage; exit 0 ;;
+        \?) echo "Unknown option: -$OPTARG" >&2; usage >&2; exit 2 ;;
+        :)  echo "Option -$OPTARG requires an argument" >&2; usage >&2; exit 2 ;;
+    esac
+done
+
+here=$(dirname -- "$0")
+dir=$(pwd -P)
+[[ -n "$name" ]] || name=$("$here/z-session-name" "$dir")
+
+switch=false
+[[ -n "${ZELLIJ:-}" ]] && ! $new_window && switch=true
+$kill_origin && ! $switch && die "-k only applies when switching a Zellij window (not with -w)"
+
+# Prints the number of clients attached to session $1.
+attached_clients() {
+    zellij --session "$1" action list-clients 2>/dev/null | tail -n +2 | grep -c . || true
+}
+
+if $switch; then
+    origin="${ZELLIJ_SESSION_NAME:-}"
+    [[ "$name" != "$origin" ]] || die "already in session $name"
+    $fresh && zellij delete-session "$name" >/dev/null 2>&1 || true
+    zellij action switch-session "$name" --cwd "$dir" --layout "$layout"
+    if $kill_origin; then
+        # The switch is asynchronous, and does nothing if this pane's window was not the last
+        # one to receive a key, so only delete the origin once nobody is attached to it.
+        for _ in 1 2 3 4 5 6 7 8 9 10; do
+            [[ "$(attached_clients "$origin")" == 0 ]] && break
+            sleep 0.2
+        done
+        [[ "$(attached_clients "$origin")" == 0 ]] ||
+            die "not deleting $origin: it still has attached clients"
+        # Detached: this script runs in a pane of the session being deleted.
+        setsid -f zellij delete-session --force "$origin" >/dev/null 2>&1 </dev/null
+    fi
+    exit 0
+fi
+
+$fresh && zellij delete-session "$name" >/dev/null 2>&1 || true
+sessions=$(zellij list-sessions --short --no-formatting 2>/dev/null || true)
+if ! grep -Fxq -- "$name" <<<"$sessions"; then
+    # `zellij terminal ... options` would open a standalone window outside the desktop app, so
+    # create the session first. Only when it does not exist: this replaces an exited session
+    # instead of resurrecting it.
+    zellij attach --create-background "$name" options --default-layout "$layout"
+fi
+# Detached: with no desktop app running, this process becomes the app and must outlive the
+# terminal it was started from.
+setsid -f zellij terminal "$name" >/dev/null 2>&1 </dev/null

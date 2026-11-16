@@ -25,6 +25,7 @@ bin/drawio-ls
 # not work
 {{ if ne .platform "linux" }}
 .config/environment.d
+.config/plasma-workspace
 {{ end }}
 
 # not agentbox

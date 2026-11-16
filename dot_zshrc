@@ -68,6 +68,10 @@ autoload -Uz zmv
 # Define functions and completions.
 function md() { [[ $# == 1 ]] && mkdir -p -- "$1" && cd -- "$1" }
 compdef _directories md
+function zt() {
+  command zt "$@" || return
+  [[ -n ${ZELLIJ-} ]] || (( ${argv[(I)-h]} )) || exit
+}
 
 (( $+commands[just] )) && eval "$(just --completions zsh)"
 (( $+commands[uv] )) && eval "$(uv generate-shell-completion zsh)"

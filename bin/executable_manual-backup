@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+# manual-backup.sh — snapshot untracked/unsynced dotfiles into a single archive.
+#
+# Usage: ./manual-backup.sh
+# Restore: tar -xzpf <archive> -C "$HOME"   (-p keeps permissions, which ssh needs)
+
+set -euo pipefail
+
+# Paths to back up, relative to $HOME. Add or remove entries here.
+PATHS=(
+    .ssh
+    .radicle/keys
+    .radicle/config.json
+)
+
+DEST="$HOME/Downloads/manual-backups"
+NAME="manual-backup-$(hostname -s)-$(date +%Y%m%d-%H%M%S)"
+
+# The archive holds private keys: make everything we create owner-only.
+umask 077
+
+TMP="$(mktemp -d)"
+trap 'rm -rf "$TMP"' EXIT
+
+STAGE="$TMP/$NAME"
+mkdir -p "$STAGE" "$DEST"
+
+copied=()
+for p in "${PATHS[@]}"; do
+    src="$HOME/$p"
+    if [[ ! -e "$src" ]]; then
+        echo "skip:   ~/$p (not found)" >&2
+        continue
+    fi
+    # --parents recreates the relative path under the stage dir, so nested
+    # entries like .config/foo work; -a preserves modes, times and symlinks.
+    (cd "$HOME" && cp -a --parents -- "$p" "$STAGE/")
+    echo "copied: ~/$p"
+    copied+=("$p")
+done
+
+if (( ${#copied[@]} == 0 )); then
+    echo "nothing to back up" >&2
+    exit 1
+fi
+
+# Sockets (e.g. a running radicle node's control.sock) can't be archived and
+# are recreated on startup anyway; drop them so tar doesn't complain.
+find "$STAGE" -type s -delete
+
+# Archive paths are relative to $HOME (.ssh/..., .radicle/...). Only the
+# copied entries are named, not ".", so extracting into $HOME never touches
+# the mode or mtime of $HOME itself.
+ARCHIVE="$TMP/$NAME.tar.gz"
+tar -czpf "$ARCHIVE" -C "$STAGE" -- "${copied[@]}"
+
+# Verify the archive reads back cleanly before it counts as a backup.
+tar -tzf "$ARCHIVE" > /dev/null
+
+age -p -o "$ARCHIVE.age" "$ARCHIVE"
+mv -- "$ARCHIVE.age" "$DEST/"
+echo "done:   $DEST/$NAME.tar.gz.age"

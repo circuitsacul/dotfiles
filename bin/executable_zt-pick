@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+    cat <<EOF
+Usage: zt-pick [ZT_OPTIONS...]
+  Pick a folder in Yazi, then run \`zt ZT_OPTIONS\` there (see \`zt -h\`). Quit Yazi with q in
+  the folder to open; Q cancels.
+
+  For a desktop shortcut, where -k removes the throwaway session the picker ran in:
+    zellij terminal -e zt-pick -k
+EOF
+}
+
+[[ "${1:-}" != "-h" ]] || { usage; exit 0; }
+
+here=$(dirname -- "$0")
+cwd_file=$(mktemp "${TMPDIR:-/tmp}/zt-pick.XXXXXXXX")
+trap 'rm -f -- "$cwd_file"' EXIT
+
+yazi --cwd-file "$cwd_file"
+dir=$(<"$cwd_file")
+[[ -n "$dir" ]] || exit 0
+
+cd -- "$dir"
+"$here/zt" "$@"
