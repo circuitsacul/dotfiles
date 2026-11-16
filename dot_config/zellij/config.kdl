@@ -7,13 +7,7 @@
 keybinds preset="default" {
     shared_except "locked" {
         bind "Alt t" { NewTab; SwitchToMode "Normal"; }
-        bind "Ctrl w" {
-            LaunchOrFocusPlugin "session-manager" {
-                floating true
-                move_to_focused_tab true
-            };
-            SwitchToMode "Normal"
-        }
+        bind "Ctrl w" { ToggleSessionCard; SwitchToMode "Normal"; }
         bind "Ctrl i" { ToggleSessionCard; SwitchToMode "Normal"; } // inbox
         bind "Alt n" { MoveFocusOrTab "Left"; }
         bind "Alt e" { MoveFocus "Down"; }
