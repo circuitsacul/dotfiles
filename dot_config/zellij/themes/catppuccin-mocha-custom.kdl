@@ -1,16 +1,20 @@
-// Zellij v0.46.0's built-in catppuccin-mocha theme with the bright green highlights removed:
+// A copy of Zellij v0.46.0's built-in catppuccin-mocha theme with three changes:
 // https://github.com/zellij-org/zellij/blob/v0.46.0/zellij-utils/assets/themes/catppuccin-mocha.kdl
 // A full definition is needed: omitted components use Zellij defaults, not the base theme.
 //
-// Differences from the built-in theme (everything else is identical, terminal_colors included):
-// - Green -> Blue for the focused frame, the mode indicator / emphasis_2 and table titles.
-//   Green stays only where it means something: exit_code_success, player_6, terminal_colors.
-// - Ribbons (tabs) are flat text on the bar background instead of green / white blocks:
-//   Text when selected, Overlay0 otherwise, a Surface0 block on mouse hover.
-// - Backgrounds use Base (the Catppuccin terminal background) instead of Mantle.
-//
-// text_unselected is also the Zellij terminal window's default foreground and background, so
-// keep it at Text on Base; dimming it to restyle the bar greys out all terminal text there.
+// 1. Ribbons (tabs, status bar keys) are Text on dark blocks instead of dark text on light blocks:
+//    selected = dark red, unselected = Surface0, hover = Surface1. Their emphasis colors are the
+//    light Catppuccin ones so they stay readable on the dark blocks (>= 4.5:1, Zellij's own
+//    target). With simplified_ui, every other unselected tab is drawn with ribbon_hover, which
+//    is what keeps neighbouring tabs apart; set ribbon_hover = ribbon_unselected to drop that.
+// 2. The green accent is Red (243 139 168): emphasis_2, table titles, the focused frame. On the
+//    Surface2 "selected" rows it is the lighter 245 158 182, as the built-in lightens green there.
+//    exit_code_success.base is Red too: Zellij also uses it decoratively (the session manager's
+//    "Session:" prompt), at the cost of success and error markers sharing one color.
+//    Green stays only in player_6 (sixth attached client) and terminal_colors (the ANSI table).
+// 3. Backgrounds are Base (30 30 46) instead of Mantle (24 24 37). text_unselected.background is
+//    also the default background of Zellij's terminal window, and Catppuccin Mocha themes of
+//    other programs assume Base there (pi draws its message blocks in Mantle, for one).
 themes {
     catppuccin-mocha-custom {
         text_unselected {
@@ -18,7 +22,7 @@ themes {
             background 30 30 46
             emphasis_0 250 179 135
             emphasis_1 137 220 235
-            emphasis_2 137 180 250
+            emphasis_2 243 139 168
             emphasis_3 245 194 231
         }
         text_selected {
@@ -26,39 +30,39 @@ themes {
             background 88 91 112
             emphasis_0 255 202 171
             emphasis_1 142 225 240
-            emphasis_2 137 180 250
+            emphasis_2 245 158 182
             emphasis_3 248 197 234
         }
         ribbon_selected {
             base 205 214 244
-            background 30 30 46
-            emphasis_0 243 139 168
+            background 99 33 51
+            emphasis_0 249 226 175
             emphasis_1 250 179 135
             emphasis_2 245 194 231
-            emphasis_3 137 180 250
+            emphasis_3 137 220 235
         }
         ribbon_unselected {
-            base 108 112 134
-            background 30 30 46
+            base 205 214 244
+            background 49 50 68
             emphasis_0 243 139 168
-            emphasis_1 147 153 178
+            emphasis_1 166 173 200
             emphasis_2 137 180 250
             emphasis_3 245 194 231
         }
         ribbon_hover {
             base 205 214 244
-            background 49 50 68
-            emphasis_0 243 139 168
-            emphasis_1 147 153 178
-            emphasis_2 137 180 250
+            background 69 71 90
+            emphasis_0 245 158 182
+            emphasis_1 176 182 206
+            emphasis_2 143 184 250
             emphasis_3 245 194 231
         }
         table_title {
-            base 137 180 250
+            base 243 139 168
             background 30 30 46
             emphasis_0 250 179 135
             emphasis_1 137 220 235
-            emphasis_2 137 180 250
+            emphasis_2 243 139 168
             emphasis_3 245 194 231
         }
         table_cell_selected {
@@ -66,7 +70,7 @@ themes {
             background 88 91 112
             emphasis_0 255 202 171
             emphasis_1 142 225 240
-            emphasis_2 137 180 250
+            emphasis_2 245 158 182
             emphasis_3 248 197 234
         }
         table_cell_unselected {
@@ -74,7 +78,7 @@ themes {
             background 30 30 46
             emphasis_0 250 179 135
             emphasis_1 137 220 235
-            emphasis_2 137 180 250
+            emphasis_2 243 139 168
             emphasis_3 245 194 231
         }
         list_selected {
@@ -82,7 +86,7 @@ themes {
             background 88 91 112
             emphasis_0 255 202 171
             emphasis_1 142 225 240
-            emphasis_2 137 180 250
+            emphasis_2 245 158 182
             emphasis_3 248 197 234
         }
         list_unselected {
@@ -90,11 +94,11 @@ themes {
             background 30 30 46
             emphasis_0 250 179 135
             emphasis_1 137 220 235
-            emphasis_2 137 180 250
+            emphasis_2 243 139 168
             emphasis_3 245 194 231
         }
         frame_selected {
-            base 137 180 250
+            base 243 139 168
             background 0
             emphasis_0 250 179 135
             emphasis_1 137 220 235
@@ -110,7 +114,7 @@ themes {
             emphasis_3 250 179 135
         }
         exit_code_success {
-            base 166 227 161
+            base 243 139 168
             background 0
             emphasis_0 137 220 235
             emphasis_1 24 24 37

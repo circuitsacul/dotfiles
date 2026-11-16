@@ -6,6 +6,15 @@
 // h/j/k/l key, and any h/j/k/l key left with nothing is unbound. Exceptions are marked below.
 keybinds preset="default" {
     shared_except "locked" {
+        bind "Alt t" { NewTab; SwitchToMode "Normal"; }
+        bind "Ctrl w" {
+            LaunchOrFocusPlugin "session-manager" {
+                floating true
+                move_to_focused_tab true
+            };
+            SwitchToMode "Normal"
+        }
+        bind "Ctrl i" { ToggleSessionCard; SwitchToMode "Normal"; } // inbox
         bind "Alt n" { MoveFocusOrTab "Left"; }
         bind "Alt e" { MoveFocus "Down"; }
         bind "Alt i" { MoveFocus "Up"; }
@@ -259,7 +268,7 @@ web_client {
 //   - true
 //   - false (Default)
 // 
-simplified_ui true
+simplified_ui false
  
 // Enable OSC8 hyperlink output
 // Options:
