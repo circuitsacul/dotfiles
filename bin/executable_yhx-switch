@@ -77,14 +77,17 @@ case "$window" in
     fi
     update() {
       ((${#files[@]})) || return 0
-      local open=":open" f
+      local open="open" f buf="yhx-open-$$"
       for f in "${files[@]}"; do
         open+=" '${f//\'/\'\'}'"
       done
-      tmux send-keys -t "$win_t" Escape
-      tmux send-keys -t "$win_t" -l "$open"
-      tmux send-keys -t "$win_t" Enter
-      [[ -z $line ]] || tmux send-keys -t "$win_t" ":goto $line" Enter
+      local -a keys=(Enter)
+      [[ -z $line ]] || keys+=(":goto $line" Enter)
+      # CSI-u Escape avoids Alt-:; bracketed paste avoids completion on every path character.
+      tmux send-keys -t "$win_t" -l $'\e[27u:' \; \
+        set-buffer -b "$buf" "$open" \; \
+        paste-buffer -dpr -b "$buf" -t "$win_t" \; \
+        send-keys -t "$win_t" "${keys[@]}"
     }
     ;;
   lazygit)

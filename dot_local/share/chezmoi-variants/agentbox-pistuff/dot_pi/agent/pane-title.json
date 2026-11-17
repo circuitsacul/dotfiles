@@ -1,4 +1,4 @@
 {
-  "model": "openai-codex/gpt-6-luna",
-  "reasoning": "high"
+  "model": "openai-codex/gpt-6.1-terra",
+  "reasoning": "low"
 }

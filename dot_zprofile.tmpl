@@ -6,3 +6,7 @@ export XDG_CONFIG_HOME XDG_CACHE_HOME XDG_DATA_HOME
 if [ -r /etc/profile ]; then
   . /etc/profile
 fi
+{{ if eq .profile "agentbox-pistuff" }}
+# Antigravity CLI and other sandbox-local tools.
+export PATH="$HOME/.local/bin:$PATH"
+{{ end -}}

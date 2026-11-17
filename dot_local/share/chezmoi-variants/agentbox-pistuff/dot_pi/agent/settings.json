@@ -8,7 +8,7 @@
     "/home/agent/mypi"
   ],
   "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-6.1-sol",
+  "defaultModel": "gpt-6.2-sol",
   "defaultThinkingLevel": "medium",
   "outputPad": 0,
   "editorPaddingX": 0,
@@ -37,11 +37,11 @@
   "fullscreenExitOutput": "resume-hint",
   "fullscreenScrollbar": "always",
   "enabledModels": [
-    "openai-codex/gpt-6-astra",
+    "openai-codex/gpt-6.2-astra",
     "claude-code/claude-fable-5-2",
     "claude-code/claude-opus-5-5",
     "claude-code/claude-sonnet-5-5",
-    "openai-codex/gpt-6.1-sol",
+    "openai-codex/gpt-6.2-sol",
     "openai-codex/gpt-6.1-terra"
   ],
   "deviceId": "9e920bce-da94-4bc9-bb37-dc8992a6e90d"
