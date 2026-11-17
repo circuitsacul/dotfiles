@@ -1,7 +1,7 @@
 theme = "catppuccin_mocha"
 
 [editor]
-scroll-lines = 1
+scroll-lines = 3
 
 line-number = "relative"
 bufferline = "always"
@@ -42,14 +42,15 @@ l = ":run-shell-command ~/bin/yhx-switch lazygit"
 ###################################################################################################
 # colemak-dh key mappings
 [keys.normal]
-"A-n" = "goto_previous_buffer"
-"A-o" = "goto_next_buffer"
+# Shadowed by Zellij; use N/O in normal mode.
+# "A-n" = "goto_previous_buffer"
+# "A-o" = "goto_next_buffer"
 N = "goto_previous_buffer"
 O = "goto_next_buffer"
 
 n="move_char_left"
-e="move_line_down"
-i="move_line_up"
+e="move_visual_line_down"
+i="move_visual_line_up"
 o="move_char_right"
 
 h="insert_mode"
@@ -70,8 +71,13 @@ E="join_selections"
 I="keep_selections"
 "A-I"="remove_selections"
 
+# Hide redundant stock aliases; use Alt+E / Alt+I.
+"A-J"="no_op"
+"A-K"="no_op"
+
 [keys.normal.g]
-G="goto_file_end"
+G="goto_last_line"
+I="goto_implementation"
 
 n="goto_line_start"
 o="goto_line_end"
@@ -79,26 +85,72 @@ o="goto_line_end"
 e="move_line_down"
 i="move_line_up"
 
+# Hide stock direction aliases; use n/e/i/o.
+h="no_op"
+j="no_op"
+k="no_op"
+l="no_op"
+
 [keys.normal.space.w]
 n="jump_view_left"
 e="jump_view_down"
 i="jump_view_up"
 o="jump_view_right"
+l="wonly"
+N="swap_view_left"
+E="swap_view_down"
+I="swap_view_up"
+O="swap_view_right"
+h = { s = "hsplit_new", v = "vsplit_new", C-s = "hsplit_new", C-v = "vsplit_new" }
+
+# Hide stock direction/swap aliases; use neio/NEIO.
+j="no_op"
+k="no_op"
+H="no_op"
+J="no_op"
+K="no_op"
+L="no_op"
+"C-h"="no_op"
+"C-j"="no_op"
+"C-k"="no_op"
+"C-l"="no_op"
 
 [keys.normal.C-w]
 n="jump_view_left"
 e="jump_view_down"
 i="jump_view_up"
 o="jump_view_right"
+l="wonly"
+N="swap_view_left"
+E="swap_view_down"
+I="swap_view_up"
+O="swap_view_right"
+h = { s = "hsplit_new", v = "vsplit_new", C-s = "hsplit_new", C-v = "vsplit_new" }
+
+# Hide stock direction/swap aliases; use neio/NEIO.
+j="no_op"
+k="no_op"
+H="no_op"
+J="no_op"
+K="no_op"
+L="no_op"
+"C-h"="no_op"
+"C-j"="no_op"
+"C-k"="no_op"
+"C-l"="no_op"
 
 [keys.insert]
-"A-n" = "goto_previous_buffer"
-"A-o" = "goto_next_buffer"
+# Shadowed by Zellij.
+# "A-n" = "goto_previous_buffer"
+# "A-o" = "goto_next_buffer"
 "A-x" = "normal_mode" # Maps Alt-X to enter normal mode
 
 [keys.select]
-"A-n" = "goto_previous_buffer"
-"A-o" = "goto_next_buffer"
+# Shadowed by Zellij.
+# "A-n" = "goto_previous_buffer"
+# "A-o" = "goto_next_buffer"
+N = "goto_previous_buffer"
+O = "goto_next_buffer"
 
 n="extend_char_left"
 e="extend_visual_line_down"
@@ -111,11 +163,11 @@ H="insert_at_line_start"
 l="open_below"
 L="open_above"
 
-k="move_next_word_end"
-K="move_next_long_word_end"
+k="extend_next_word_end"
+K="extend_next_long_word_end"
 
-j="search_next"
-J="search_prev"
+j="extend_search_next"
+J="extend_search_prev"
 
 E="join_selections"
 "A-E"="join_selections_space"
@@ -123,19 +175,106 @@ E="join_selections"
 I="keep_selections"
 "A-I"="remove_selections"
 
+# Hide redundant stock aliases; use Alt+E / Alt+I.
+"A-J"="no_op"
+"A-K"="no_op"
+
 [keys.select.g]
-G="extend_to_file_end"
+G="extend_to_last_line"
+I="goto_implementation"
 
 n="goto_line_start"
 o="goto_line_end"
 
-e="move_line_down"
-i="move_line_up"
+e="extend_line_down"
+i="extend_line_up"
+
+# Hide stock direction aliases; use n/e/i/o.
+h="no_op"
+j="no_op"
+k="no_op"
+l="no_op"
+
+[keys.select.space.w]
+n="jump_view_left"
+e="jump_view_down"
+i="jump_view_up"
+o="jump_view_right"
+l="wonly"
+N="swap_view_left"
+E="swap_view_down"
+I="swap_view_up"
+O="swap_view_right"
+h = { s = "hsplit_new", v = "vsplit_new", C-s = "hsplit_new", C-v = "vsplit_new" }
+
+# Hide stock direction/swap aliases; use neio/NEIO.
+j="no_op"
+k="no_op"
+H="no_op"
+J="no_op"
+K="no_op"
+L="no_op"
+"C-h"="no_op"
+"C-j"="no_op"
+"C-k"="no_op"
+"C-l"="no_op"
+
+[keys.select.C-w]
+n="jump_view_left"
+e="jump_view_down"
+i="jump_view_up"
+o="jump_view_right"
+l="wonly"
+N="swap_view_left"
+E="swap_view_down"
+I="swap_view_up"
+O="swap_view_right"
+h = { s = "hsplit_new", v = "vsplit_new", C-s = "hsplit_new", C-v = "vsplit_new" }
+
+# Hide stock direction/swap aliases; use neio/NEIO.
+j="no_op"
+k="no_op"
+H="no_op"
+J="no_op"
+K="no_op"
+L="no_op"
+"C-h"="no_op"
+"C-j"="no_op"
+"C-k"="no_op"
+"C-l"="no_op"
 
 [keys.normal.z]
 e="scroll_down"
 i="scroll_up"
+E="page_cursor_half_down"
+I="page_cursor_half_up"
+# Hide stock scroll aliases; use e/i.
+j="no_op"
+k="no_op"
 
 [keys.normal.Z]
 e="scroll_down"
 i="scroll_up"
+E="page_cursor_half_down"
+I="page_cursor_half_up"
+# Hide stock scroll aliases; use e/i.
+j="no_op"
+k="no_op"
+
+[keys.select.z]
+e="scroll_down"
+i="scroll_up"
+E="page_cursor_half_down"
+I="page_cursor_half_up"
+# Hide stock scroll aliases; use e/i.
+j="no_op"
+k="no_op"
+
+[keys.select.Z]
+e="scroll_down"
+i="scroll_up"
+E="page_cursor_half_down"
+I="page_cursor_half_up"
+# Hide stock scroll aliases; use e/i.
+j="no_op"
+k="no_op"
