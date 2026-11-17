@@ -9,7 +9,7 @@ bufferline = "always"
 completion-trigger-len = 1
 completion-timeout = 5
 
-rulers = [100]
+rulers = [101]
 
 [editor.soft-wrap]
 enable = true

@@ -1,0 +1,8 @@
+{{- $config := include "dot_config/helix/config.toml" | fromToml -}}
+{{- $_ := setValueAtPath "editor.soft-wrap.enable" false $config -}}
+{{- $_ := setValueAtPath "editor.lsp.enable" false $config -}}
+{{- $_ := setValueAtPath "editor.gutters" (dict "layout" (list)) $config -}}
+{{- $_ := setValueAtPath "editor.bufferline" "never" $config -}}
+{{- $_ := setValueAtPath "editor.rulers" (list) $config -}}
+# Generated from config.toml for Zellij scrollback editing.
+{{ $config | toToml -}}
