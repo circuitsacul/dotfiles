@@ -35,7 +35,7 @@ keybinds preset="default" {
         bind "F1" {
             MessagePlugin "compact-bar" {
                 name "toggle_tooltip"
-                payload "1"
+                payload "2"
                 floating false
                 tooltip "F1"
             }
@@ -53,7 +53,7 @@ keybinds preset="default" {
         bind "F1" {
             MessagePlugin "compact-bar" {
                 name "toggle_tooltip"
-                payload "1"
+                payload "2"
                 floating false
                 tooltip "F1"
             }
@@ -69,7 +69,7 @@ keybinds preset="default" {
         bind "F1" {
             MessagePlugin "compact-bar" {
                 name "toggle_tooltip"
-                payload "1"
+                payload "2"
                 floating false
                 tooltip "F1"
             }
@@ -86,7 +86,7 @@ keybinds preset="default" {
         bind "F1" {
             MessagePlugin "compact-bar" {
                 name "toggle_tooltip"
-                payload "1"
+                payload "2"
                 floating false
                 tooltip "F1"
             }
@@ -110,7 +110,7 @@ keybinds preset="default" {
         bind "F1" {
             MessagePlugin "compact-bar" {
                 name "toggle_tooltip"
-                payload "1"
+                payload "2"
                 floating false
                 tooltip "F1"
             }
@@ -123,7 +123,7 @@ keybinds preset="default" {
         bind "F1" {
             MessagePlugin "compact-bar" {
                 name "toggle_tooltip"
-                payload "1"
+                payload "2"
                 floating false
                 tooltip "F1"
             }
@@ -133,7 +133,7 @@ keybinds preset="default" {
         bind "F1" {
             MessagePlugin "compact-bar" {
                 name "toggle_tooltip"
-                payload "1"
+                payload "2"
                 floating false
                 tooltip "F1"
             }
@@ -143,7 +143,7 @@ keybinds preset="default" {
         bind "F1" {
             MessagePlugin "compact-bar" {
                 name "toggle_tooltip"
-                payload "1"
+                payload "2"
                 floating false
                 tooltip "F1"
             }
@@ -153,7 +153,7 @@ keybinds preset="default" {
         bind "F1" {
             MessagePlugin "compact-bar" {
                 name "toggle_tooltip"
-                payload "1"
+                payload "2"
                 floating false
                 tooltip "F1"
             }
@@ -163,7 +163,7 @@ keybinds preset="default" {
         bind "F1" {
             MessagePlugin "compact-bar" {
                 name "toggle_tooltip"
-                payload "1"
+                payload "2"
                 floating false
                 tooltip "F1"
             }
@@ -173,7 +173,7 @@ keybinds preset="default" {
         bind "F1" {
             MessagePlugin "compact-bar" {
                 name "toggle_tooltip"
-                payload "1"
+                payload "2"
                 floating false
                 tooltip "F1"
             }
@@ -183,7 +183,7 @@ keybinds preset="default" {
         bind "F1" {
             MessagePlugin "compact-bar" {
                 name "toggle_tooltip"
-                payload "1"
+                payload "2"
                 floating false
                 tooltip "F1"
             }
@@ -193,7 +193,7 @@ keybinds preset="default" {
         bind "F1" {
             MessagePlugin "compact-bar" {
                 name "toggle_tooltip"
-                payload "1"
+                payload "2"
                 floating false
                 tooltip "F1"
             }
@@ -203,7 +203,7 @@ keybinds preset="default" {
         bind "F1" {
             MessagePlugin "compact-bar" {
                 name "toggle_tooltip"
-                payload "1"
+                payload "2"
                 floating false
                 tooltip "F1"
             }
@@ -213,7 +213,7 @@ keybinds preset="default" {
         bind "F1" {
             MessagePlugin "compact-bar" {
                 name "toggle_tooltip"
-                payload "1"
+                payload "2"
                 floating false
                 tooltip "F1"
             }
@@ -634,3 +634,6 @@ scroll_mode_sync false
 // host_notification_protocol "auto"
 support_kitty_keyboard_protocol true
 nested_session_handling "descend"
+attention {
+    track_commands true
+}
