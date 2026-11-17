@@ -42,9 +42,6 @@ l = ":run-shell-command ~/bin/yhx-switch lazygit"
 ###################################################################################################
 # colemak-dh key mappings
 [keys.normal]
-# Shadowed by Zellij; use N/O in normal mode.
-# "A-n" = "goto_previous_buffer"
-# "A-o" = "goto_next_buffer"
 N = "goto_previous_buffer"
 O = "goto_next_buffer"
 
@@ -90,6 +87,8 @@ h="no_op"
 j="no_op"
 k="no_op"
 l="no_op"
+# Hide the stock previous-buffer alias (its partner g n is line start here); use N/O.
+p="no_op"
 
 [keys.normal.space.w]
 n="jump_view_left"
@@ -97,6 +96,7 @@ e="jump_view_down"
 i="jump_view_up"
 o="jump_view_right"
 l="wonly"
+"C-l"="wonly"
 N="swap_view_left"
 E="swap_view_down"
 I="swap_view_up"
@@ -113,7 +113,7 @@ L="no_op"
 "C-h"="no_op"
 "C-j"="no_op"
 "C-k"="no_op"
-"C-l"="no_op"
+"C-o"="no_op" # stock wonly; moved to C-l
 
 [keys.normal.C-w]
 n="jump_view_left"
@@ -121,6 +121,7 @@ e="jump_view_down"
 i="jump_view_up"
 o="jump_view_right"
 l="wonly"
+"C-l"="wonly"
 N="swap_view_left"
 E="swap_view_down"
 I="swap_view_up"
@@ -137,18 +138,12 @@ L="no_op"
 "C-h"="no_op"
 "C-j"="no_op"
 "C-k"="no_op"
-"C-l"="no_op"
+"C-o"="no_op" # stock wonly; moved to C-l
 
 [keys.insert]
-# Shadowed by Zellij.
-# "A-n" = "goto_previous_buffer"
-# "A-o" = "goto_next_buffer"
 "A-x" = "normal_mode" # Maps Alt-X to enter normal mode
 
 [keys.select]
-# Shadowed by Zellij.
-# "A-n" = "goto_previous_buffer"
-# "A-o" = "goto_next_buffer"
 N = "goto_previous_buffer"
 O = "goto_next_buffer"
 
@@ -194,6 +189,8 @@ h="no_op"
 j="no_op"
 k="no_op"
 l="no_op"
+# Hide the stock previous-buffer alias (its partner g n is line start here); use N/O.
+p="no_op"
 
 [keys.select.space.w]
 n="jump_view_left"
@@ -201,6 +198,7 @@ e="jump_view_down"
 i="jump_view_up"
 o="jump_view_right"
 l="wonly"
+"C-l"="wonly"
 N="swap_view_left"
 E="swap_view_down"
 I="swap_view_up"
@@ -217,7 +215,7 @@ L="no_op"
 "C-h"="no_op"
 "C-j"="no_op"
 "C-k"="no_op"
-"C-l"="no_op"
+"C-o"="no_op" # stock wonly; moved to C-l
 
 [keys.select.C-w]
 n="jump_view_left"
@@ -225,6 +223,7 @@ e="jump_view_down"
 i="jump_view_up"
 o="jump_view_right"
 l="wonly"
+"C-l"="wonly"
 N="swap_view_left"
 E="swap_view_down"
 I="swap_view_up"
@@ -241,40 +240,52 @@ L="no_op"
 "C-h"="no_op"
 "C-j"="no_op"
 "C-k"="no_op"
-"C-l"="no_op"
+"C-o"="no_op" # stock wonly; moved to C-l
 
 [keys.normal.z]
 e="scroll_down"
 i="scroll_up"
 E="page_cursor_half_down"
 I="page_cursor_half_up"
-# Hide stock scroll aliases; use e/i.
-j="no_op"
+j="search_next"
+J="search_prev"
+# Hide stock aliases; use e/i to scroll and j/J to search.
 k="no_op"
+n="no_op"
+N="no_op"
 
 [keys.normal.Z]
 e="scroll_down"
 i="scroll_up"
 E="page_cursor_half_down"
 I="page_cursor_half_up"
-# Hide stock scroll aliases; use e/i.
-j="no_op"
+j="search_next"
+J="search_prev"
+# Hide stock aliases; use e/i to scroll and j/J to search.
 k="no_op"
+n="no_op"
+N="no_op"
 
 [keys.select.z]
 e="scroll_down"
 i="scroll_up"
 E="page_cursor_half_down"
 I="page_cursor_half_up"
-# Hide stock scroll aliases; use e/i.
-j="no_op"
+j="search_next"
+J="search_prev"
+# Hide stock aliases; use e/i to scroll and j/J to search.
 k="no_op"
+n="no_op"
+N="no_op"
 
 [keys.select.Z]
 e="scroll_down"
 i="scroll_up"
 E="page_cursor_half_down"
 I="page_cursor_half_up"
-# Hide stock scroll aliases; use e/i.
-j="no_op"
+j="search_next"
+J="search_prev"
+# Hide stock aliases; use e/i to scroll and j/J to search.
 k="no_op"
+n="no_op"
+N="no_op"
