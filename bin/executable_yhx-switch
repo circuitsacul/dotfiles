@@ -32,8 +32,13 @@ shift
 # An empty session part means the calling pane's session.
 sess_t="${session:+=$session}:"
 
-# Per window: `cmd` creates it, `update` applies ARGS to an already-running one.
+# `cmd` starts a missing window. For an existing window, select it and run `update`.
+# `edit` overrides `focus_existing` to select and open files in one tmux client.
 update() { :; }
+focus_existing() {
+  tmux select-window -t "$win_t"
+  update
+}
 case "$window" in
   tree)
     focus=""
@@ -75,8 +80,13 @@ case "$window" in
     else
       cmd=(hx ${line:+"+$line"} "${files[@]}")
     fi
-    update() {
-      ((${#files[@]})) || return 0
+    focus_existing() {
+      # "$@" inserts tmux commands after selection, so the marker runs before any keys.
+      local -a select_cmd=(select-window -t "$win_t" "$@")
+      if ((${#files[@]} == 0)); then
+        tmux "${select_cmd[@]}"
+        return
+      fi
       local open="open" f buf="yhx-open-$$"
       for f in "${files[@]}"; do
         open+=" '${f//\'/\'\'}'"
@@ -84,11 +94,23 @@ case "$window" in
       local -a keys=(Enter)
       [[ -z $line ]] || keys+=(":goto $line" Enter)
       # CSI-u Escape avoids Alt-:; bracketed paste avoids completion on every path character.
-      tmux send-keys -t "$win_t" -l $'\e[27u:' \; \
+      tmux "${select_cmd[@]}" \; send-keys -t "$win_t" -l $'\e[27u:' \; \
         set-buffer -b "$buf" "$open" \; \
         paste-buffer -dpr -b "$buf" -t "$win_t" \; \
         send-keys -t "$win_t" "${keys[@]}"
     }
+
+    # Usually there's exactly one edit window: select it and open the files in one client.
+    # A failed select stops the queue before the marker or any keys; use the lookup below.
+    win_t="${sess_t}=$window"
+    selected='yhx-switch: selected edit window'
+    if err=$(focus_existing \; display-message -p "$selected" 2>&1); then
+      exit 0
+    elif [[ $err == *"$selected"* ]]; then
+      # Selection succeeded. Report the failure rather than replaying a partial open.
+      printf '%s\n' "$err" >&2
+      exit 1
+    fi
     ;;
   lazygit)
     cmd=(lazygit)
@@ -120,8 +142,7 @@ ids=$(tmux list-windows -t "$sess_t" -f "#{==:#{window_name},$window}" -F '#{win
 win_t="${ids%%$'\n'*}"
 
 if [[ -n $win_t ]]; then
-  tmux select-window -t "$win_t"
-  update
+  focus_existing
 else
   proj=$(tmux show-option -v -t "$sess_t" @project_root)
   tmux new-window -t "$sess_t" -n "$window" -c "$proj" "${cmd[@]}"
