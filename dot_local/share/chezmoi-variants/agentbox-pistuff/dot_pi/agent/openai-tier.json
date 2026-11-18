@@ -1,3 +1,6 @@
 {
-  "tier": "fast"
+  "tier": "fast",
+  "models": {
+    "gpt-6.2-sol": "ultrafast"
+  }
 }
