@@ -25,6 +25,11 @@
   left: 0px;
 }
 
+/* Keep window controls from covering navigation when the fullscreen toolbar appears. */
+:root[sizemode="fullscreen"] #TabsToolbar > .titlebar-buttonbox-container {
+  display: none !important;
+}
+
 #main-window[sizemode="fullscreen"] #customizableui-special-spring4 {
   display: none !important;
 }
