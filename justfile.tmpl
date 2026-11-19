@@ -7,6 +7,16 @@ _:
 cafe:
     systemd-inhibit --what=idle:sleep --why="manual caffeine" sleep infinity
 
+# Install or update Bitwarden Desktop from the official x86_64 RPM.
+update-bitwarden:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    tmp=$(mktemp --suffix=.rpm)
+    trap 'rm -f -- "$tmp"' EXIT
+    curl --fail --location --show-error --output "$tmp" \
+        'https://vault.bitwarden.com/download/?app=desktop&platform=linux&variant=rpm'
+    sudo dnf install "$tmp"
+
 # Update Radicle Desktop without changing its AppImageLauncher-integrated path.
 update-radicle-desktop:
     #!/usr/bin/env bash
